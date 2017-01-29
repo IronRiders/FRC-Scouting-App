@@ -90,6 +90,12 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f050009
 			public const int linearLayout3 = 2131034121;
 			
+			// aapt resource value: 0x7f05000e
+			public const int listView1 = 2131034126;
+			
+			// aapt resource value: 0x7f05000f
+			public const int searchView1 = 2131034127;
+			
 			// aapt resource value: 0x7f050006
 			public const int switch1 = 2131034118;
 			
@@ -120,6 +126,9 @@ namespace ScoutingFRC
 			
 			// aapt resource value: 0x7f030001
 			public const int Main = 2130903041;
+			
+			// aapt resource value: 0x7f030002
+			public const int ViewData = 2130903042;
 			
 			static Layout()
 			{
