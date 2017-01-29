@@ -17,7 +17,7 @@ namespace ScoutingFRC
         private int teamNumber;
         private int match;
         private PreformaceData automomous;
-        private PreformaceData teleoporated;
+        private PreformaceData teleoperated;
 
         public class PreformaceData
         {

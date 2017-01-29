@@ -3,6 +3,8 @@ using Android.Widget;
 using Android.OS;
 using System.Collections.Generic;
 using Android.Bluetooth;
+using System.Linq;
+using System.Diagnostics;
 
 namespace ScoutingFRC
 {
@@ -16,31 +18,38 @@ namespace ScoutingFRC
             // Set our view from the "main" layout resource
              SetContentView (Resource.Layout.Main);
 
-            list = new List<string>();
-            list.Add("Test");
-            adapter = new ArrayAdapter<string>(this, Resource.Id.listView1, list);
+            adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1);
             var listView = FindViewById<ListView>(Resource.Id.listView1);
-            listView.Adapter = adapter;
+            listView.Adapter= adapter;
 
             var bluetoothReceiver = new BluetoothReceiver(DiscoveryFinishedCallback);
-            RegisterReceiver(bluetoothReceiver, new Android.Content.IntentFilter(BluetoothDevice.ActionFound));
             RegisterReceiver(bluetoothReceiver, new Android.Content.IntentFilter(BluetoothAdapter.ActionDiscoveryFinished));
+            RegisterReceiver(bluetoothReceiver, new Android.Content.IntentFilter(BluetoothDevice.ActionFound));
 
             bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
-            bluetoothAdapter.StartDiscovery();
+            if(!bluetoothAdapter.StartDiscovery()) {
+                Debugger.Break();
+            }
+
+            List<string> bondedDevices = bluetoothAdapter.BondedDevices.Select(bt => bt.Name).ToList();
         }
 
         private void DiscoveryFinishedCallback(List<string> devices)
         {
-            RunOnUiThread(() =>
-            {
-                //list.AddRange(devices);
-                adapter.NotifyDataSetChanged();
-            });
+            adapter.AddAll(devices);
+            adapter.NotifyDataSetChanged();
         }
 
+        public const int MESSAGE_STATE_CHANGE = 1;
+        public const int MESSAGE_READ = 2;
+        public const int MESSAGE_WRITE = 3;
+        public const int MESSAGE_DEVICE_NAME = 4;
+        public const int MESSAGE_TOAST = 5;
+
+        public const string DEVICE_NAME = "device_name";
+        public const string TOAST = "toast";
+
         private ArrayAdapter<string> adapter;
-        private List<string> list;
         private BluetoothAdapter bluetoothAdapter;
     }
 }
