@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1">
+        <TextView
+            android:text="Team Number"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView1" />
+        <EditText
+            android:inputType="number"
+            android:layout_width="100.0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/editText1" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+        <TextView
+            android:text="Match Number"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView2" />
+        <EditText
+            android:inputType="number"
+            android:layout_width="100.0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/editText2" />
+    </LinearLayout>
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch1"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Automomous"
+        android:ellipsize="none"
+        android:textOn="Automomous"
+        android:textOff="Teleoporated" />
+    <CheckBox
+        android:text="Cross the baseline "
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox1" />
+    <TextView
+        android:text="High Boiler"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout3">
+        <Button
+            android:text="Goal!"
+            android:layout_width="164.0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/button1" />
+        <Button
+            android:text="MISS"
+            android:layout_width="164.5dp"
+            android:layout_height="match_parent"
+            android:id="@+id/button2" />
+    </LinearLayout>
+    <TextView
+        android:text="Low Boiler"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout3">
+        <Button
+            android:text="Goal!"
+            android:layout_width="164.0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/button1" />
+        <Button
+            android:text="MISS"
+            android:layout_width="164.5dp"
+            android:layout_height="match_parent"
+            android:id="@+id/button2" />
+    </LinearLayout>
+    <TextView
+        android:text="Gears"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout3">
+        <Button
+            android:text="Goal!"
+            android:layout_width="164.0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/button1" />
+        <Button
+            android:text="MISS"
+            android:layout_width="164.5dp"
+            android:layout_height="match_parent"
+            android:id="@+id/button2" />
+    </LinearLayout>
+    <CheckBox
+        android:text="Climb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox2" />
+    <Button
+        android:text="Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button3" />
+</LinearLayout>
