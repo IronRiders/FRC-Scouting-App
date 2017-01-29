@@ -51,7 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptThread.cs" />
     <Compile Include="BluetoothReceiver.cs" />
+    <Compile Include="BluetoothService.cs" />
+    <Compile Include="ConnectedThread.cs" />
+    <Compile Include="ConnectThread.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MatchData.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
