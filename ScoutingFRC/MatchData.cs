@@ -14,22 +14,41 @@ namespace ScoutingFRC
 {
     class MatchData
     {
-        private int teamNumber;
-        private int match;
-        private PreformaceData automomous;
-        private PreformaceData teleoperated;
+        public int teamNumber;
+        public int match;
+        public PreformaceData automomous;
+        public PreformaceData teleoperated;
+
+        public MatchData()
+        {
+          automomous = new PreformaceData();
+          teleoperated = new PreformaceData();
+        }
 
         public class PreformaceData
         {
-            private ScoringMethod highBoiler;
-            private ScoringMethod lowBoiler;
-            private ScoringMethod gears;
-            private bool oneTimePoints;
+            public ScoringMethod highBoiler;
+            public ScoringMethod lowBoiler;
+            public ScoringMethod gears;
+            public bool oneTimePoints;
+
+            public PreformaceData()
+            {
+                highBoiler = new ScoringMethod();
+                lowBoiler = new ScoringMethod();
+                gears = new ScoringMethod();
+            }
 
             public class ScoringMethod
             {
-                private int failedAttempts;
-                private int successes;
+                public int failedAttempts;
+                public int successes;
+
+                public ScoringMethod()
+                {
+                    failedAttempts = 0;
+                    successes = 0;
+                }
             }
         }
     }
