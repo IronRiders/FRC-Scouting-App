@@ -20,9 +20,9 @@ namespace ScoutingFRC
         private BluetoothSocket mmSocket;
         private Stream mmInStream;
         private Stream mmOutStream;
-        public BluetoothService _service;
+        public BluetoothService2 _service;
 
-        public ConnectedThread(BluetoothSocket socket, BluetoothService service)
+        public ConnectedThread(BluetoothSocket socket, BluetoothService2 service)
         {
             Name = "ConnectedThread";
 
