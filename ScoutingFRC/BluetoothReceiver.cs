@@ -37,7 +37,6 @@ namespace ScoutingFRC
                         break;
                 }
                 case BluetoothAdapter.ActionDiscoveryFinished: {
-                        devices.Insert(0, string.Format("--- Test, {0} devices found ---", devices.Count));
                         discoveryFinishedCallback?.Invoke(devices);
                         devices.Clear();
                         break;

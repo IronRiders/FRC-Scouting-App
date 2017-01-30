@@ -90,6 +90,9 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f050009
 			public const int linearLayout3 = 2131034121;
 			
+			// aapt resource value: 0x7f05000e
+			public const int listView1 = 2131034126;
+			
 			// aapt resource value: 0x7f050006
 			public const int switch1 = 2131034118;
 			

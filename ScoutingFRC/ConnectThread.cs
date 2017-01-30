@@ -18,9 +18,14 @@ namespace ScoutingFRC
     {
         private BluetoothSocket mmSocket;
         private BluetoothDevice mmDevice;
-        private BluetoothService _service;
+        private BluetoothService2 _service;
 
-        public ConnectThread(BluetoothDevice device, BluetoothService service)
+        void Test()
+        {
+
+        }
+
+        public ConnectThread(BluetoothDevice device, BluetoothService2 service)
         {
             Name = "ConnectThread";
 
@@ -28,7 +33,7 @@ namespace ScoutingFRC
             _service = service;
             BluetoothSocket tmp = null;
 
-           tmp = device.CreateRfcommSocketToServiceRecord(BluetoothService.MY_UUID);
+           tmp = device.CreateRfcommSocketToServiceRecord(BluetoothService2.MY_UUID);
            mmSocket = tmp;
         }
 

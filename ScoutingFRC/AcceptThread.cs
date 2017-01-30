@@ -17,16 +17,16 @@ namespace ScoutingFRC
     class AcceptThread : Thread
     {
         private BluetoothServerSocket mmServerSocket;
-        private BluetoothService _service;
+        private BluetoothService2 _service;
 
-        public AcceptThread(BluetoothService service)
+        public AcceptThread(BluetoothService2 service)
         {
             Name = "AcceptThread";
 
             _service = service;
             BluetoothServerSocket tmp = null;
 
-            tmp = _service._adapter.ListenUsingRfcommWithServiceRecord(BluetoothService.NAME, BluetoothService.MY_UUID);
+            tmp = _service._adapter.ListenUsingRfcommWithServiceRecord(BluetoothService2.NAME, BluetoothService2.MY_UUID);
 
             mmServerSocket = tmp;
         }
@@ -35,18 +35,18 @@ namespace ScoutingFRC
         {
             BluetoothSocket socket = null;
 
-            while (_service._state != BluetoothService.STATE_CONNECTED) {
+            while (_service._state != BluetoothService2.STATE_CONNECTED) {
                 socket = mmServerSocket.Accept();
 
                 if (socket != null) {
                     lock (this) {
                         switch (_service._state) {
-                            case BluetoothService.STATE_LISTEN:
-                            case BluetoothService.STATE_CONNECTING:
+                            case BluetoothService2.STATE_LISTEN:
+                            case BluetoothService2.STATE_CONNECTING:
                                 _service.Connected(socket, socket.RemoteDevice);
                                 break;
-                            case BluetoothService.STATE_NONE:
-                            case BluetoothService.STATE_CONNECTED:
+                            case BluetoothService2.STATE_NONE:
+                            case BluetoothService2.STATE_CONNECTED:
                                 socket.Close();
                                 break;
                         }

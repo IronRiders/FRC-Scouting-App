@@ -16,7 +16,7 @@ namespace ScoutingFRC
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
-             SetContentView (Resource.Layout.Main);
+            SetContentView (Resource.Layout.Main);
 
             adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1);
             var listView = FindViewById<ListView>(Resource.Id.listView1);
@@ -31,7 +31,8 @@ namespace ScoutingFRC
                 Debugger.Break();
             }
 
-            List<string> bondedDevices = bluetoothAdapter.BondedDevices.Select(bt => bt.Name).ToList();
+            List<string> bondedDevices = bluetoothAdapter.BondedDevices.Select(bt => "Bonded: " + bt.Name).ToList();
+            adapter.AddAll(bondedDevices);
         }
 
         private void DiscoveryFinishedCallback(List<string> devices)
@@ -39,6 +40,8 @@ namespace ScoutingFRC
             adapter.AddAll(devices);
             adapter.NotifyDataSetChanged();
         }
+
+        private BluetoothService btService;
 
         public const int MESSAGE_STATE_CHANGE = 1;
         public const int MESSAGE_READ = 2;
