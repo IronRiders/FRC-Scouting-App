@@ -21,6 +21,8 @@ namespace ScoutingFRC
              SetContentView (Resource.Layout.Main);
             FindViewById<Button>(Resource.Id.buttonCollect).Click += ButtonCollect_Click;
             FindViewById<Button>(Resource.Id.buttonView).Click += ButtonView_Click;
+            FindViewById<Button>(Resource.Id.button1).Click += button1_Click;
+            cancelled = false;
 
             adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1);
             var listView = FindViewById<ListView>(Resource.Id.listView1);
@@ -31,11 +33,28 @@ namespace ScoutingFRC
             RegisterReceiver(bluetoothReceiver, new Android.Content.IntentFilter(BluetoothDevice.ActionFound));
 
             bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
-            if(!bluetoothAdapter.StartDiscovery()) {
-                Debugger.Break();
-            }
+           
+            ScanForDevices();
+        }
 
-            List<string> bondedDevices = bluetoothAdapter.BondedDevices.Select(bt => bt.Name).ToList();
+        private bool cancelled;
+        void ScanForDevices()
+        {
+            adapter.Clear();
+            if (bluetoothAdapter.IsDiscovering)
+            {
+                bluetoothAdapter.CancelDiscovery();
+                cancelled = true;
+            }
+            else
+            {
+                bluetoothAdapter.StartDiscovery();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ScanForDevices();
         }
 
         private void ButtonCollect_Click(object sender, EventArgs e)
@@ -50,8 +69,20 @@ namespace ScoutingFRC
 
         private void DiscoveryFinishedCallback(List<string> devices)
         {
-            adapter.AddAll(devices);
-            adapter.NotifyDataSetChanged();
+            if (!cancelled)
+            {
+                var paired = bluetoothAdapter.BondedDevices.Select(bt => "Paired: " + bt.Name).ToList();
+                adapter.Add($"--- {paired.Count + devices.Count} Devices Found ---");
+                adapter.AddAll(paired);
+                adapter.AddAll(devices);
+                adapter.NotifyDataSetChanged();
+            }
+            else
+            {
+                bluetoothAdapter.StartDiscovery();
+                cancelled = false;
+            }
+            
         }
 
         public const int MESSAGE_STATE_CHANGE = 1;

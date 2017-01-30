@@ -82,6 +82,9 @@ namespace ScoutingFRC
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f060014
+			public const int button1 = 2131099668;
+			
 			// aapt resource value: 0x7f060012
 			public const int buttonCollect = 2131099666;
 			
@@ -130,11 +133,11 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f060009
 			public const int linearLayout3 = 2131099657;
 			
-			// aapt resource value: 0x7f060014
-			public const int listView1 = 2131099668;
-			
 			// aapt resource value: 0x7f060015
-			public const int searchView1 = 2131099669;
+			public const int listView1 = 2131099669;
+			
+			// aapt resource value: 0x7f060016
+			public const int searchView1 = 2131099670;
 			
 			// aapt resource value: 0x7f060006
 			public const int switchAuto = 2131099654;

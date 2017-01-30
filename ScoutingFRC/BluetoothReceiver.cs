@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Android.App;
+using Android.App.Admin;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
@@ -30,14 +31,14 @@ namespace ScoutingFRC
                 case BluetoothDevice.ActionFound: {
                         BluetoothDevice device = (BluetoothDevice) intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
 
-                        if (device.BondState != Bond.Bonded) {
-                            devices.Add(device.Name);
+                        if (device.BondState != Bond.Bonded)
+                        {
+                            devices.Add(device.Name ?? device.Address ?? "Unknown Device");
                         }
 
                         break;
                 }
                 case BluetoothAdapter.ActionDiscoveryFinished: {
-                        devices.Insert(0, string.Format("--- Test, {0} devices found ---", devices.Count));
                         discoveryFinishedCallback?.Invoke(devices);
                         devices.Clear();
                         break;
