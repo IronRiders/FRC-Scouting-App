@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px">
+    <Button
+        android:text="Collect Data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonCollect" />
+    <Button
+        android:text="View Data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonView" />
     <ListView
         android:minWidth="25px"
         android:minHeight="25px"

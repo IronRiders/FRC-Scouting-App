@@ -1,10 +1,12 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
 using Android.Widget;
 using Android.OS;
 using System.Collections.Generic;
 using Android.Bluetooth;
 using System.Linq;
 using System.Diagnostics;
+using Android.Content;
 
 namespace ScoutingFRC
 {
@@ -17,6 +19,8 @@ namespace ScoutingFRC
 
             // Set our view from the "main" layout resource
              SetContentView (Resource.Layout.Main);
+            FindViewById<Button>(Resource.Id.buttonCollect).Click += ButtonCollect_Click;
+            FindViewById<Button>(Resource.Id.buttonView).Click += ButtonView_Click;
 
             adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1);
             var listView = FindViewById<ListView>(Resource.Id.listView1);
@@ -32,6 +36,16 @@ namespace ScoutingFRC
             }
 
             List<string> bondedDevices = bluetoothAdapter.BondedDevices.Select(bt => bt.Name).ToList();
+        }
+
+        private void ButtonCollect_Click(object sender, EventArgs e)
+        {
+            StartActivity(new Intent(Application.Context, typeof(DataCollectionActivity)));
+        }
+
+        private void ButtonView_Click(object sender, EventArgs e)
+        {
+            StartActivity(new Intent(Application.Context, typeof(DataViewingActivity)));
         }
 
         private void DiscoveryFinishedCallback(List<string> devices)
