@@ -25,5 +25,6 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listView1" />
+        android:id="@+id/listView1"
+        android:layout_marginTop="0.0dp" />
 </LinearLayout>
