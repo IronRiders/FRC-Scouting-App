@@ -15,13 +15,13 @@ namespace ScoutingFRC
 {
     class BluetoothReceiver : BroadcastReceiver
     {
-        private List<string> devices;
-        private Action<List<string>> discoveryFinishedCallback;
+        private List<BluetoothDevice> devices;
+        private Action<List<BluetoothDevice>> discoveryFinishedCallback;
 
-        public BluetoothReceiver(Action<List<string>> discoveryFinishedCallback)
+        public BluetoothReceiver(Action<List<BluetoothDevice>> discoveryFinishedCallback)
         {
             this.discoveryFinishedCallback = discoveryFinishedCallback;
-            devices = new List<string>();
+            devices = new List<BluetoothDevice>();
         }
 
         public override void OnReceive(Context context, Intent intent)
@@ -31,7 +31,7 @@ namespace ScoutingFRC
                         BluetoothDevice device = (BluetoothDevice) intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
 
                         if (device.BondState != Bond.Bonded) {
-                            devices.Add(device.Name);
+                            devices.Add(device);
                         }
 
                         break;
