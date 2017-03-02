@@ -34,22 +34,35 @@ namespace ScoutingFRC
 
             bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
 
-            bs = new BluetoothService(this);
+            bs = new BluetoothService(this, ErrorCallback, DataCallback);
+
             bluetoothDevices = new List<BluetoothDevice>();
 
             SearchForDevices();
         }
 
-        long connectedId = -1;
+        void ErrorCallback(Exception ex, BluetoothDevice device)
+        {
+
+        }
+
+        void DataCallback(byte[] data, BluetoothDevice device)
+        {
+
+        }
+
         private void MainActivity_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            if(connectedId < 0) {
-                connectedId = e.Id;
-                bs.Connect(bluetoothDevices[(int)(e.Id - 1)]);
+            BluetoothDevice device = bluetoothDevices[(int)(e.Id - 1)];
+
+            lock (bs.connectionsLock) {
+                if (bs.connections.Any(bc => bc.bluetoothDevice.Address == device.Address)) {
+                    Toast.MakeText(this, "Already connected to this device. Disconnecting", ToastLength.Long).Show();
+                }
+                else {
+                    bs.Connect(device);
+                }
             }
-            else {
-                bs.Write(Encoding.ASCII.GetBytes("Test Message"));
-            } 
         }
 
         private bool cancelled = false;
@@ -92,7 +105,7 @@ namespace ScoutingFRC
                 bluetoothDevices.AddRange(bluetoothAdapter.BondedDevices);
                 bluetoothDevices.AddRange(devices);
 
-                adapter.AddAll(bluetoothAdapter.BondedDevices.Select(bt => "Paired: " + bt.Name).ToList());
+                adapter.AddAll(bluetoothAdapter.BondedDevices.Select(bt => "Paired: " + ((bt.Name == null) ? bt.Address : bt.Name)).ToList());
                 adapter.AddAll(devices.Select(d => d.Name).ToList());
                 adapter.NotifyDataSetChanged();
             }
