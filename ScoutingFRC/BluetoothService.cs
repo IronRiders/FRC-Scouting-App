@@ -38,7 +38,7 @@ namespace ScoutingFRC
             this.errorCallback = errorCallback;
             this.dataCallback = dataCallback;
 
-            connectThread = new Thread(Connect);
+            connectThread = new Thread(ConnectInternal);
             connectionThread = new Thread(Connection);
 
             if(bluetoothSocket != null && bluetoothSocket.IsConnected) {
@@ -51,13 +51,32 @@ namespace ScoutingFRC
             }
         }
 
-        public void Connect()
+        private bool Connect()
         {
-            var socket = bluetoothDevice.CreateRfcommSocketToServiceRecord(uuid);
+            bool connected = IsConnected();
+
+            if(connected) {
+                connectThread.Start();
+            }
+
+            return connected;
+        }
+
+        public bool IsConnected()
+        {
+            return connectionThread.IsAlive;
+        }
+
+        public void ConnectInternal()
+        {
+            Looper.Prepare();
+
+            bluetoothSocket = bluetoothDevice.CreateRfcommSocketToServiceRecord(uuid);
 
             try {
-                socket.Connect();
+                bluetoothSocket.Connect();
                 connectionThread.Start();
+                Debug("Connected to " + bluetoothDevice.Name == null ? bluetoothDevice.Address : bluetoothDevice.Name);
             }
             catch (Exception ex) {
                 errorCallback?.Invoke(ex, bluetoothDevice);
@@ -66,10 +85,17 @@ namespace ScoutingFRC
 
         public void Disconnect()
         {
+            var copy = errorCallback;
             errorCallback = null;
-            bluetoothSocket.Close();
-            connectThread.Join();
-            connectionThread.Join();
+            bluetoothSocket?.Close();
+            bluetoothSocket = null;
+            if(connectThread.IsAlive) {
+                connectThread.Join();
+            }
+            if(connectionThread.IsAlive) {
+                connectionThread.Join();
+            }
+            errorCallback = copy;
         }
 
         private void Connection()
@@ -102,11 +128,16 @@ namespace ScoutingFRC
                 }       
             }
         }
+
+        public void Debug(string s)
+        {
+            ((Activity)Application.Context).RunOnUiThread(() => Toast.MakeText(Application.Context, s, ToastLength.Long).Show());
+        }
     }
 
     class BluetoothService
     {
-        private const string name = "BS";
+        private const string name = "BluetoothService";
         private static UUID uuid = UUID.FromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
 
         private Context context;
@@ -156,6 +187,25 @@ namespace ScoutingFRC
             lock (connectionsLock) {
                 connections.Add(new BluetoothConnection(device, uuid, errorCallback, dataCallback));
             } 
+        }
+
+        public void Disconnect(BluetoothDevice device)
+        {
+            new Thread(new ParameterizedThreadStart(DisconnectThread)).Start();
+        }
+
+        public void DisconnectThread(object parameter)
+        {
+            BluetoothDevice device = (BluetoothDevice)parameter;
+
+            lock (connectionsLock) {
+                BluetoothConnection bc = connections.Find(_bc => _bc.bluetoothDevice.Address == device.Address);
+                if (bc != null) {
+                    bc.Disconnect();
+                    connections.Remove(bc);
+                }
+            }
+            
         }
 
         public void StartListening()
