@@ -29,11 +29,15 @@ namespace ScoutingFRC
 
         private UUID uuid;
 
-        public BluetoothConnection(BluetoothDevice bluetoothDevice, UUID uuid, Action<Exception, BluetoothDevice> errorCallback, Action<byte[], BluetoothDevice> dataCallback, BluetoothSocket bluetoothSocket = null)
+        Context xd;
+
+        public BluetoothConnection(Context context, BluetoothDevice bluetoothDevice, UUID uuid, Action<Exception, BluetoothDevice> errorCallback, Action<byte[], BluetoothDevice> dataCallback, BluetoothSocket bluetoothSocket = null)
         {
             this.bluetoothDevice = bluetoothDevice;
 
             this.uuid = uuid;
+
+            xd = context;
 
             this.errorCallback = errorCallback;
             this.dataCallback = dataCallback;
@@ -76,7 +80,7 @@ namespace ScoutingFRC
             try {
                 bluetoothSocket.Connect();
                 connectionThread.Start();
-                Debug("Connected to " + bluetoothDevice.Name == null ? bluetoothDevice.Address : bluetoothDevice.Name);
+                Debug("Connected to " + (bluetoothDevice.Name == null ? bluetoothDevice.Address : bluetoothDevice.Name));
             }
             catch (Exception ex) {
                 errorCallback?.Invoke(ex, bluetoothDevice);
@@ -89,10 +93,10 @@ namespace ScoutingFRC
             errorCallback = null;
             bluetoothSocket?.Close();
             bluetoothSocket = null;
-            if(connectThread.IsAlive) {
+            if(connectThread.IsAlive && Thread.CurrentThread.ManagedThreadId != connectThread.ManagedThreadId) {
                 connectThread.Join();
             }
-            if(connectionThread.IsAlive) {
+            if(connectionThread.IsAlive && Thread.CurrentThread.ManagedThreadId != connectionThread.ManagedThreadId) {
                 connectionThread.Join();
             }
             errorCallback = copy;
@@ -131,7 +135,7 @@ namespace ScoutingFRC
 
         public void Debug(string s)
         {
-            ((Activity)Application.Context).RunOnUiThread(() => Toast.MakeText(Application.Context, s, ToastLength.Long).Show());
+            ((Activity)xd).RunOnUiThread(() => Toast.MakeText(Application.Context, s, ToastLength.Long).Show());
         }
     }
 
@@ -172,7 +176,12 @@ namespace ScoutingFRC
 
         private void ErrorCallback(Exception ex, BluetoothDevice device)
         {
-            connections.First(bc => bc.bluetoothDevice.Address == device.Address).Disconnect();
+            if(device != null) {
+                var connection = connections.First(bc => bc.bluetoothDevice.Address == device.Address);
+                connection.Disconnect();
+                connections.Remove(connection);
+            }
+
 
             errorCallback(ex, device);
         }
@@ -185,13 +194,13 @@ namespace ScoutingFRC
         public void Connect(BluetoothDevice device)
         {
             lock (connectionsLock) {
-                connections.Add(new BluetoothConnection(device, uuid, errorCallback, dataCallback));
+                connections.Add(new BluetoothConnection(context, device, uuid, ErrorCallback, dataCallback));
             } 
         }
 
         public void Disconnect(BluetoothDevice device)
         {
-            new Thread(new ParameterizedThreadStart(DisconnectThread)).Start();
+            new Thread(new ParameterizedThreadStart(DisconnectThread)).Start(device);
         }
 
         public void DisconnectThread(object parameter)
@@ -239,7 +248,7 @@ namespace ScoutingFRC
                 while (listen) {
                     BluetoothSocket socket = serverSocket.Accept();
                     lock (connectionsLock) {
-                        connections.Add(new BluetoothConnection(socket.RemoteDevice, uuid, errorCallback, dataCallback, socket));
+                        connections.Add(new BluetoothConnection(context, socket.RemoteDevice, uuid, ErrorCallback, dataCallback, socket));
                     }
                 }
 
@@ -247,10 +256,10 @@ namespace ScoutingFRC
                 serverSocket.Close();
             }
             catch (Exception ex) {
-                errorCallback(ex, null);
+                ErrorCallback(ex, null);
 
                 if(!attemptedClose) {
-                    try { serverSocket.Close(); } catch { errorCallback(ex, null); }
+                    try { serverSocket.Close(); } catch { ErrorCallback(ex, null); }
                 }
             }
         }

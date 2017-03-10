@@ -94,7 +94,7 @@ namespace ScoutingFRC
                 bluetoothDevices.Clear();
 
                 bluetoothDevices.AddRange(bluetoothAdapter.BondedDevices);
-                adapter.AddAll(bluetoothAdapter.BondedDevices.Select(bt => "Paired: " + ((bt.Name == null) ? bt.Address : bt.Name)).ToList());
+                adapter.AddAll(bluetoothAdapter.BondedDevices.Select(bt => "Paired: " + ((bt.Name == null) ? "" : bt.Name) + " (" + bt.Address + ")").ToList());
             }
             else {
                 Debugger.Break();
@@ -124,7 +124,7 @@ namespace ScoutingFRC
             if(!cancelled) {
                 bluetoothDevices.AddRange(devices);
 
-                adapter.AddAll(devices.Select(bt => ((bt.Name == null) ? bt.Address : bt.Name)).ToList());
+                adapter.AddAll(devices.Select(bt => ((bt.Name == null) ? "" : bt.Name) + " (" + bt.Address + ")").ToList());
                 adapter.NotifyDataSetChanged();
             }
 
