@@ -148,9 +148,6 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070015
 			public const int listView1 = 2131165205;
 			
-			// aapt resource value: 0x7f070016
-			public const int searchView1 = 2131165206;
-			
 			// aapt resource value: 0x7f070006
 			public const int switchAuto = 2131165190;
 			
