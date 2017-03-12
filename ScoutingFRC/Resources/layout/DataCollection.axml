@@ -57,7 +57,8 @@
             android:showText="true"
             android:textOff="Tele"
             android:switchPadding="10dp"
-            android:switchMinWidth="50dp" />
+            android:switchMinWidth="50dp"
+           />
     </LinearLayout>
     <View
         android:layout_width="fill_parent"
@@ -86,12 +87,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout3">
             <Button
+                android:background="@drawable/fuelButton"
+                style="@style/button_text"
                 android:text="Goal!"
                 android:layout_width="164.0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/buttonHighGoal"
                 android:drawableTint="#00000000" />
             <Button
+                android:background="@drawable/fuelButton"
+                style="@style/button_text"
                 android:text="MISS"
                 android:layout_width="164.5dp"
                 android:layout_height="match_parent"
@@ -109,11 +114,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout3">
             <Button
+                android:background="@drawable/fuelButton"
+                style="@style/button_text"
                 android:text="Goal!"
                 android:layout_width="164.0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/buttonLowGoal" />
             <Button
+                android:background="@drawable/fuelButton"
+                style="@style/button_text"
                 android:text="MISS"
                 android:layout_width="164.5dp"
                 android:layout_height="match_parent"
@@ -131,11 +140,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout3">
             <Button
+                android:background="@drawable/gearButton"
+                style="@style/button_text"
                 android:text="Goal!"
                 android:layout_width="164.0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/buttonGearGoal" />
             <Button
+                android:background="@drawable/gearButton"
+                style="@style/button_text"
                 android:text="MISS"
                 android:layout_width="164.5dp"
                 android:layout_height="match_parent"
@@ -145,7 +158,8 @@
             android:text="Climb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBoxClimb" />
+            android:id="@+id/checkBoxClimb"
+            android:enabled="false" />
     </LinearLayout>
     <Button
         android:text="Submit"

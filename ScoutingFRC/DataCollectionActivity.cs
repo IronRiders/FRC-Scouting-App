@@ -16,6 +16,7 @@ namespace ScoutingFRC
     public class DataCollectionActivity : Activity
     {
         private MatchData matchData;
+        private bool autonomous = true;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -52,13 +53,24 @@ namespace ScoutingFRC
                 {
                     addAttempt(ref matchData.automomous.lowBoiler.failedAttempts, ref matchData.teleoperated.lowBoiler.failedAttempts);
                 };
+            FindViewById<Switch>(Resource.Id.switchAuto).CheckedChange += OnCheckedChange;
+        }
+
+        private void OnCheckedChange(object sender, CompoundButton.CheckedChangeEventArgs checkedChangeEventArgs)
+        {
+            autonomous = FindViewById<Switch>(Resource.Id.switchAuto).Checked;
+            using (var line = FindViewById<CheckBox>(Resource.Id.checkBox1))
+            using (var rope = FindViewById<CheckBox>(Resource.Id.checkBoxClimb))
+            {
+                line.Enabled = autonomous;
+                rope.Enabled = !autonomous;
+            }
         }
 
 
         private void addAttempt(ref int auto,ref int tele)
         {
-            bool auto1 = FindViewById<Switch>(Resource.Id.switchAuto).Checked;
-            if (auto1) {
+            if (autonomous) {
                 auto++;
             }
             else {
