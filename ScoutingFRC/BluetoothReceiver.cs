@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 
 using Android.App;
-using Android.App.Admin;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
@@ -16,13 +15,13 @@ namespace ScoutingFRC
 {
     class BluetoothReceiver : BroadcastReceiver
     {
-        private List<string> devices;
-        private Action<List<string>> discoveryFinishedCallback;
+        private List<BluetoothDevice> devices;
+        private Action<List<BluetoothDevice>> discoveryFinishedCallback;
 
-        public BluetoothReceiver(Action<List<string>> discoveryFinishedCallback)
+        public BluetoothReceiver(Action<List<BluetoothDevice>> discoveryFinishedCallback)
         {
             this.discoveryFinishedCallback = discoveryFinishedCallback;
-            devices = new List<string>();
+            devices = new List<BluetoothDevice>();
         }
 
         public override void OnReceive(Context context, Intent intent)
@@ -31,9 +30,8 @@ namespace ScoutingFRC
                 case BluetoothDevice.ActionFound: {
                         BluetoothDevice device = (BluetoothDevice) intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
 
-                        if (device.BondState != Bond.Bonded)
-                        {
-                            devices.Add(device.Name ?? device.Address ?? "Unknown Device");
+                        if (device.BondState != Bond.Bonded) {
+                            devices.Add(device);
                         }
 
                         break;
