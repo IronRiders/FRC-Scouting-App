@@ -97,11 +97,9 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070014
 			public const int button1 = 2131165204;
 			
-			// aapt resource value: 0x7f060016
-			public const int button2 = 2131099670;
+			// aapt resource value: 0x7f070016
+			public const int button2 = 2131165206;
 			
-			// aapt resource value: 0x7f060012
-			public const int buttonCollect = 2131099666;
 			// aapt resource value: 0x7f070012
 			public const int buttonCollect = 2131165202;
 			
@@ -132,16 +130,11 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070007
 			public const int checkBox1 = 2131165191;
 			
-			// aapt resource value: 0x7f060010
-			public const int checkBoxClimb = 2131099664;
-			
-			// aapt resource value: 0x7f060015
-			public const int editText1 = 2131099669;
-			
-			// aapt resource value: 0x7f060005
-			public const int editTextMathcNumber = 2131099653;
 			// aapt resource value: 0x7f070010
 			public const int checkBoxClimb = 2131165200;
+			
+			// aapt resource value: 0x7f070015
+			public const int editText1 = 2131165205;
 			
 			// aapt resource value: 0x7f070005
 			public const int editTextMathcNumber = 2131165189;
@@ -158,8 +151,8 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070009
 			public const int linearLayout3 = 2131165193;
 			
-			// aapt resource value: 0x7f070015
-			public const int listView1 = 2131165205;
+			// aapt resource value: 0x7f070017
+			public const int listView1 = 2131165207;
 			
 			// aapt resource value: 0x7f070006
 			public const int switchAuto = 2131165190;
