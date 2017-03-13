@@ -12,6 +12,7 @@ using Android.Widget;
 
 namespace ScoutingFRC
 {
+    [Serializable]
     class MatchData
     {
         public int teamNumber;
@@ -24,7 +25,7 @@ namespace ScoutingFRC
           automomous = new PreformaceData();
           teleoperated = new PreformaceData();
         }
-
+        [Serializable]
         public class PreformaceData
         {
             public ScoringMethod highBoiler;
@@ -38,7 +39,7 @@ namespace ScoutingFRC
                 lowBoiler = new ScoringMethod();
                 gears = new ScoringMethod();
             }
-
+            [Serializable]
             public class ScoringMethod
             {
                 public int failedAttempts;
