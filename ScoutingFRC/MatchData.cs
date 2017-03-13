@@ -9,20 +9,43 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Java.IO;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ScoutingFRC
-{
+{   
+    [Serializable]
     class MatchData
     {
         public int teamNumber;
         public int match;
         public PerformanceData automomous;
         public PerformanceData teleoperated;
+        public DateTime timeCollected;
 
         public MatchData()
         {
-          automomous = new PerformanceData();
-          teleoperated = new PerformanceData();
+            automomous = new PerformanceData();
+            teleoperated = new PerformanceData();
+            timeCollected = DateTime.Now;
+        }
+
+        public static T Deserialize<T>(byte[] bytes) where T : class
+        {
+            using (MemoryStream stream = new MemoryStream(bytes)) {
+                var binaryFormatter = new BinaryFormatter();
+                return binaryFormatter.Deserialize(stream) as T;
+            }
+        }
+
+        public static byte[] Serialize<T>(T matchData) where T : class
+        {
+            using (MemoryStream stream = new MemoryStream()) {
+                var binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(stream, matchData);
+                return stream.ToArray();
+            }
         }
 
         public int GetDataHash()
@@ -35,6 +58,7 @@ namespace ScoutingFRC
             return new { teamNumber, match, automomous, teleoperated }.GetHashCode();
         }
 
+        [Serializable]
         public class PerformanceData
         {
             public ScoringMethod highBoiler;
@@ -47,6 +71,8 @@ namespace ScoutingFRC
                 highBoiler = new ScoringMethod();
                 lowBoiler = new ScoringMethod();
                 gears = new ScoringMethod();
+
+                oneTimePoints = false;
             }
 
             public override int GetHashCode()
@@ -54,6 +80,7 @@ namespace ScoutingFRC
                 return new { highBoiler, lowBoiler, gears, oneTimePoints }.GetHashCode();
             }
 
+            [Serializable]
             public class ScoringMethod
             {
                 public int failedAttempts;
