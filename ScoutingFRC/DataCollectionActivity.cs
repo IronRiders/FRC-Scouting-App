@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 using Android.App;
@@ -83,7 +85,17 @@ namespace ScoutingFRC
         {
             matchData.teamNumber = int.Parse(FindViewById<TextView>(Resource.Id.editTextTeamNumber).Text);
             matchData.match = int.Parse(FindViewById<TextView>(Resource.Id.editTextMathcNumber).Text);
-       
+
+            Intent myIntent = new Intent(this, typeof(MainActivity));
+
+            var binFormatter = new BinaryFormatter();
+            var mStream = new MemoryStream();
+            binFormatter.Serialize(mStream, matchData);
+            var bytes = mStream.ToArray();
+            myIntent.PutExtra("W", bytes);
+            SetResult(Result.Ok, myIntent);
+            Finish();
+
         }
     }
 }
