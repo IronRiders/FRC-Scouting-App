@@ -71,12 +71,14 @@ namespace ScoutingFRC
             btDataTransfers = new List<BluetoothDataTransfer>();
 
             //Some testing
-            List<MatchData> md = new List<MatchData> { RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData() };
+            //List<MatchData> md = new List<MatchData> { RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData() };
 
-            byte[] test = MatchData.Serialize(md);
+            //byte[] test = MatchData.Serialize(md);
 
-            List<MatchData> md2 = MatchData.Deserialize<List<MatchData>>(test);
+            //List<MatchData> md2 = MatchData.Deserialize<List<MatchData>>(test);
             //
+
+            matchDataList.Add(RandomMatchData());
 
             bluetoothDevices = new List<BluetoothDevice>();
 
@@ -95,7 +97,7 @@ namespace ScoutingFRC
             MatchData md = new MatchData();
             Random r = new Random();
 
-            md.teamNumber = r.Next();
+            md.teamNumber = 1234;
             md.match = r.Next();
 
             md.automomous.gears.failedAttempts = r.Next();
