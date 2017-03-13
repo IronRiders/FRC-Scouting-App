@@ -60,10 +60,5 @@ namespace ScoutingFRC
             }
             return ret;
         }
-
-        private void addScoringMethod(MatchData.PreformaceData.ScoringMethod method, int start, int[] arr)
-        {
-            
-        }
     }
 }

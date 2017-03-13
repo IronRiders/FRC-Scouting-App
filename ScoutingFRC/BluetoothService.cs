@@ -16,36 +16,55 @@ using System.Diagnostics;
 
 namespace ScoutingFRC
 {
+    class BluetoothCallbacks<T>
+    {
+        public Action<T, Exception> error;
+        public Action<T, byte[]> dataReceived;
+        public Action<T, int> dataSent;
+        public Action<T> connected;
+        public Action<T> disconnected;
+    }
+
     class BluetoothConnection
     {
+        static int dataId;
+
         private Thread connectThread;
         private Thread connectionThread;
+
+        private List<Thread> writeThreads;
+
+        private Thread disconnectThread;
 
         public BluetoothDevice bluetoothDevice;
         private BluetoothSocket bluetoothSocket;
 
-        private Action<Exception, BluetoothDevice> errorCallback;
-        private Action<byte[], BluetoothDevice> dataCallback;
+        private BluetoothCallbacks<BluetoothConnection> callbacks;
 
         private UUID uuid;
 
-        Context xd;
+        Context context;
 
-        public BluetoothConnection(Context context, BluetoothDevice bluetoothDevice, UUID uuid, Action<Exception, BluetoothDevice> errorCallback, Action<byte[], BluetoothDevice> dataCallback, BluetoothSocket bluetoothSocket = null)
+        public BluetoothConnection(Context context, BluetoothDevice bluetoothDevice, UUID uuid, BluetoothCallbacks<BluetoothConnection> callbacks, BluetoothSocket bluetoothSocket = null)
         {
             this.bluetoothDevice = bluetoothDevice;
 
             this.uuid = uuid;
 
-            xd = context;
+            this.context = context;
 
-            this.errorCallback = errorCallback;
-            this.dataCallback = dataCallback;
+            this.callbacks = callbacks ?? new BluetoothCallbacks<BluetoothConnection>();
 
             connectThread = new Thread(ConnectInternal);
             connectionThread = new Thread(Connection);
 
-            if(bluetoothSocket != null && bluetoothSocket.IsConnected) {
+            writeThreads = new List<Thread>();
+
+            disconnectThread = new Thread(DisconnectInternal);
+
+            dataId = 0;
+
+            if (bluetoothSocket != null && bluetoothSocket.IsConnected) {
                 this.bluetoothSocket = bluetoothSocket;
                 connectionThread.Start();
             }
@@ -55,23 +74,14 @@ namespace ScoutingFRC
             }
         }
 
-        private bool Connect()
+        private void Connect()
         {
-            bool connected = IsConnected();
-
-            if(connected) {
+            if (!IsConnected() && !IsDisconnecting()) {
                 connectThread.Start();
             }
-
-            return connected;
         }
 
-        public bool IsConnected()
-        {
-            return connectionThread.IsAlive;
-        }
-
-        public void ConnectInternal()
+        private void ConnectInternal()
         {
             Looper.Prepare();
 
@@ -80,62 +90,113 @@ namespace ScoutingFRC
             try {
                 bluetoothSocket.Connect();
                 connectionThread.Start();
-                Debug("Connected to " + (bluetoothDevice.Name == null ? bluetoothDevice.Address : bluetoothDevice.Name));
+
+                callbacks.connected?.Invoke(this);
             }
             catch (Exception ex) {
-                errorCallback?.Invoke(ex, bluetoothDevice);
+                callbacks.error?.Invoke(this, ex);
             }
+        }
+
+        public bool IsConnected()
+        {
+            return connectionThread.IsAlive;
+        }
+
+        public bool IsDisconnecting()
+        {
+            return disconnectThread.IsAlive;
         }
 
         public void Disconnect()
         {
-            var copy = errorCallback;
-            errorCallback = null;
+            if (IsConnected()) {
+                disconnectThread.Start();
+            }
+        }
+
+        private void DisconnectInternal()
+        {
+            //Don't throw any errors when disconnecting
+            var copy = callbacks.error;
+            callbacks.error = null;
+
+            //closing the socket will cause both threads to fail
             bluetoothSocket?.Close();
             bluetoothSocket = null;
-            if(connectThread.IsAlive && Thread.CurrentThread.ManagedThreadId != connectThread.ManagedThreadId) {
+
+            foreach(Thread writeThread in writeThreads) {
+                if(writeThread.IsAlive) {
+                    writeThread.Join();
+                }
+            }
+
+            writeThreads.Clear();
+
+            if (connectThread.IsAlive) {
                 connectThread.Join();
             }
-            if(connectionThread.IsAlive && Thread.CurrentThread.ManagedThreadId != connectionThread.ManagedThreadId) {
+            if (connectionThread.IsAlive) {
                 connectionThread.Join();
             }
-            errorCallback = copy;
+
+            callbacks.error = copy;
+
+            callbacks.disconnected?.Invoke(this);
         }
 
         private void Connection()
         {
             Looper.Prepare();
 
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[4096];
             int bytes;
 
             while (true) {
                 try {
                     bytes = bluetoothSocket.InputStream.Read(buffer, 0, buffer.Length);
-                    dataCallback(buffer.Take(bytes).ToArray(), bluetoothDevice);
+                    callbacks.dataReceived?.Invoke(this, buffer.Take(bytes).ToArray());
                 }
                 catch (Exception ex) {
-                    errorCallback?.Invoke(ex, bluetoothDevice);
+                    callbacks.error?.Invoke(this, ex);
                     return;
                 }
             }
         }
 
-        public void Write(byte[] data)
+        public bool Write(byte[] data, ref int id)
         {
-            if(bluetoothSocket != null && bluetoothSocket.IsConnected) {
-                try {
-                    bluetoothSocket.OutputStream.Write(data, 0, data.Length);
-                }
-                catch(Exception ex) {
-                    errorCallback?.Invoke(ex, bluetoothDevice);
-                }       
+            if(IsConnected() && !IsDisconnecting()) {
+                int _id = dataId++;
+                Thread thread = new Thread((() =>
+                {
+                    if (bluetoothSocket != null && bluetoothSocket.IsConnected) {
+                        try {
+                            bluetoothSocket.OutputStream.Write(data, 0, data.Length);
+                            callbacks.dataSent?.Invoke(this, _id);
+                        }
+                        catch (Exception ex) {
+                            callbacks.error?.Invoke(this, ex);
+                        }
+                    }
+
+                    writeThreads.Remove(Thread.CurrentThread);
+                }));
+
+                id = _id;
+
+                writeThreads.Add(thread);
+                thread.Start();
+
+                return true;
             }
+
+            return false;
         }
 
         public void Debug(string s)
         {
-            ((Activity)xd).RunOnUiThread(() => Toast.MakeText(Application.Context, s, ToastLength.Long).Show());
+            (context as Activity).RunOnUiThread(() => Toast.MakeText(Application.Context, s, ToastLength.Long).Show());
         }
     }
 
@@ -150,77 +211,96 @@ namespace ScoutingFRC
 
         private bool listen = false;
 
-        private Action<Exception, BluetoothDevice> errorCallback;
-        private Action<byte[], BluetoothDevice> dataCallback;
-
         private Thread listenThread;
 
         public List<BluetoothConnection> connections;
 
         public readonly object connectionsLock = new object();
 
-        public BluetoothService(Context context, Action<Exception, BluetoothDevice> errorCallback, Action<byte[], BluetoothDevice> dataCallback, BluetoothAdapter bluetoothAdapter = null, bool startListening = true)
+        private BluetoothCallbacks<BluetoothConnection> userCallbacks;
+        private BluetoothCallbacks<BluetoothConnection> serviceCallbacks;
+
+        public BluetoothService(Context context, BluetoothCallbacks<BluetoothConnection> callbacks, BluetoothAdapter bluetoothAdapter = null, bool startListening = true)
         {
             this.context = context ?? Application.Context;
             this.bluetoothAdapter = bluetoothAdapter ?? BluetoothAdapter.DefaultAdapter;
-            this.errorCallback = errorCallback;
-            this.dataCallback = dataCallback;
+
+            userCallbacks = callbacks ?? new BluetoothCallbacks<BluetoothConnection>();
+            serviceCallbacks = new BluetoothCallbacks<BluetoothConnection>();
+
+            serviceCallbacks.error = Error;
+            serviceCallbacks.dataReceived = DataReceived;
+            serviceCallbacks.dataSent = DataSent;
+            serviceCallbacks.connected = Connected;
+            serviceCallbacks.disconnected = Disconnected;
+
             connections = new List<BluetoothConnection>();
 
             listenThread = new Thread(Listen);
 
-            if(startListening) {
+            if (startListening) {
                 StartListening();
             }
         }
 
-        private void ErrorCallback(Exception ex, BluetoothDevice device)
+        private void Error(BluetoothConnection bluetoothConnection, Exception ex)
         {
-            if(device != null) {
-                var connection = connections.First(bc => bc.bluetoothDevice.Address == device.Address);
-                connection.Disconnect();
-                connections.Remove(connection);
+            if (bluetoothConnection != null) {
+                bluetoothConnection.Disconnect();
             }
 
+            userCallbacks.error?.Invoke(bluetoothConnection, ex);
+        }
 
-            errorCallback(ex, device);
+        private void DataReceived(BluetoothConnection bluetoothConnection, byte[] data)
+        {
+            userCallbacks.dataReceived?.Invoke(bluetoothConnection, data);
+        }
+
+        private void DataSent(BluetoothConnection bluetoothConnection, int id)
+        {
+            userCallbacks.dataSent?.Invoke(bluetoothConnection, id);
+        }
+
+        private void Connected(BluetoothConnection bluetoothConnection)
+        {
+            connections.Add(bluetoothConnection);
+            userCallbacks.connected?.Invoke(bluetoothConnection);
+        }
+
+        private void Disconnected(BluetoothConnection bluetoothConnection)
+        {
+            connections.Remove(bluetoothConnection);
+            userCallbacks.disconnected?.Invoke(bluetoothConnection);
         }
 
         public void Debug(string s)
         {
-            ((Activity)context).RunOnUiThread(() => Toast.MakeText(context, s, ToastLength.Long).Show());
+            (context as Activity).RunOnUiThread(() => Toast.MakeText(context, s, ToastLength.Long).Show());
         }
 
         public void Connect(BluetoothDevice device)
         {
             lock (connectionsLock) {
-                connections.Add(new BluetoothConnection(context, device, uuid, ErrorCallback, dataCallback));
-            } 
+                connections.Add(new BluetoothConnection(context, device, uuid, serviceCallbacks));
+            }
         }
 
         public void Disconnect(BluetoothDevice device)
         {
-            new Thread(new ParameterizedThreadStart(DisconnectThread)).Start(device);
-        }
-
-        public void DisconnectThread(object parameter)
-        {
-            BluetoothDevice device = (BluetoothDevice)parameter;
-
-            lock (connectionsLock) {
-                BluetoothConnection bc = connections.Find(_bc => _bc.bluetoothDevice.Address == device.Address);
-                if (bc != null) {
-                    bc.Disconnect();
-                    connections.Remove(bc);
-                }
+            BluetoothConnection bc = connections.Find(_bc => _bc.bluetoothDevice.Address == device.Address);
+            if (bc != null) {
+                bc.Disconnect();
+                connections.Remove(bc);
             }
-            
         }
 
         public void StartListening()
         {
-            listen = true;
-            listenThread.Start();
+            if(!IsListening()) {
+                listen = true;
+                listenThread.Start();
+            }
         }
 
         public bool IsListening()
@@ -230,10 +310,10 @@ namespace ScoutingFRC
 
         public void StopListening()
         {
-            if(IsListening()) {
+            if (IsListening()) {
                 listen = false;
                 listenThread.Join();
-            } 
+            }
         }
 
         public void Listen()
@@ -248,7 +328,7 @@ namespace ScoutingFRC
                 while (listen) {
                     BluetoothSocket socket = serverSocket.Accept();
                     lock (connectionsLock) {
-                        connections.Add(new BluetoothConnection(context, socket.RemoteDevice, uuid, ErrorCallback, dataCallback, socket));
+                        new BluetoothConnection(context, socket.RemoteDevice, uuid, serviceCallbacks, socket);
                     }
                 }
 
@@ -256,126 +336,14 @@ namespace ScoutingFRC
                 serverSocket.Close();
             }
             catch (Exception ex) {
-                ErrorCallback(ex, null);
+                Error(null, ex);
 
-                if(!attemptedClose) {
-                    try { serverSocket.Close(); } catch { ErrorCallback(ex, null); }
+                if (!attemptedClose) {
+                    try { serverSocket.Close(); } catch { Error(null, ex); }
                 }
             }
+
+            listen = false;
         }
     }
-
-    /*class BluetoothService
-    {
-        private BluetoothAdapter bluetoothAdapter;
-
-        private Thread incomingConnectionThread;
-        private Thread connectionThread;
-
-        private const string name = "BluetoothService";
-        private static UUID uuid = UUID.FromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
-
-        private bool connected;
-
-        private Context context;
-
-        BluetoothSocket socket;
-
-        public BluetoothService(Context activity)
-        {
-            this.context = activity;
-            bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
-
-            incomingConnectionThread = new Thread(ListenForIncomingConnections);
-            incomingConnectionThread.Start();
-
-            connectionThread = new Thread(ConnectionThread);
-        }
-
-        public void ConnectionThread()
-        {
-            Looper.Prepare();
-
-            byte[] buffer = new byte[1024];
-            int bytes;
-
-            while (true) {
-                try {
-                    bytes = socket.InputStream.Read(buffer, 0, buffer.Length);
-
-                    string s;
-                    unsafe
-                    {
-                        fixed (byte* bufferPtr = buffer) {
-                            s = Encoding.ASCII.GetString(bufferPtr, bytes);
-                        }
-                    }
-
-                    Debug("Msg: " + s);   
-                }
-                catch (Exception ex) {
-                    //connection lost!
-                    Debug(ex.Message + " CONNECTION LOST");
-                    connected = false;
-                    break;
-                }
-            }
-        }
-
-        public void Debug(string s)
-        {
-            ((Activity)context).RunOnUiThread(() => Toast.MakeText(context, s, ToastLength.Long).Show());
-        }
-
-        public void Write(byte[] bytes)
-        {
-            if(connected) {
-                try {
-                    socket.OutputStream.Write(bytes, 0, bytes.Length);
-                }
-                catch (Exception ex) {
-                    Debug(ex.Message);
-                    connected = false;
-                    return;
-                }
-            }
-        }
-
-        BluetoothServerSocket serverSocket;
-        public void ListenForIncomingConnections()
-        {
-            Looper.Prepare();
-
-            serverSocket = bluetoothAdapter.ListenUsingInsecureRfcommWithServiceRecord(name, uuid);
-
-            try {
-                socket = serverSocket.Accept();
-                connectionThread.Start();
-                Debug("Accepted");
-            }
-            catch (Exception ex) {
-                Debug(ex.Message);
-                connected = false;
-                return;
-            }
-
-            connected = true;
-        }
- 
-        public void Connect(BluetoothDevice device)
-        {
-            try {
-                socket = device.CreateRfcommSocketToServiceRecord(uuid);
-               
-                socket.Connect();
-
-                connectionThread.Start();
-                connected = true;
-            }
-            catch(Exception ex) {
-                Debug(ex.Message);
-                connected = false;
-            }
-        }
-    }*/
 }
