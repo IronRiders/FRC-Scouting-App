@@ -17,7 +17,7 @@
             <TextView
                 android:text="Team Number"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="156.0dp"
+                android:layout_width="230.5dp"
                 android:layout_height="match_parent"
                 android:id="@+id/textView1"
                 android:textAlignment="gravity"
@@ -36,7 +36,7 @@
             <TextView
                 android:text="Match Number"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="159.5dp"
+                android:layout_width="230.5dp"
                 android:layout_height="match_parent"
                 android:id="@+id/textView2"
                 android:gravity="center_vertical" />
@@ -57,8 +57,7 @@
             android:showText="true"
             android:textOff="Tele"
             android:switchPadding="10dp"
-            android:switchMinWidth="50dp"
-           />
+            android:switchMinWidth="50dp" />
     </LinearLayout>
     <View
         android:layout_width="fill_parent"
