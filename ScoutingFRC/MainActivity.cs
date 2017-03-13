@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using Android.Bluetooth;
 using System.Linq;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using Android.Content;
 using System.Text;
 
@@ -14,6 +16,7 @@ namespace ScoutingFRC
     [Activity(Label = "ScoutingFRC", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
+        private List<MatchData> data = new List<MatchData>();
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -116,7 +119,20 @@ namespace ScoutingFRC
 
         private void ButtonView_Click(object sender, EventArgs e)
         {
-            StartActivity(new Intent(Application.Context, typeof(DataViewingActivity)));
+            int number = Int32.Parse(FindViewById<TextView>(Resource.Id.editText2).Text);
+            List<MatchData> goodData = new List<MatchData>();
+            foreach (var matchData in data)
+            {
+                if(matchData.teamNumber == number) goodData.Add(matchData);
+            }
+            var viewActivity = new Intent(Application.Context, typeof(DataViewingActivity));
+
+            var binFormatter = new BinaryFormatter();
+            var mStream = new MemoryStream();
+            binFormatter.Serialize(mStream, goodData);
+            var bytes = mStream.ToArray();
+            viewActivity.PutExtra("MatchBytes", bytes);
+            StartActivity(viewActivity);
         }
 
         private void DiscoveryFinishedCallback(List<BluetoothDevice> devices)
