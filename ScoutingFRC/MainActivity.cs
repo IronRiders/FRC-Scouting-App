@@ -248,7 +248,9 @@ namespace ScoutingFRC
 
         private void ButtonCollect_Click(object sender, EventArgs e)
         {
-            StartActivity(new Intent(Application.Context, typeof(DataCollectionActivity)));
+            // StartActivity(new Intent(Application.Context, typeof(DataCollectionActivity)));
+            var myIntent = new Intent(this, typeof(DataCollectionActivity));
+            StartActivityForResult(myIntent, 0);
         }
 
         private void ButtonView_Click(object sender, EventArgs e)
@@ -268,6 +270,22 @@ namespace ScoutingFRC
             viewActivity.PutExtra("MatchBytes", bytes);
             
             StartActivity(viewActivity);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (resultCode == Result.Ok) {
+                var bytes = data.GetByteArrayExtra("W");
+                var mStream = new MemoryStream();
+                var binFormatter = new BinaryFormatter();
+
+                mStream.Write(bytes, 0, bytes.Length);
+                mStream.Position = 0;
+
+                var Mach = binFormatter.Deserialize(mStream) as MatchData;
+               matchDataList.Add(Mach);
+            }
         }
 
         private void DiscoveryFinishedCallback(List<BluetoothDevice> devices)

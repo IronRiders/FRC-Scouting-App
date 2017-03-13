@@ -61,8 +61,8 @@ namespace ScoutingFRC
 
             FindViewById<TextView>(Resource.Id.textView1).Text = matches;
 
-
-        }
+        
+    }
 
         private double[] divide(int[] ar, int a)
         {
@@ -74,7 +74,7 @@ namespace ScoutingFRC
             return ret;
         }
 
-        private void addScoringMethod(MatchData.PreformaceData.ScoringMethod method, int start, int[] arr)
+        private void addScoringMethod(MatchData.PerformanceData.ScoringMethod method, int start, int[] arr)
         {
             arr[start] += method.successes;
             arr[start+1] += method.failedAttempts;
