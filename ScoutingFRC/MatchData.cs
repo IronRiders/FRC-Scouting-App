@@ -13,7 +13,7 @@ using Android.Widget;
 namespace ScoutingFRC
 {
     [Serializable]
-    class MatchData
+    public class MatchData
     {
         public int teamNumber;
         public int match;
