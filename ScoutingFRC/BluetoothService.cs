@@ -67,6 +67,7 @@ namespace ScoutingFRC
             if (bluetoothSocket != null && bluetoothSocket.IsConnected) {
                 this.bluetoothSocket = bluetoothSocket;
                 connectionThread.Start();
+                callbacks.connected?.Invoke(this);
             }
             else {
                 this.bluetoothSocket = null;
