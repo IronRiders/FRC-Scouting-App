@@ -3,5 +3,6 @@
 <resources>
   <color name="gear">#EAAA00</color>
   <color name="fuel">#F3F315</color>
+  <color name="splash_background">#000000</color>
 
 </resources>

@@ -50,6 +50,9 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f040000
 			public const int gear = 2130968576;
 			
+			// aapt resource value: 0x7f040002
+			public const int splash_background = 2130968578;
+			
 			static Color()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -80,6 +83,12 @@ namespace ScoutingFRC
 			
 			// aapt resource value: 0x7f020005
 			public const int ModeSwitchTrack = 2130837509;
+			
+			// aapt resource value: 0x7f020006
+			public const int RCS_Logo_small = 2130837510;
+			
+			// aapt resource value: 0x7f020007
+			public const int splash_screen = 2130837511;
 			
 			static Drawable()
 			{
@@ -234,6 +243,15 @@ namespace ScoutingFRC
 		
 		public partial class Style
 		{
+			
+			// aapt resource value: 0x7f060002
+			public const int CustomTheme = 2131099650;
+			
+			// aapt resource value: 0x7f060001
+			public const int CustomTheme_Base = 2131099649;
+			
+			// aapt resource value: 0x7f060003
+			public const int CustomTheme_Splash = 2131099651;
 			
 			// aapt resource value: 0x7f060000
 			public const int button_text = 2131099648;

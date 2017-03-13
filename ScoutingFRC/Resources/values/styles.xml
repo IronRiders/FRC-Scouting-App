@@ -8,4 +8,22 @@
     <item name="android:layout_margin" >3dp</item>
     <item name="android:textSize" >15dp</item>
   </style>
+
+  <style name="CustomTheme.Base" parent ="@android:style/Theme.Material.Light">
+    <item name="android:colorPrimary">#ff279df4</item>
+    <item name="android:colorPrimaryDark">#ff0863a6</item>
+    <item name="android:colorAccent">#ff6fcdfe</item>
+    <item name="android:textColorSecondary">#ff008fda</item>
+    <item name="android:colorControlNormal">#ff008dd6</item>
+    <item name="android:colorControlActivated">#ff3cbcfe</item>
+    <item name="android:colorButtonNormal">#ff5fb4fd</item>
+  </style>
+
+  <style name="CustomTheme" parent="CustomTheme.Base">
+  </style>
+
+  <style name="CustomTheme.Splash" parent ="@android:style/Theme.Material.Light">
+    <item name="android:windowBackground">@drawable/splash_screen</item>
+    <item name="android:windowNoTitle">true</item>
+  </style>
 </resources>
