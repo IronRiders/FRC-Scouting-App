@@ -16,27 +16,42 @@ namespace ScoutingFRC
     {
         public int teamNumber;
         public int match;
-        public PreformaceData automomous;
-        public PreformaceData teleoperated;
+        public PerformanceData automomous;
+        public PerformanceData teleoperated;
 
         public MatchData()
         {
-          automomous = new PreformaceData();
-          teleoperated = new PreformaceData();
+          automomous = new PerformanceData();
+          teleoperated = new PerformanceData();
         }
 
-        public class PreformaceData
+        public int GetDataHash()
+        {
+            return new { automomous, teleoperated }.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return new { teamNumber, match, automomous, teleoperated }.GetHashCode();
+        }
+
+        public class PerformanceData
         {
             public ScoringMethod highBoiler;
             public ScoringMethod lowBoiler;
             public ScoringMethod gears;
             public bool oneTimePoints;
 
-            public PreformaceData()
+            public PerformanceData()
             {
                 highBoiler = new ScoringMethod();
                 lowBoiler = new ScoringMethod();
                 gears = new ScoringMethod();
+            }
+
+            public override int GetHashCode()
+            {
+                return new { highBoiler, lowBoiler, gears, oneTimePoints }.GetHashCode();
             }
 
             public class ScoringMethod
@@ -48,6 +63,11 @@ namespace ScoutingFRC
                 {
                     failedAttempts = 0;
                     successes = 0;
+                }
+
+                public override int GetHashCode()
+                {
+                    return new { failedAttempts, successes }.GetHashCode();
                 }
             }
         }
