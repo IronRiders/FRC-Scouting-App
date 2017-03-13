@@ -166,6 +166,12 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070008
 			public const int textView3 = 2131165192;
 			
+			// aapt resource value: 0x7f070018
+			public const int textViewTeamNumber = 2131165208;
+			
+			// aapt resource value: 0x7f070019
+			public const int view1 = 2131165209;
+			
 			static Id()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

@@ -83,6 +83,7 @@ namespace ScoutingFRC
         {
             matchData.teamNumber = int.Parse(FindViewById<TextView>(Resource.Id.editTextTeamNumber).Text);
             matchData.match = int.Parse(FindViewById<TextView>(Resource.Id.editTextMathcNumber).Text);
+       
         }
     }
 }
