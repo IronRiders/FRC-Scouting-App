@@ -11,6 +11,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Android.Content;
 using System.Text;
 using Android.Content.PM;
+using System.ComponentModel;
 
 namespace ScoutingFRC
 {
@@ -157,8 +158,6 @@ namespace ScoutingFRC
                     btDataTransfers.Remove(btDataTransfer);
                 }
             });
-
-            attemptingConnection = false;
         }
 
         void DataCallback(BluetoothConnection bluetoothConnection, byte[] data)
@@ -177,14 +176,14 @@ namespace ScoutingFRC
                     }
                 }
 
-                //var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
-                if(attemptingConnection) {
-                    //btDataTransfer.received = true;
+                var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
+                if(btDataTransfer != null) {
+                    btDataTransfer.received = true;
 
-                    //if (btDataTransfer.Done()) {
+                    if (btDataTransfer.Done()) {
                         bluetoothConnection.Disconnect();
-                    //    btDataTransfers.Remove(btDataTransfer);
-                    //}
+                        btDataTransfers.Remove(btDataTransfer);
+                    }
                 }
 
                 //Update UI
@@ -194,7 +193,7 @@ namespace ScoutingFRC
         void DataSentCallback(BluetoothConnection bluetoothConnection, int id)
         {
             RunOnUiThread(() => {
-                /*var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
+                var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
                 if (btDataTransfer != null) {
                     btDataTransfer.sent = true;
 
@@ -202,35 +201,33 @@ namespace ScoutingFRC
                         bluetoothConnection.Disconnect();
                         btDataTransfers.Remove(btDataTransfer);
                     }
-                }*/
+                }
             });
         }
 
         void ConnectedCallback(BluetoothConnection bluetoothConnection)
         {
             RunOnUiThread(() => {
-                //var btdt = new BluetoothDataTransfer(bluetoothConnection);
-                //btDataTransfers.Add(btdt);
+                var btdt = new BluetoothDataTransfer(bluetoothConnection);
+                btDataTransfers.Add(btdt);
 
-                if(attemptingConnection) {
-                    int lel = 9;
-                    bluetoothConnection.Write(MatchData.Serialize(matchDataList), ref lel);
-                }
+                var serialized = MatchData.Serialize(matchDataList);
+                byte[] data = new byte[sizeof(int) + serialized.Length];
+                BitConverter.GetBytes(serialized.Length).CopyTo(data, 0);
+                serialized.CopyTo(data, sizeof(int));
+                bluetoothConnection.Write(data, ref btdt.id);
             });
         }
 
         void DisconnectedCallback(BluetoothConnection bluetoothConnection)
         {
             RunOnUiThread(() => {
-                //var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
-                //if (btDataTransfer != null) {
-                //     btDataTransfers.Remove(btDataTransfer);
-                //}
-                attemptingConnection = false;
+                var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
+                if (btDataTransfer != null) {
+                     btDataTransfers.Remove(btDataTransfer);
+                }
             });
         }
-
-        private bool attemptingConnection = false;
 
         private void MainActivity_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -243,7 +240,6 @@ namespace ScoutingFRC
                 }
                 else {
                     bs.Connect(device);
-                    attemptingConnection = true;
                 }
             }
         }
