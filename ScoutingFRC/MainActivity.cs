@@ -157,6 +157,8 @@ namespace ScoutingFRC
                     btDataTransfers.Remove(btDataTransfer);
                 }
             });
+
+            attemptingConnection = false;
         }
 
         void DataCallback(BluetoothConnection bluetoothConnection, byte[] data)
@@ -175,14 +177,14 @@ namespace ScoutingFRC
                     }
                 }
 
-                var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
-                if(btDataTransfer != null) {
-                    btDataTransfer.received = true;
+                //var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
+                if(attemptingConnection) {
+                    //btDataTransfer.received = true;
 
-                    if (btDataTransfer.Done()) {
+                    //if (btDataTransfer.Done()) {
                         bluetoothConnection.Disconnect();
-                        btDataTransfers.Remove(btDataTransfer);
-                    }
+                    //    btDataTransfers.Remove(btDataTransfer);
+                    //}
                 }
 
                 //Update UI
@@ -192,7 +194,7 @@ namespace ScoutingFRC
         void DataSentCallback(BluetoothConnection bluetoothConnection, int id)
         {
             RunOnUiThread(() => {
-                var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
+                /*var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
                 if (btDataTransfer != null) {
                     btDataTransfer.sent = true;
 
@@ -200,28 +202,35 @@ namespace ScoutingFRC
                         bluetoothConnection.Disconnect();
                         btDataTransfers.Remove(btDataTransfer);
                     }
-                }
+                }*/
             });
         }
 
         void ConnectedCallback(BluetoothConnection bluetoothConnection)
         {
             RunOnUiThread(() => {
-                var btdt = new BluetoothDataTransfer(bluetoothConnection);
-                btDataTransfers.Add(btdt);
-                bluetoothConnection.Write(MatchData.Serialize(matchDataList), ref btdt.id);
+                //var btdt = new BluetoothDataTransfer(bluetoothConnection);
+                //btDataTransfers.Add(btdt);
+
+                if(attemptingConnection) {
+                    int lel = 9;
+                    bluetoothConnection.Write(MatchData.Serialize(matchDataList), ref lel);
+                }
             });
         }
 
         void DisconnectedCallback(BluetoothConnection bluetoothConnection)
         {
             RunOnUiThread(() => {
-                var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
-                if (btDataTransfer != null) {
-                    btDataTransfers.Remove(btDataTransfer);
-                }
+                //var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
+                //if (btDataTransfer != null) {
+                //     btDataTransfers.Remove(btDataTransfer);
+                //}
+                attemptingConnection = false;
             });
         }
+
+        private bool attemptingConnection = false;
 
         private void MainActivity_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -234,6 +243,7 @@ namespace ScoutingFRC
                 }
                 else {
                     bs.Connect(device);
+                    attemptingConnection = true;
                 }
             }
         }
