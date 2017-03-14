@@ -45,15 +45,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout1">
-        <EditText
-            android:inputType="number"
-            android:layout_width="500.0dp"
+        <AutoCompleteTextView
+            android:layout_width="228.0dp"
             android:layout_height="match_parent"
-            android:id="@+id/editText2" />
+            android:id="@+id/autoCompleteTextView1" />
         <Button
             android:text="View Data"
             android:id="@+id/buttonView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
     <Button

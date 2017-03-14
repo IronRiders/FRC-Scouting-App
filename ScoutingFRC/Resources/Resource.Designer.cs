@@ -103,6 +103,9 @@ namespace ScoutingFRC
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f070015
+			public const int autoCompleteTextView1 = 2131165205;
+			
 			// aapt resource value: 0x7f070017
 			public const int button1 = 2131165207;
 			
@@ -138,9 +141,6 @@ namespace ScoutingFRC
 			
 			// aapt resource value: 0x7f070010
 			public const int checkBoxClimb = 2131165200;
-			
-			// aapt resource value: 0x7f070015
-			public const int editText2 = 2131165205;
 			
 			// aapt resource value: 0x7f070005
 			public const int editTextMathcNumber = 2131165189;
