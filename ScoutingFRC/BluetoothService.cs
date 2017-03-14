@@ -13,6 +13,7 @@ using System.Threading;
 using Android.Bluetooth;
 using Java.Util;
 using System.Diagnostics;
+using System.IO;
 
 namespace ScoutingFRC
 {
@@ -40,6 +41,9 @@ namespace ScoutingFRC
         private BluetoothSocket bluetoothSocket;
 
         private BluetoothCallbacks<BluetoothConnection> callbacks;
+
+        private Stream inputStream;
+        private Stream outputStream;
 
         private UUID uuid;
 
@@ -153,9 +157,12 @@ namespace ScoutingFRC
             byte[] buffer = new byte[4096];
             int bytes;
 
+            inputStream = bluetoothSocket.InputStream;
+            outputStream = bluetoothSocket.OutputStream;
+
             while (true) {
                 try {
-                    bytes = bluetoothSocket.InputStream.Read(buffer, 0, buffer.Length);
+                    bytes = inputStream.Read(buffer, 0, buffer.Length);
                     callbacks.dataReceived?.Invoke(this, buffer.Take(bytes).ToArray());
                 }
                 catch (Exception ex) {
@@ -173,7 +180,8 @@ namespace ScoutingFRC
                 {
                     if (bluetoothSocket != null && bluetoothSocket.IsConnected) {
                         try {
-                            bluetoothSocket.OutputStream.Write(data, 0, data.Length);
+                            outputStream.Write(data, 0, data.Length);
+
                             callbacks.dataSent?.Invoke(this, _id);
                         }
                         catch (Exception ex) {
