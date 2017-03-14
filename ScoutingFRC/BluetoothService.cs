@@ -163,7 +163,9 @@ namespace ScoutingFRC
             while (true) {
                 try {
                     bytes = inputStream.Read(buffer, 0, buffer.Length);
-                    callbacks.dataReceived?.Invoke(this, buffer.Take(bytes).ToArray());
+                    //callbacks.dataReceived?.Invoke(this, buffer.Take(bytes).ToArray());
+                    
+                    int x = bytes;
                 }
                 catch (Exception ex) {
                     callbacks.error?.Invoke(this, ex);
