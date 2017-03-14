@@ -10,10 +10,11 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Android.Content;
 using System.Text;
+using Android.Content.PM;
 
 namespace ScoutingFRC
 {
-    [Activity(Label = "ScoutingFRC", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "ScoutingFRC", Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
         private List<MatchData> matchDataList = new List<MatchData>();
@@ -90,6 +91,12 @@ namespace ScoutingFRC
             else {
                 Toast.MakeText(this, "Bluetooth is disabled", ToastLength.Long).Show();
             }       
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            FindViewById<TextView>(Resource.Id.textView2).Text = ("Matches Scouting: " + matchDataList.Count);
         }
 
         MatchData RandomMatchData()
