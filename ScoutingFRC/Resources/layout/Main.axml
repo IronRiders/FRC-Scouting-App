@@ -5,6 +5,36 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px">
+    <ImageView
+        android:src="@drawable/icon"
+        android:layout_width="match_parent"
+        android:layout_height="149.5dp"
+        android:id="@+id/imageView1"
+        android:maxHeight="100dp" />
+    <TextView
+        android:text="FRC Scouting App"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1"
+        android:textStyle="bold"
+        android:textSize="50dp"
+        android:gravity="center_horizontal" />
+    <TextView
+        android:text="Matches Scouted: "
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#FF777777"
+        android:id="@+id/view1"
+        android:layout_marginBottom="20dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:layout_marginTop="20dp" />
     <Button
         android:text="Collect Data"
         android:layout_width="match_parent"
@@ -26,15 +56,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="#FF777777"
-        android:id="@+id/view1"
-        android:layout_marginBottom="20dp"
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp"
-        android:layout_marginTop="20dp" />
     <Button
         android:text="Scan for Devices"
         android:layout_width="match_parent"
