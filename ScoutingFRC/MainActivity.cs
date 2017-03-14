@@ -96,7 +96,20 @@ namespace ScoutingFRC
         protected override void OnResume()
         {
             base.OnResume();
-            FindViewById<TextView>(Resource.Id.textView2).Text = ("Matches Scouting: " + matchDataList.Count);
+            FindViewById<TextView>(Resource.Id.textView2).Text = ("Matches Scouted: " + matchDataList.Count);
+
+            var autocompleteTextView = FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1);
+            List<int> numbers = new List<int>();
+            foreach (var matchData in matchDataList)
+            {
+                if (!numbers.Contains(matchData.teamNumber))
+                {
+                    numbers.Add(matchData.teamNumber);
+                }
+            }
+            string[] autoCompleteOptions = numbers.Select(i => i.ToString()).ToArray();
+            ArrayAdapter autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
+            autocompleteTextView.Adapter = autoCompleteAdapter;
         }
 
         MatchData RandomMatchData()
@@ -264,7 +277,7 @@ namespace ScoutingFRC
 
         private void ButtonView_Click(object sender, EventArgs e)
         {
-            int number = Int32.Parse(FindViewById<TextView>(Resource.Id.editText2).Text);
+            int number = Int32.Parse(FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1).Text);
             List<MatchData> goodData = new List<MatchData>();
             foreach (var matchData in matchDataList)
             {
