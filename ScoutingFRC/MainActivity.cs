@@ -118,7 +118,7 @@ namespace ScoutingFRC
             MatchData md = new MatchData();
             Random r = new Random();
 
-            md.teamNumber = 1234;
+            md.teamNumber = 1233;
             md.match = r.Next();
 
             md.automomous.gears.failedAttempts = r.Next();

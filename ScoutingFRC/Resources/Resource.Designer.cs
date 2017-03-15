@@ -103,14 +103,17 @@ namespace ScoutingFRC
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070015
-			public const int autoCompleteTextView1 = 2131165205;
+			// aapt resource value: 0x7f070014
+			public const int autoCompleteTextView1 = 2131165204;
 			
 			// aapt resource value: 0x7f070017
 			public const int button1 = 2131165207;
 			
-			// aapt resource value: 0x7f070014
-			public const int buttonCollect = 2131165204;
+			// aapt resource value: 0x7f070016
+			public const int button2 = 2131165206;
+			
+			// aapt resource value: 0x7f070013
+			public const int buttonCollect = 2131165203;
 			
 			// aapt resource value: 0x7f07000e
 			public const int buttonGearGoal = 2131165198;
@@ -133,8 +136,8 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070011
 			public const int buttonSubmit = 2131165201;
 			
-			// aapt resource value: 0x7f070016
-			public const int buttonView = 2131165206;
+			// aapt resource value: 0x7f070015
+			public const int buttonView = 2131165205;
 			
 			// aapt resource value: 0x7f070007
 			public const int checkBox1 = 2131165191;
@@ -147,9 +150,6 @@ namespace ScoutingFRC
 			
 			// aapt resource value: 0x7f070002
 			public const int editTextTeamNumber = 2131165186;
-			
-			// aapt resource value: 0x7f070012
-			public const int imageView1 = 2131165202;
 			
 			// aapt resource value: 0x7f070000
 			public const int linearLayout1 = 2131165184;
@@ -190,8 +190,8 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070019
 			public const int textViewTeamNumber = 2131165209;
 			
-			// aapt resource value: 0x7f070013
-			public const int view1 = 2131165203;
+			// aapt resource value: 0x7f070012
+			public const int view1 = 2131165202;
 			
 			static Id()
 			{
