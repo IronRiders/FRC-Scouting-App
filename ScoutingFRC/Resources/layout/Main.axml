@@ -4,26 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minWidth="25px"
-    android:minHeight="25px">
-    <ImageView
-        android:src="@drawable/icon"
-        android:layout_width="match_parent"
-        android:layout_height="149.5dp"
-        android:id="@+id/imageView1"
-        android:maxHeight="100dp" />
-    <TextView
-        android:text="FRC Scouting App"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView1"
-        android:textStyle="bold"
-        android:textSize="50dp"
-        android:gravity="center_horizontal" />
+    android:minHeight="25px"
+    android:padding="7dp">
     <TextView
         android:text="Matches Scouted: "
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView2" />
     <View
@@ -46,15 +32,28 @@
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout1">
         <AutoCompleteTextView
-            android:layout_width="228.0dp"
             android:layout_height="match_parent"
-            android:id="@+id/autoCompleteTextView1" />
+            android:id="@+id/autoCompleteTextView1"
+            android:gravity="center"
+            android:inputType="number"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:textSize="25dp"
+            android:text="####" />
         <Button
             android:text="View Data"
             android:id="@+id/buttonView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="1" />
     </LinearLayout>
+    <Button
+        android:text="Sync Data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2" />
     <Button
         android:text="Scan for Devices"
         android:layout_width="match_parent"
