@@ -283,6 +283,10 @@ namespace ScoutingFRC
         {
             if (bluetoothConnection != null) {
                 bluetoothConnection.Disconnect();
+
+                lock (connectionsLock) {
+                    connections.Remove(bluetoothConnection);
+                }
             }
 
             userCallbacks.error?.Invoke(bluetoothConnection, ex);
@@ -300,13 +304,15 @@ namespace ScoutingFRC
 
         private void Connected(BluetoothConnection bluetoothConnection)
         {
-            connections.Add(bluetoothConnection);
+            lock(connectionsLock) {
+                connections.Add(bluetoothConnection);
+            }
+            
             userCallbacks.connected?.Invoke(bluetoothConnection);
         }
 
         private void Disconnected(BluetoothConnection bluetoothConnection)
         {
-            connections.Remove(bluetoothConnection);
             userCallbacks.disconnected?.Invoke(bluetoothConnection);
         }
 
@@ -324,10 +330,11 @@ namespace ScoutingFRC
 
         public void Disconnect(BluetoothDevice device)
         {
-            BluetoothConnection bc = connections.Find(_bc => _bc.bluetoothDevice.Address == device.Address);
-            if (bc != null) {
-                bc.Disconnect();
-                connections.Remove(bc);
+            lock (connectionsLock) {
+                BluetoothConnection bc = connections.Find(_bc => _bc.bluetoothDevice.Address == device.Address);
+                if (bc != null) {
+                    bc.Disconnect();
+                }
             }
         }
 
