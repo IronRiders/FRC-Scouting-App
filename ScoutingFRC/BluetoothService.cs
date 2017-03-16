@@ -115,7 +115,7 @@ namespace ScoutingFRC
 
         public void Disconnect()
         {
-            if (IsConnected()) {
+            if (IsConnected() && !IsDisconnecting()) {
                 disconnectThread.Start();
             }
         }
@@ -155,17 +155,51 @@ namespace ScoutingFRC
             Looper.Prepare();
 
             byte[] buffer = new byte[4096];
+            byte[] result = new byte[4096];
             int bytes;
 
             inputStream = bluetoothSocket.InputStream;
             outputStream = bluetoothSocket.OutputStream;
 
+
+            int totalBytes = -1;
+            int bytesLeft = -1;
+
             while (true) {
+                int startIndex = 0;
                 try {
                     bytes = inputStream.Read(buffer, 0, buffer.Length);
-                    //callbacks.dataReceived?.Invoke(this, buffer.Take(bytes).ToArray());
-                    
-                    int x = bytes;
+                    if(totalBytes < 0) {
+                        if(bytes > sizeof(int)) {
+                            bytesLeft = totalBytes = BitConverter.ToInt32(buffer, 0);
+                            Array.Copy(buffer, sizeof(int), result, 0, bytes - sizeof(int));
+                            bytesLeft -= bytes - sizeof(int);
+                            startIndex = 4;
+                        }
+                        else {
+                            callbacks.error?.Invoke(this, new Exception("Initial data chunk too small."));
+                            totalBytes = -1;
+                            bytesLeft = -1;
+                            continue;
+                        }
+                    }
+                    else {
+                        bytesLeft -= bytes;
+                        if(bytesLeft < 0) {
+                            callbacks.error?.Invoke(this, new Exception("Data chunk too big."));
+                            totalBytes = -1;
+                            bytesLeft = -1;
+                            continue;
+                        }
+                    }
+
+                    Array.Copy(buffer, startIndex, result, totalBytes - (bytes - startIndex) - bytesLeft, bytes - startIndex);
+
+                    if (bytesLeft == 0) {
+                        callbacks.dataReceived?.Invoke(this, result.Take(totalBytes).ToArray());
+                        totalBytes = -1;
+                        bytesLeft = -1;
+                    }
                 }
                 catch (Exception ex) {
                     callbacks.error?.Invoke(this, ex);

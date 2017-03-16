@@ -121,6 +121,9 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070013
 			public const int buttonCollect = 2131165203;
 			
+			// aapt resource value: 0x7f070013
+			public const int buttonCollect = 2131165203;
+			
 			// aapt resource value: 0x7f07000e
 			public const int buttonGearGoal = 2131165198;
 			
