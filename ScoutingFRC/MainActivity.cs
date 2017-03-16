@@ -64,12 +64,12 @@ namespace ScoutingFRC
             ArrayAdapter autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
             autocompleteTextView.Adapter = autoCompleteAdapter;
         }
+        Random r = new Random();
 
         MatchData RandomMatchData()
         {
             MatchData md = new MatchData();
-            Random r = new Random();
-
+             
             md.teamNumber = r.Next();
             md.match = r.Next();
 
