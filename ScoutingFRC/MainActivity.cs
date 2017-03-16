@@ -15,7 +15,7 @@ using System.ComponentModel;
 
 namespace ScoutingFRC
 {
-    [Activity(Label = "ScoutingFRC", Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "FRC Scouting", Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
         private List<MatchData> matchDataList = new List<MatchData>();
@@ -51,7 +51,8 @@ namespace ScoutingFRC
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
-            FindViewById<Button>(Resource.Id.buttonCollect).Click += ButtonCollect_Click;
+            FindViewById<Button>(Resource.Id.buttonSync).Click += ButtonSync_Click;
+          FindViewById<Button>(Resource.Id.buttonCollect).Click += ButtonCollect_Click;
             FindViewById<Button>(Resource.Id.buttonView).Click += ButtonView_Click;
             FindViewById<Button>(Resource.Id.button1).Click += button1_Click;
             FindViewById<ListView>(Resource.Id.listView1).ItemClick += MainActivity_ItemClick;
@@ -276,7 +277,6 @@ namespace ScoutingFRC
 
         private void ButtonCollect_Click(object sender, EventArgs e)
         {
-            // StartActivity(new Intent(Application.Context, typeof(DataCollectionActivity)));
             var myIntent = new Intent(this, typeof(DataCollectionActivity));
             StartActivityForResult(myIntent, 0);
         }
@@ -290,14 +290,16 @@ namespace ScoutingFRC
                 if(matchData.teamNumber == number) goodData.Add(matchData);
             }
             var viewActivity = new Intent(Application.Context, typeof(DataViewingActivity));
-
-            var binFormatter = new BinaryFormatter();
-            var mStream = new MemoryStream();
-            binFormatter.Serialize(mStream, goodData);
-            var bytes = mStream.ToArray();
+            byte[] bytes = MatchData.Serialize(matchDataList);
             viewActivity.PutExtra("MatchBytes", bytes);
             
             StartActivity(viewActivity);
+        }
+
+        private void ButtonSync_Click(object sender, EventArgs e)
+        {
+            var myIntent = new Intent(this, typeof(SyncDataActivity));
+            StartActivityForResult(myIntent, 1);
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
