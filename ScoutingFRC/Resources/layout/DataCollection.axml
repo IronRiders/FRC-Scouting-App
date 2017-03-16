@@ -17,16 +17,21 @@
             <TextView
                 android:text="Team Number"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="230.5dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/textView1"
                 android:textAlignment="gravity"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:layout_weight="1" />
             <EditText
                 android:inputType="number"
-                android:layout_width="100.0dp"
-                android:layout_height="match_parent"
-                android:id="@+id/editTextTeamNumber" />
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextTeamNumber"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:gravity="center" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -36,15 +41,20 @@
             <TextView
                 android:text="Match Number"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="230.5dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/textView2"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_gravity="right" />
             <EditText
                 android:inputType="number"
-                android:layout_width="100.0dp"
-                android:layout_height="match_parent"
-                android:id="@+id/editTextMathcNumber" />
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextMathcNumber"
+                android:layout_width="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:gravity="center" />
         </LinearLayout>
         <Switch
             android:layout_width="match_parent"
@@ -55,9 +65,7 @@
             android:textOn="Auto"
             android:checked="true"
             android:showText="true"
-            android:textOff="Tele"
-            android:switchPadding="10dp"
-            android:switchMinWidth="50dp" />
+            android:textOff="Tele" />
     </LinearLayout>
     <View
         android:layout_width="fill_parent"
@@ -68,7 +76,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:layout_marginBottom="48.0dp">
+        android:layout_gravity="top"
+        android:layout_weight="1">
         <CheckBox
             android:text="Cross the baseline "
             android:layout_width="match_parent"
@@ -77,7 +86,7 @@
         <TextView
             android:text="High Boiler"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView3" />
         <LinearLayout
@@ -89,22 +98,24 @@
                 android:background="@drawable/fuelButton"
                 style="@style/button_text"
                 android:text="Goal!"
-                android:layout_width="164.0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/buttonHighGoal"
-                android:drawableTint="#00000000" />
+                android:drawableTint="#00000000"
+                android:layout_width="match_parent"
+                android:layout_weight="1" />
             <Button
                 android:background="@drawable/fuelButton"
                 style="@style/button_text"
                 android:text="MISS"
-                android:layout_width="164.5dp"
                 android:layout_height="match_parent"
-                android:id="@+id/buttonHighMiss" />
+                android:id="@+id/buttonHighMiss"
+                android:layout_weight="1"
+                android:layout_width="match_parent" />
         </LinearLayout>
         <TextView
             android:text="Low Boiler"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView3" />
         <LinearLayout
@@ -116,23 +127,25 @@
                 android:background="@drawable/fuelButton"
                 style="@style/button_text"
                 android:text="Goal!"
-                android:layout_width="164.0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/buttonLowGoal" />
+                android:id="@+id/buttonLowGoal"
+                android:layout_width="match_parent"
+                android:layout_weight="1" />
             <Button
                 android:background="@drawable/fuelButton"
                 style="@style/button_text"
                 android:text="MISS"
-                android:layout_width="164.5dp"
                 android:layout_height="match_parent"
-                android:id="@+id/buttonLowMiss" />
+                android:id="@+id/buttonLowMiss"
+                android:layout_weight="1"
+                android:layout_width="match_parent" />
         </LinearLayout>
         <TextView
             android:text="Gears"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3" />
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -142,16 +155,18 @@
                 android:background="@drawable/gearButton"
                 style="@style/button_text"
                 android:text="Goal!"
-                android:layout_width="164.0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/buttonGearGoal" />
+                android:id="@+id/buttonGearGoal"
+                android:layout_width="match_parent"
+                android:layout_weight="1" />
             <Button
                 android:background="@drawable/gearButton"
                 style="@style/button_text"
                 android:text="MISS"
-                android:layout_width="164.5dp"
                 android:layout_height="match_parent"
-                android:id="@+id/buttonGearMiss" />
+                android:id="@+id/buttonGearMiss"
+                android:layout_weight="1"
+                android:layout_width="match_parent" />
         </LinearLayout>
         <CheckBox
             android:text="Climb"
