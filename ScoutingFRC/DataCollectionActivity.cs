@@ -70,7 +70,6 @@ namespace ScoutingFRC
             }
         }
 
-
         private void addAttempt(ref int auto,ref int tele)
         {
             if (autonomous) {
@@ -81,7 +80,6 @@ namespace ScoutingFRC
             }
         }
 
-
         private void ButtonSubmit_Click(object sender, EventArgs e)
         {
             matchData.teamNumber = int.Parse(FindViewById<TextView>(Resource.Id.editTextTeamNumber).Text);
@@ -89,10 +87,7 @@ namespace ScoutingFRC
 
             Intent myIntent = new Intent(this, typeof(MainActivity));
 
-            var binFormatter = new BinaryFormatter();
-            var mStream = new MemoryStream();
-            binFormatter.Serialize(mStream, matchData);
-            var bytes = mStream.ToArray();
+            var bytes = MatchData.Serialize(matchData);
             myIntent.PutExtra("W", bytes);
             SetResult(Result.Ok, myIntent);
             Finish();

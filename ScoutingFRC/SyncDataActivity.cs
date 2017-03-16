@@ -12,13 +12,13 @@ using Android.Widget;
 
 namespace ScoutingFRC
 {
-    [Activity(Label = "SyncDataActivity")]
+    [Activity(Label = "Sync Data")]
     public class SyncDataActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            SetContentView(Resource.Layout.SyncDevices);
             // Create your application here
         }
     }

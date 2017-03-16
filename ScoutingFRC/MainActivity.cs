@@ -52,7 +52,7 @@ namespace ScoutingFRC
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
             FindViewById<Button>(Resource.Id.buttonSync).Click += ButtonSync_Click;
-          FindViewById<Button>(Resource.Id.buttonCollect).Click += ButtonCollect_Click;
+            FindViewById<Button>(Resource.Id.buttonCollect).Click += ButtonCollect_Click;
             FindViewById<Button>(Resource.Id.buttonView).Click += ButtonView_Click;
             FindViewById<Button>(Resource.Id.button1).Click += button1_Click;
             FindViewById<ListView>(Resource.Id.listView1).ItemClick += MainActivity_ItemClick;
@@ -283,14 +283,14 @@ namespace ScoutingFRC
 
         private void ButtonView_Click(object sender, EventArgs e)
         {
-            int number = Int32.Parse(FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1).Text);
+            int number = int.Parse(FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1).Text);
             List<MatchData> goodData = new List<MatchData>();
             foreach (var matchData in matchDataList)
             {
                 if(matchData.teamNumber == number) goodData.Add(matchData);
             }
             var viewActivity = new Intent(Application.Context, typeof(DataViewingActivity));
-            byte[] bytes = MatchData.Serialize(matchDataList);
+            byte[] bytes = MatchData.Serialize(goodData);
             viewActivity.PutExtra("MatchBytes", bytes);
             
             StartActivity(viewActivity);
@@ -307,14 +307,8 @@ namespace ScoutingFRC
             base.OnActivityResult(requestCode, resultCode, data);
             if (resultCode == Result.Ok) {
                 var bytes = data.GetByteArrayExtra("W");
-                var mStream = new MemoryStream();
-                var binFormatter = new BinaryFormatter();
-
-                mStream.Write(bytes, 0, bytes.Length);
-                mStream.Position = 0;
-
-                var Mach = binFormatter.Deserialize(mStream) as MatchData;
-               matchDataList.Add(Mach);
+                var match = MatchData.Deserialize<MatchData>(bytes);
+                matchDataList.Add(match);
             }
         }
 
