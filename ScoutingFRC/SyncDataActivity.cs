@@ -173,6 +173,7 @@ namespace ScoutingFRC
                     SendData(bluetoothConnection);
                 }
                 else {
+                    ChangeTextViews();
                     bluetoothConnection.Disconnect();
                     weStarted = false;
                 }
@@ -207,7 +208,12 @@ namespace ScoutingFRC
 
         void DisconnectedCallback(BluetoothConnection bluetoothConnection)
         {
-
+            RunOnUiThread(() => {
+                if (weStarted) {
+                    ChangeTextViews();
+                    weStarted = false;
+                }
+            });
         }
 
         private void ButtonCancel_Click(object sender, EventArgs eventArgs)
