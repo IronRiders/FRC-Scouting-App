@@ -280,6 +280,9 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f060000
 			public const int button_text = 2131099648;
 			
+			// aapt resource value: 0x7f060004
+			public const int ct = 2131099652;
+			
 			static Style()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
