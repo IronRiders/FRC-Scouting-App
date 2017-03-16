@@ -32,6 +32,7 @@ namespace ScoutingFRC
 
         private Thread connectThread;
         private Thread connectionThread;
+        private bool connected;
 
         private List<Thread> writeThreads;
 
@@ -64,6 +65,8 @@ namespace ScoutingFRC
             disconnectThread = new Thread(DisconnectInternal);
 
             dataId = 0;
+
+            connected = false;
 
             if (bluetoothSocket != null && bluetoothSocket.IsConnected) {
                 this.bluetoothSocket = bluetoothSocket;
@@ -196,6 +199,7 @@ namespace ScoutingFRC
                 }
                 catch (Exception ex) {
                     callbacks.error?.Invoke(this, ex);
+                    callbacks.disconnected?.Invoke(this);
                     return;
                 }
             }
@@ -283,10 +287,6 @@ namespace ScoutingFRC
         {
             if (bluetoothConnection != null) {
                 bluetoothConnection.Disconnect();
-
-                lock (connectionsLock) {
-                    connections.Remove(bluetoothConnection);
-                }
             }
 
             userCallbacks.error?.Invoke(bluetoothConnection, ex);
@@ -305,7 +305,9 @@ namespace ScoutingFRC
         private void Connected(BluetoothConnection bluetoothConnection)
         {
             lock(connectionsLock) {
-                connections.Add(bluetoothConnection);
+                if(!connections.Contains(bluetoothConnection)) {
+                    connections.Add(bluetoothConnection);
+                }
             }
             
             userCallbacks.connected?.Invoke(bluetoothConnection);
@@ -313,6 +315,10 @@ namespace ScoutingFRC
 
         private void Disconnected(BluetoothConnection bluetoothConnection)
         {
+            lock (connectionsLock) {
+                connections.Remove(bluetoothConnection);
+            }
+
             userCallbacks.disconnected?.Invoke(bluetoothConnection);
         }
 
