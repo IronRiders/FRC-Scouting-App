@@ -23,17 +23,11 @@ namespace ScoutingFRC
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ViewData);
             var bytes = Intent.GetByteArrayExtra("MatchBytes");
-            var mStream = new MemoryStream();
-            var binFormatter = new BinaryFormatter();
-            
-            mStream.Write(bytes, 0, bytes.Length);
-            mStream.Position = 0;
+            List<MatchData> MatchList = MatchData.Deserialize<List<MatchData>>(bytes);
 
-            var MachList = binFormatter.Deserialize(mStream) as List<MatchData>;
-
-            if (MachList.Count > 0)
+            if (MatchList.Count > 0)
             {
-                displayData(MachList);
+                displayData(MatchList);
             }
 
         }
