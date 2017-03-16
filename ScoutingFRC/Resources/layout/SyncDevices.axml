@@ -19,21 +19,13 @@
             android:layout_weight="5"
             android:layout_gravity="left"
             android:gravity="center" />
-        <Button
-            android:text="Select"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/button1"
-            android:gravity="center"
-            android:layout_gravity="right"
-            android:layout_weight="2" />
     </LinearLayout>
     <ListView
         android:minWidth="25px"
         android:minHeight="75px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView1"
+        android:id="@+id/listViewDevices"
         android:layout_gravity="top"
         android:layout_weight="1" />
     <LinearLayout
@@ -45,24 +37,24 @@
             android:text="Exchange Data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button2" />
+            android:id="@+id/buttonExchange" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout3">
+            android:id="@+id/linearLayoutResults">
             <TextView
                 android:text="Matches Recived:"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView2" />
+                android:id="@+id/textViewRecived" />
             <TextView
                 android:text="Matches Sent:"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView3" />
+                android:id="@+id/textViewSent" />
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -70,7 +62,7 @@
                 android:id="@+id/linearLayout4">
                 <Button
                     android:text="Add To DataBase"
-                    android:id="@+id/button3"
+                    android:id="@+id/buttonAdd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -79,7 +71,7 @@
                     android:text="Cancel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/button4"
+                    android:id="@+id/buttonCancel"
                     android:layout_gravity="right"
                     android:layout_weight="1" />
             </LinearLayout>

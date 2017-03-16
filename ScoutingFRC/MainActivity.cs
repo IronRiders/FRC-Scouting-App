@@ -299,6 +299,8 @@ namespace ScoutingFRC
         private void ButtonSync_Click(object sender, EventArgs e)
         {
             var myIntent = new Intent(this, typeof(SyncDataActivity));
+            byte[] bytes = MatchData.Serialize(matchDataList);
+            myIntent.PutExtra("currentData", bytes);
             StartActivityForResult(myIntent, 1);
         }
 
@@ -306,9 +308,18 @@ namespace ScoutingFRC
         {
             base.OnActivityResult(requestCode, resultCode, data);
             if (resultCode == Result.Ok) {
-                var bytes = data.GetByteArrayExtra("W");
-                var match = MatchData.Deserialize<MatchData>(bytes);
-                matchDataList.Add(match);
+                if (requestCode == 0)
+                {
+                    var bytes = data.GetByteArrayExtra("W");
+                    var match = MatchData.Deserialize<MatchData>(bytes);
+                    matchDataList.Add(match);
+                }
+                else if (requestCode == 1)
+                {
+                    var bytes = data.GetByteArrayExtra("newMatches");
+                    var matches = MatchData.Deserialize<List<MatchData>>(bytes);
+                    matchDataList.AddRange(matches);
+                }
             }
         }
 
