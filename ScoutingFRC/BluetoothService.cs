@@ -224,8 +224,6 @@ namespace ScoutingFRC
                             callbacks.error?.Invoke(this, ex);
                         }
                     }
-
-                    writeThreads.Remove(Thread.CurrentThread);
                 }));
 
                 id = _id;
