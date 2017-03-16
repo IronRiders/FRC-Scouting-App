@@ -44,11 +44,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/linearLayoutResults">
             <TextView
-                android:text="Matches Recived:"
+                android:text="Matches Received:"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textViewRecived" />
+                android:id="@+id/textViewReceived" />
             <TextView
                 android:text="Matches Sent:"
                 android:textAppearance="?android:attr/textAppearanceMedium"

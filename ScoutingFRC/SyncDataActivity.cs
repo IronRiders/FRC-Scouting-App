@@ -153,6 +153,12 @@ namespace ScoutingFRC
             });
         }
 
+        void ChangeTextViews()
+        {
+            FindViewById<TextView>(Resource.Id.textViewReceived).Text = "Matches Received: " + newData.Count;
+            FindViewById<TextView>(Resource.Id.textViewSent).Text = "Matches Sent: " + currentData.Count;
+        }
+
         void DataCallback(BluetoothConnection bluetoothConnection, byte[] data)
         {
             RunOnUiThread(() => {
@@ -170,6 +176,7 @@ namespace ScoutingFRC
                     btDataTransfer.received = true;
 
                     if (btDataTransfer.Done()) {
+                        ChangeTextViews();
                         bluetoothConnection.Disconnect();
                         btDataTransfers.Remove(btDataTransfer);
                     }
@@ -185,6 +192,7 @@ namespace ScoutingFRC
                     btDataTransfer.sent = true;
 
                     if (btDataTransfer.Done()) {
+                        ChangeTextViews();
                         bluetoothConnection.Disconnect();
                         btDataTransfers.Remove(btDataTransfer);
                     }

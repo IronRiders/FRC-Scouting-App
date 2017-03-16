@@ -42,9 +42,6 @@ namespace ScoutingFRC
 
         private BluetoothCallbacks<BluetoothConnection> callbacks;
 
-        private Stream inputStream;
-        private Stream outputStream;
-
         private UUID uuid;
 
         Context context;
@@ -158,17 +155,13 @@ namespace ScoutingFRC
             byte[] result = new byte[4096];
             int bytes;
 
-            inputStream = bluetoothSocket.InputStream;
-            outputStream = bluetoothSocket.OutputStream;
-
-
             int totalBytes = -1;
             int bytesLeft = -1;
 
             while (true) {
                 int startIndex = 0;
                 try {
-                    bytes = inputStream.Read(buffer, 0, buffer.Length);
+                    bytes = bluetoothSocket.InputStream.Read(buffer, 0, buffer.Length);
                     if(totalBytes < 0) {
                         if(bytes > sizeof(int)) {
                             bytesLeft = totalBytes = BitConverter.ToInt32(buffer, 0);
@@ -216,7 +209,7 @@ namespace ScoutingFRC
                 {
                     if (bluetoothSocket != null && bluetoothSocket.IsConnected) {
                         try {
-                            outputStream.Write(data, 0, data.Length);
+                            bluetoothSocket.OutputStream.Write(data, 0, data.Length);
 
                             callbacks.dataSent?.Invoke(this, _id);
                         }
