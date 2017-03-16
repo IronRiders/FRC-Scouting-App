@@ -95,6 +95,8 @@ namespace ScoutingFRC
         bool weStarted = false;
         private void SyncDataActivity_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
+            done = false;
+
             BluetoothDevice device = bluetoothDevices[(int)(e.Id)];
 
             lock (bs.connectionsLock) {
@@ -147,7 +149,9 @@ namespace ScoutingFRC
         void ErrorCallback(BluetoothConnection bluetoothConnection, Exception ex)
         {
             RunOnUiThread(() => {
-                Toast.MakeText(this, "Error from " + (bluetoothConnection.bluetoothDevice.Name == null ? bluetoothConnection.bluetoothDevice.Address : bluetoothConnection.bluetoothDevice.Name) + ": " + ex.Message, ToastLength.Long).Show();
+                if(!done) {
+                    Toast.MakeText(this, "Error from " + (bluetoothConnection.bluetoothDevice.Name == null ? bluetoothConnection.bluetoothDevice.Address : bluetoothConnection.bluetoothDevice.Name) + ": " + ex.Message, ToastLength.Long).Show();
+                }             
             });
         }
 
@@ -155,7 +159,11 @@ namespace ScoutingFRC
         {
             FindViewById<TextView>(Resource.Id.textViewReceived).Text = "Matches Received: " + newData.Count;
             FindViewById<TextView>(Resource.Id.textViewSent).Text = "Matches Sent: " + currentData.Count;
+
+            Toast.MakeText(this, "Done", ToastLength.Long).Show();
         }
+
+        bool done = false;
 
         void DataCallback(BluetoothConnection bluetoothConnection, byte[] data)
         {
@@ -176,6 +184,7 @@ namespace ScoutingFRC
                     ChangeTextViews();
                     bluetoothConnection.Disconnect();
                     weStarted = false;
+                    done = true;
                 }
             });
         }
@@ -183,7 +192,9 @@ namespace ScoutingFRC
         void DataSentCallback(BluetoothConnection bluetoothConnection, int id)
         {
             RunOnUiThread(() => {
-
+                if(weStarted) {
+                    done = true;
+                }
             });
         }
 
@@ -209,7 +220,7 @@ namespace ScoutingFRC
         void DisconnectedCallback(BluetoothConnection bluetoothConnection)
         {
             RunOnUiThread(() => {
-                if (weStarted) {
+                if (weStarted && done) {
                     ChangeTextViews();
                     weStarted = false;
                 }
