@@ -92,6 +92,7 @@ namespace ScoutingFRC
             }
         }
 
+        bool weStarted = false;
         private void SyncDataActivity_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             BluetoothDevice device = bluetoothDevices[(int)(e.Id)];
@@ -102,6 +103,7 @@ namespace ScoutingFRC
                     bs.Disconnect(device);
                 }
                 else {
+                    weStarted = true;
                     bs.Connect(device);
                 }
             }
@@ -146,10 +148,6 @@ namespace ScoutingFRC
         {
             RunOnUiThread(() => {
                 Toast.MakeText(this, "Error from " + (bluetoothConnection.bluetoothDevice.Name == null ? bluetoothConnection.bluetoothDevice.Address : bluetoothConnection.bluetoothDevice.Name) + ": " + ex.Message, ToastLength.Long).Show();
-                var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
-                if (btDataTransfer != null) {
-                    btDataTransfers.Remove(btDataTransfer);
-                }
             });
         }
 
@@ -171,15 +169,12 @@ namespace ScoutingFRC
                     }
                 }
 
-                var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
-                if (btDataTransfer != null) {
-                    btDataTransfer.received = true;
-
-                    if (btDataTransfer.Done()) {
-                        ChangeTextViews();
-                        bluetoothConnection.Disconnect();
-                        btDataTransfers.Remove(btDataTransfer);
-                    }
+                if (weStarted) {
+                    SendData(bluetoothConnection);
+                }
+                else {
+                    bluetoothConnection.Disconnect();
+                    weStarted = false;
                 }
             });
         }
@@ -187,41 +182,32 @@ namespace ScoutingFRC
         void DataSentCallback(BluetoothConnection bluetoothConnection, int id)
         {
             RunOnUiThread(() => {
-                var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
-                if (btDataTransfer != null) {
-                    btDataTransfer.sent = true;
 
-                    if (btDataTransfer.Done()) {
-                        ChangeTextViews();
-                        bluetoothConnection.Disconnect();
-                        btDataTransfers.Remove(btDataTransfer);
-                    }
-                }
             });
+        }
+
+        void SendData(BluetoothConnection bluetoothConnection)
+        {
+            var serialized = MatchData.Serialize(currentData);
+            byte[] data = new byte[sizeof(int) + serialized.Length];
+            BitConverter.GetBytes(serialized.Length).CopyTo(data, 0);
+            serialized.CopyTo(data, sizeof(int));
+            int id = 0;
+            bluetoothConnection.Write(data, ref id);
         }
 
         void ConnectedCallback(BluetoothConnection bluetoothConnection)
         {
             RunOnUiThread(() => {
-                var btdt = new BluetoothDataTransfer(bluetoothConnection);
-                btDataTransfers.Add(btdt);
-
-                var serialized = MatchData.Serialize(currentData);
-                byte[] data = new byte[sizeof(int) + serialized.Length];
-                BitConverter.GetBytes(serialized.Length).CopyTo(data, 0);
-                serialized.CopyTo(data, sizeof(int));
-                bluetoothConnection.Write(data, ref btdt.id);
+                if(!weStarted) {
+                    SendData(bluetoothConnection);
+                }
             });
         }
 
         void DisconnectedCallback(BluetoothConnection bluetoothConnection)
         {
-            RunOnUiThread(() => {
-                var btDataTransfer = btDataTransfers.Find(btdt => btdt.connection == bluetoothConnection);
-                if (btDataTransfer != null) {
-                    btDataTransfers.Remove(btDataTransfer);
-                }
-            });
+
         }
 
         private void ButtonCancel_Click(object sender, EventArgs eventArgs)
