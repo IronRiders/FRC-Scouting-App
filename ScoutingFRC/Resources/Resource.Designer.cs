@@ -283,6 +283,9 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f060003
 			public const int CustomTheme_Splash = 2131099651;
 			
+			// aapt resource value: 0x7f060004
+			public const int Theme_Custom = 2131099652;
+			
 			// aapt resource value: 0x7f060000
 			public const int button_text = 2131099648;
 			
