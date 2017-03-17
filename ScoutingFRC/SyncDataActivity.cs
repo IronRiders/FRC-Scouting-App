@@ -73,7 +73,7 @@ namespace ScoutingFRC
 
             btDataTransfers = new List<BluetoothDataTransfer>();
 
-            adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1);
+            adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSelectableListItem);
             var listView = FindViewById<ListView>(Resource.Id.listViewDevices);
             listView.Adapter = adapter;
 

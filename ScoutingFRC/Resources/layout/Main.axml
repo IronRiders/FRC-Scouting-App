@@ -5,52 +5,68 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px"
-    android:padding="7dp">
-    <TextView
-        android:text="Matches Scouted: "
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="#FF777777"
-        android:id="@+id/view1"
-        android:layout_marginBottom="20dp"
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp"
-        android:layout_marginTop="20dp" />
-    <Button
-        android:text="Collect Data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonCollect" />
+    android:padding="15dp">
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1">
-        <AutoCompleteTextView
-            android:layout_height="match_parent"
-            android:id="@+id/autoCompleteTextView1"
-            android:gravity="center"
-            android:inputType="number"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:textSize="25dp" />
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout2"
+        android:layout_weight="1"
+        android:layout_gravity="top">
         <Button
-            android:text="View Data"
-            android:id="@+id/buttonView"
+            android:text="Scout a Match"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonCollect" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout1">
+            <AutoCompleteTextView
+                android:layout_height="match_parent"
+                android:id="@+id/autoCompleteTextView1"
+                android:gravity="center"
+                android:inputType="number"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:textSize="25dp" />
+            <Button
+                android:text="View Team Data"
+                android:id="@+id/buttonView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="1" />
+        </LinearLayout>
+        <Button
+            android:text="Sync Data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonSync" />
     </LinearLayout>
-    <Button
-        android:text="Sync Data"
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonSync" />
+        android:id="@+id/linearLayout3"
+        android:layout_weight="0"
+        android:layout_gravity="bottom">
+        <TextView
+            android:text="Matches Scouted: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:textStyle="bold" />
+        <TextView
+            android:text="Teams: "
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3" />
+    </LinearLayout>
 </LinearLayout>

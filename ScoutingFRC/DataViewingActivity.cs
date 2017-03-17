@@ -54,7 +54,7 @@ namespace ScoutingFRC
             double[] low = divide(LowGoals, count);
             double[] gear = divide(gears, count);
 
-            FindViewById<TextView>(Resource.Id.textView1).Text = matches;
+            FindViewById<TextView>(Resource.Id.textView1).Text = matches.Substring(0,matches.Length-2);
 
         
     }
