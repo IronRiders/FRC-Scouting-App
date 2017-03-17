@@ -18,8 +18,8 @@ namespace ScoutingFRC
     [Activity(Label = "Sync Data", ScreenOrientation = ScreenOrientation.Portrait)]
     public class SyncDataActivity : Activity
     {
-        List<MatchData> currentData = new List<MatchData>();
-        List<MatchData> newData = new List<MatchData>();
+        List<MatchData> currentData;
+        List<MatchData> newData;
 
         private BluetoothCallbacks<BluetoothConnection> callbacks;
 
@@ -30,36 +30,29 @@ namespace ScoutingFRC
 
         private class BluetoothDataTransfer
         {
-            public BluetoothDataTransfer(BluetoothConnection connection = null, int id = -1, bool received = false, bool sent = false)
+            public BluetoothDataTransfer(BluetoothConnection connection = null, BluetoothDevice device = null, bool weStarted = false)
             {
+                this.device = device;
                 this.connection = connection;
-                this.id = id;
-                this.received = received;
-                this.sent = sent;
+                this.weStarted = weStarted;
+                this.done = false;
             }
 
-            public bool Done()
-            {
-                return received && sent;
-            }
-
+            public BluetoothDevice device;
             public BluetoothConnection connection;
-            public int id;
-            public bool received;
-            public bool sent;
+            public bool weStarted;
+            public bool done;
         }
 
         private List<BluetoothDataTransfer> btDataTransfers;
-
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.SyncDevices);
-            
+
             var bytes = Intent.GetByteArrayExtra("currentData");
             currentData = MatchData.Deserialize<List<MatchData>>(bytes);
-            FindViewById<Button>(Resource.Id.buttonExchange).Click += ButtonExchange_Click;
             FindViewById<Button>(Resource.Id.buttonAdd).Click += ButtonAdd_Click;
             FindViewById<Button>(Resource.Id.buttonCancel).Click += ButtonCancel_Click;
             FindViewById<ListView>(Resource.Id.listViewDevices).ItemClick += SyncDataActivity_ItemClick;
@@ -70,6 +63,8 @@ namespace ScoutingFRC
             callbacks.dataSent = DataSentCallback;
             callbacks.connected = ConnectedCallback;
             callbacks.disconnected = DisconnectedCallback;
+
+            newData = new List<MatchData>();
 
             btDataTransfers = new List<BluetoothDataTransfer>();
 
@@ -94,6 +89,7 @@ namespace ScoutingFRC
 
                     if(!bluetoothAdapter.IsEnabled) {
                         Toast.MakeText(this, "Bluetooth is disabled and can't be automatically enabled.", ToastLength.Long).Show();
+                        return;
                     }
                 }
                  
@@ -112,11 +108,8 @@ namespace ScoutingFRC
             }
         }
 
-        bool weStarted = false;
         private void SyncDataActivity_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            done = false;
-
             BluetoothDevice device = bluetoothDevices[(int)(e.Id)];
 
             lock (bs.connectionsLock) {
@@ -128,8 +121,8 @@ namespace ScoutingFRC
                     Toast.MakeText(this, "Already connected to a device.", ToastLength.Long).Show();
                 }
                 else {
-                    weStarted = true;
-                    bs.Connect(device);
+                    btDataTransfers.Add(new BluetoothDataTransfer(null, device, true));
+                    bs.Connect(device);  
                 }
             }
         }
@@ -172,22 +165,21 @@ namespace ScoutingFRC
         void ErrorCallback(BluetoothConnection bluetoothConnection, Exception ex)
         {
             RunOnUiThread(() => {
-                if(!done) {
+                var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);
+                if (btd == null || !btd.done) {
                     Toast.MakeText(this, "Error from " + (bluetoothConnection.bluetoothDevice.Name == null ? bluetoothConnection.bluetoothDevice.Address : bluetoothConnection.bluetoothDevice.Name) + ": " + ex.Message, ToastLength.Long).Show();
-                    weStarted = false;
-                }           
+
+                }
             });
         }
 
         void ChangeTextViews()
-        {
+        {   
             FindViewById<TextView>(Resource.Id.textViewReceived).Text = "Matches Received: " + newData.Count;
             FindViewById<TextView>(Resource.Id.textViewSent).Text = "Matches Sent: " + currentData.Count;
 
             Toast.MakeText(this, "Done", ToastLength.Long).Show();
         }
-
-        bool done = false;
 
         void DataCallback(BluetoothConnection bluetoothConnection, byte[] data)
         {
@@ -201,14 +193,18 @@ namespace ScoutingFRC
                     }
                 }
 
-                if (weStarted) {
-                    SendData(bluetoothConnection);
-                }
-                else {
-                    ChangeTextViews();
-                    bluetoothConnection.Disconnect();
-                    weStarted = false;
-                    done = true;
+                var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);
+
+                if(btd != null) {
+                    if (btd.weStarted) {
+                        SendData(bluetoothConnection);
+                    }
+                    else {
+                        ChangeTextViews();
+                        bluetoothConnection.Disconnect();
+                        btd.weStarted = false;
+                        btd.done = true;
+                    }
                 }
             });
         }
@@ -216,8 +212,9 @@ namespace ScoutingFRC
         void DataSentCallback(BluetoothConnection bluetoothConnection, int id)
         {
             RunOnUiThread(() => {
-                if(weStarted) {
-                    done = true;
+                var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);
+                if (btd != null && btd.weStarted) {
+                    btd.done = true;
                 }
             });
         }
@@ -234,8 +231,19 @@ namespace ScoutingFRC
 
         void ConnectedCallback(BluetoothConnection bluetoothConnection)
         {
-            RunOnUiThread(() => {
-                if(!weStarted) {
+           RunOnUiThread(() => {
+               newData.Clear();
+
+                var btd = btDataTransfers.FirstOrDefault(bt => bt.device == bluetoothConnection.bluetoothDevice);
+                if (btd == null) {
+                    btd = new BluetoothDataTransfer(bluetoothConnection, bluetoothConnection.bluetoothDevice, false);
+                    btDataTransfers.Add(btd);
+                }
+                else if (btd.connection == null) {
+                    btd.connection = bluetoothConnection;
+                }
+
+                if(!btd.weStarted) {
                     SendData(bluetoothConnection);
                 }
             });
@@ -244,12 +252,25 @@ namespace ScoutingFRC
         void DisconnectedCallback(BluetoothConnection bluetoothConnection)
         {
             RunOnUiThread(() => {
-                if (weStarted && done) {
-                    ChangeTextViews();                
+                var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);
+                if(btd != null) {
+                    if (btd.weStarted && btd.done) {
+                        ChangeTextViews();
+                    }
+                    else if(!btd.done){
+                        Toast.MakeText(this, "Connection was interrupted", ToastLength.Long).Show();
+                    }
+
+                    btDataTransfers.Remove(btd);
                 }
 
-                weStarted = false;
             });
+        }
+
+        protected override void OnDestroy()
+        {
+            bs.StopListening();
+            base.OnDestroy();
         }
 
         private void ButtonCancel_Click(object sender, EventArgs eventArgs)
@@ -267,11 +288,5 @@ namespace ScoutingFRC
             SetResult(Result.Ok, myIntent);
             Finish();
         }
-
-        private void ButtonExchange_Click(object sender, EventArgs eventArgs)
-        {
-            
-        }
-
     }
 }
