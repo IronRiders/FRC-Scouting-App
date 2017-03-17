@@ -154,8 +154,8 @@ namespace ScoutingFRC
         {
             Looper.Prepare();
 
-            byte[] buffer = new byte[4096];
-            byte[] result = new byte[4096];
+            byte[] buffer = new byte[1024 * 1024];
+            byte[] result = new byte[1024 * 1024];
             int bytes;
 
             int totalBytes = -1;
@@ -305,9 +305,7 @@ namespace ScoutingFRC
         private void Connected(BluetoothConnection bluetoothConnection)
         {
             lock(connectionsLock) {
-                if(!connections.Contains(bluetoothConnection)) {
-                    connections.Add(bluetoothConnection);
-                }
+                connections.Add(bluetoothConnection);
             }
             
             userCallbacks.connected?.Invoke(bluetoothConnection);
@@ -329,9 +327,7 @@ namespace ScoutingFRC
 
         public void Connect(BluetoothDevice device)
         {
-            lock (connectionsLock) {
-                connections.Add(new BluetoothConnection(context, device, uuid, serviceCallbacks));
-            }
+            new BluetoothConnection(context, device, uuid, serviceCallbacks);
         }
 
         public void Disconnect(BluetoothDevice device)
