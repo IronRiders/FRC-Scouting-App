@@ -11,10 +11,11 @@ using Android.Views;
 using Android.Widget;
 using Android.Bluetooth;
 using System.Diagnostics;
+using Android.Content.PM;
 
 namespace ScoutingFRC
 {
-    [Activity(Label = "Sync Data")]
+    [Activity(Label = "Sync Data", ScreenOrientation = ScreenOrientation.Portrait)]
     public class SyncDataActivity : Activity
     {
         List<MatchData> currentData = new List<MatchData>();
