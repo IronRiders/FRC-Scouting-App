@@ -84,12 +84,31 @@ namespace ScoutingFRC
             bluetoothDevices = new List<BluetoothDevice>();
 
             bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
-            if (bluetoothAdapter != null && bluetoothAdapter.IsEnabled) {
+            if (bluetoothAdapter != null) {
+                if (!bluetoothAdapter.IsEnabled) {
+                    bluetoothAdapter.Enable();
+
+                    for (int i = 0; i < 100 && !bluetoothAdapter.IsEnabled; ++i) {
+                        System.Threading.Thread.Sleep(10);
+                    }
+
+                    if(!bluetoothAdapter.IsEnabled) {
+                        Toast.MakeText(this, "Bluetooth is disabled and can't be automatically enabled.", ToastLength.Long).Show();
+                    }
+                }
+                 
+                if (bluetoothAdapter.ScanMode != ScanMode.ConnectableDiscoverable) {
+                    Intent discoverableIntent = new Intent(BluetoothAdapter.ActionRequestDiscoverable);
+                    discoverableIntent.PutExtra(BluetoothAdapter.ExtraDiscoverableDuration, 60);
+                    StartActivity(discoverableIntent);
+                    bluetoothAdapter.Enable();
+                }
+
                 bs = new BluetoothService(this, callbacks, bluetoothAdapter);
                 SearchForDevices();
             }
             else {
-                Toast.MakeText(this, "Bluetooth is disabled", ToastLength.Long).Show();
+                Toast.MakeText(this, "Bluetooth not supported on this device.", ToastLength.Long).Show();
             }
         }
 
@@ -104,6 +123,9 @@ namespace ScoutingFRC
                 if (bs.connections.Any(_bc => _bc.bluetoothDevice.Address == device.Address)) {
                     Toast.MakeText(this, "Already connected to this device. Disconnecting", ToastLength.Long).Show();
                     bs.Disconnect(device);
+                }
+                else if (bs.connections.Count > 0) {
+                    Toast.MakeText(this, "Already connected to a device.", ToastLength.Long).Show();
                 }
                 else {
                     weStarted = true;
@@ -152,7 +174,8 @@ namespace ScoutingFRC
             RunOnUiThread(() => {
                 if(!done) {
                     Toast.MakeText(this, "Error from " + (bluetoothConnection.bluetoothDevice.Name == null ? bluetoothConnection.bluetoothDevice.Address : bluetoothConnection.bluetoothDevice.Name) + ": " + ex.Message, ToastLength.Long).Show();
-                }             
+                    weStarted = false;
+                }           
             });
         }
 
@@ -222,9 +245,10 @@ namespace ScoutingFRC
         {
             RunOnUiThread(() => {
                 if (weStarted && done) {
-                    ChangeTextViews();
-                    weStarted = false;
+                    ChangeTextViews();                
                 }
+
+                weStarted = false;
             });
         }
 
