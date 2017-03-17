@@ -49,7 +49,7 @@ namespace ScoutingFRC
         protected override void OnResume()
         {
             base.OnResume();
-            FindViewById<TextView>(Resource.Id.textView2).Text = ("Matches Scouted: " + matchDataList.Count);
+            FindViewById<TextView>(Resource.Id.textView2).Text = "Matches Scouted: " + matchDataList.Count;
             String teams = "Teams: ";
 
             var autocompleteTextView = FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1);
@@ -59,48 +59,49 @@ namespace ScoutingFRC
                 if (!numbers.Contains(matchData.teamNumber))
                 {
                     numbers.Add(matchData.teamNumber);
-                    teams += (matchData.teamNumber + ", ");
+                    teams += matchData.teamNumber + ", ";
                 }
             }
             FindViewById<TextView>(Resource.Id.textView3).Text = teams.Substring(0, teams.Length - 2);
 
-           string[] autoCompleteOptions = numbers.Select(i => i.ToString()).ToArray();
+            string[] autoCompleteOptions = numbers.Select(i => i.ToString()).ToArray();
             ArrayAdapter autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
             autocompleteTextView.Adapter = autoCompleteAdapter;
         }
-        Random r = new Random();
+
+        Random r = new Random((int)(DateTime.Now.Ticks % int.MaxValue));
 
         MatchData RandomMatchData()
         {
             MatchData md = new MatchData();
              
-            md.teamNumber = r.Next();
-            md.match = r.Next();
+            md.teamNumber = r.Next() % 5000;
+            md.match = r.Next() % 5000;
 
-            md.automomous.gears.failedAttempts = r.Next();
-            md.automomous.gears.successes = r.Next();
+            md.automomous.gears.failedAttempts = r.Next() % 5000;
+            md.automomous.gears.successes = r.Next() % 5000;
 
-            md.automomous.highBoiler.failedAttempts = r.Next();
-            md.automomous.highBoiler.successes = r.Next();
+            md.automomous.highBoiler.failedAttempts = r.Next() % 5000;
+            md.automomous.highBoiler.successes = r.Next() % 5000;
 
-            md.automomous.lowBoiler.failedAttempts = r.Next();
-            md.automomous.lowBoiler.successes = r.Next();
+            md.automomous.lowBoiler.failedAttempts = r.Next() % 5000;
+            md.automomous.lowBoiler.successes = r.Next() % 5000;
 
             md.automomous.oneTimePoints = r.Next() % 2 == 1;
 
-            md.teleoperated.gears.failedAttempts = r.Next();
-            md.teleoperated.gears.successes = r.Next();
+            md.teleoperated.gears.failedAttempts = r.Next() % 5000;
+            md.teleoperated.gears.successes = r.Next() % 5000;
 
-            md.teleoperated.highBoiler.failedAttempts = r.Next();
-            md.teleoperated.highBoiler.successes = r.Next();
+            md.teleoperated.highBoiler.failedAttempts = r.Next() % 5000;
+            md.teleoperated.highBoiler.successes = r.Next() % 5000;
 
-            md.teleoperated.lowBoiler.failedAttempts = r.Next();
-            md.teleoperated.lowBoiler.successes = r.Next();
+            md.teleoperated.lowBoiler.failedAttempts = r.Next() % 5000;
+            md.teleoperated.lowBoiler.successes = r.Next() % 5000;
 
             md.teleoperated.oneTimePoints = r.Next() % 2 == 1;
 
-            md.teleoperated.gears.failedAttempts = r.Next();
-            md.teleoperated.gears.successes = r.Next();
+            md.teleoperated.gears.failedAttempts = r.Next() % 5000;
+            md.teleoperated.gears.successes = r.Next() % 5000;
 
             return md;
         }
