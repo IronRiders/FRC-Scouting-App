@@ -15,7 +15,7 @@ using System.ComponentModel;
 
 namespace ScoutingFRC
 {
-    [Activity(Label = "FRC Scouting", Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "FRC Scouting", Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
         private List<MatchData> matchDataList = new List<MatchData>();
@@ -50,6 +50,7 @@ namespace ScoutingFRC
         {
             base.OnResume();
             FindViewById<TextView>(Resource.Id.textView2).Text = ("Matches Scouted: " + matchDataList.Count);
+            String teams = "Teams: ";
 
             var autocompleteTextView = FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1);
             List<int> numbers = new List<int>();
@@ -58,9 +59,12 @@ namespace ScoutingFRC
                 if (!numbers.Contains(matchData.teamNumber))
                 {
                     numbers.Add(matchData.teamNumber);
+                    teams += (matchData.teamNumber + ", ");
                 }
             }
-            string[] autoCompleteOptions = numbers.Select(i => i.ToString()).ToArray();
+            FindViewById<TextView>(Resource.Id.textView3).Text = teams.Substring(0, teams.Length - 2);
+
+           string[] autoCompleteOptions = numbers.Select(i => i.ToString()).ToArray();
             ArrayAdapter autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
             autocompleteTextView.Adapter = autoCompleteAdapter;
         }
@@ -109,11 +113,20 @@ namespace ScoutingFRC
 
         private void ButtonView_Click(object sender, EventArgs e)
         {
-            int number = int.Parse(FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1).Text);
+            int number;
+            bool parsed = int.TryParse(FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1).Text, out number);
+            if (!parsed)
+            {
+                return;
+            }
             List<MatchData> goodData = new List<MatchData>();
             foreach (var matchData in matchDataList)
             {
                 if(matchData.teamNumber == number) goodData.Add(matchData);
+            }
+            if (goodData.Count <= 0)
+            {
+                return;
             }
             var viewActivity = new Intent(Application.Context, typeof(DataViewingActivity));
             byte[] bytes = MatchData.Serialize(goodData);
