@@ -49,7 +49,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
+            android:id="@+id/textViewAG"
             android:layout_marginLeft="13.5dp" />
         <TextView
             android:text="Teleop"
@@ -62,7 +62,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
+            android:id="@+id/textViewTG"
             android:layout_marginLeft="14.5dp" />
     </LinearLayout>
     <TextView
@@ -90,7 +90,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
+            android:id="@+id/textViewAH"
             android:layout_marginLeft="13.5dp" />
         <TextView
             android:text="Teleop"
@@ -103,7 +103,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
+            android:id="@+id/textViewTH"
             android:layout_marginLeft="14.5dp" />
     </LinearLayout>
     <TextView
@@ -130,7 +130,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
+            android:id="@+id/textViewAL"
             android:layout_marginLeft="13.5dp" />
         <TextView
             android:text="Teleop"
@@ -143,7 +143,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
+            android:id="@+id/textViewTL"
             android:layout_marginLeft="14.5dp" />
     </LinearLayout>
 </LinearLayout>
