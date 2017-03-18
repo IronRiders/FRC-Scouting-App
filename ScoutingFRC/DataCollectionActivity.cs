@@ -84,6 +84,8 @@ namespace ScoutingFRC
         {
             matchData.teamNumber = int.Parse(FindViewById<TextView>(Resource.Id.editTextTeamNumber).Text);
             matchData.match = int.Parse(FindViewById<TextView>(Resource.Id.editTextMathcNumber).Text);
+            matchData.automomous.oneTimePoints = FindViewById<CheckBox>(Resource.Id.checkBox1).Checked;
+            matchData.teleoperated.oneTimePoints = FindViewById<CheckBox>(Resource.Id.checkBoxClimb).Checked;
 
             Intent myIntent = new Intent(this, typeof(MainActivity));
 

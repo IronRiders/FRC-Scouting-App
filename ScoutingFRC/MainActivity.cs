@@ -38,11 +38,6 @@ namespace ScoutingFRC
             //List<MatchData> md2 = MatchData.Deserialize<List<MatchData>>(test);
             //
             matchDataList = new List<MatchData>();
-            matchDataList.Add(RandomMatchData());
-            matchDataList.Add(RandomMatchData());
-            matchDataList.Add(RandomMatchData());
-            matchDataList.Add(RandomMatchData());
-            matchDataList.Add(RandomMatchData());
 
         }
 
@@ -50,23 +45,27 @@ namespace ScoutingFRC
         {
             base.OnResume();
             FindViewById<TextView>(Resource.Id.textView2).Text = ("Matches Scouted: " + matchDataList.Count);
-            String teams = "Teams: ";
 
-            var autocompleteTextView = FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1);
-            List<int> numbers = new List<int>();
+            List<ListItem> teamsList = new List<ListItem>();
             foreach (var matchData in matchDataList)
             {
-                if (!numbers.Contains(matchData.teamNumber))
+                ListItem item = teamsList.FirstOrDefault(i => i.teamNumber == matchData.teamNumber);
+                if (item == null)
                 {
-                    numbers.Add(matchData.teamNumber);
-                    teams += (matchData.teamNumber + ", ");
+                    item = new ListItem(matchData.teamNumber);
+                    teamsList.Add(item);
                 }
+                item.matches.Add(matchData.match);
             }
-            FindViewById<TextView>(Resource.Id.textView3).Text = teams.Substring(0, teams.Length - 2);
-
-           string[] autoCompleteOptions = numbers.Select(i => i.ToString()).ToArray();
+        //    FindViewById<TextView>(Resource.Id.textView3).Text = teams.Substring(0, teams.Length - 2);
+            var autocompleteTextView = FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1);
+            string[] autoCompleteOptions = teamsList.Select(i => i.teamNumber.ToString()).ToArray();
             ArrayAdapter autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
             autocompleteTextView.Adapter = autoCompleteAdapter;
+
+            var list = FindViewById<ListView>(Resource.Id.listView1);
+            ArrayAdapter teamListAdapter  = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
+            list.Adapter = teamListAdapter;
         }
         Random r = new Random();
 
@@ -159,6 +158,18 @@ namespace ScoutingFRC
                     var matches = MatchData.Deserialize<List<MatchData>>(bytes);
                     matchDataList.AddRange(matches);
                 }
+            }
+        }
+
+        public class ListItem
+        {
+            public int teamNumber;
+            public List<int> matches;
+
+            public ListItem(int number)
+            {
+                teamNumber = number;
+                matches = new List<int>();
             }
         }
     }

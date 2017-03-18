@@ -53,11 +53,18 @@ namespace ScoutingFRC
             double[] high = divide(HighGoals, count);
             double[] low = divide(LowGoals, count);
             double[] gear = divide(gears, count);
-
+            
             FindViewById<TextView>(Resource.Id.textView1).Text = matches.Substring(0,matches.Length-2);
 
-        
-    }
+            FindViewById<TextView>(Resource.Id.textViewAG).Text = String.Format("{0:#.###}/{1:#.##}",gear[0],gear[1]);
+            FindViewById<TextView>(Resource.Id.textViewTG).Text = String.Format("{0:#.###}/{1:#.##}", gear[2], gear[3]);
+
+            FindViewById<TextView>(Resource.Id.textViewAH).Text = String.Format("{0:#.###}/{1:#.##}", high[0], high[1]);
+            FindViewById<TextView>(Resource.Id.textViewTH).Text = String.Format("{0:#.###}/{1:#.##}", high[2], high[3]);
+
+            FindViewById<TextView>(Resource.Id.textViewAL).Text = String.Format("{0:#.###}/{1:#.##}", low[0], low[1]);
+            FindViewById<TextView>(Resource.Id.textViewTL).Text = String.Format("{0:#.###}/{1:#.##}", low[2], low[3]);
+        }
 
         private double[] divide(int[] ar, int a)
         {
@@ -72,7 +79,7 @@ namespace ScoutingFRC
         private void addScoringMethod(MatchData.PerformanceData.ScoringMethod method, int start, int[] arr)
         {
             arr[start] += method.successes;
-            arr[start+1] += method.failedAttempts;
+            arr[start + 1] += method.failedAttempts + method.successes;
         }
     }
 }
