@@ -12,6 +12,7 @@ using Android.Content;
 using System.Text;
 using Android.Content.PM;
 using System.ComponentModel;
+using Android.Views;
 
 namespace ScoutingFRC
 {
@@ -29,6 +30,7 @@ namespace ScoutingFRC
             FindViewById<Button>(Resource.Id.buttonSync).Click += ButtonSync_Click;
             FindViewById<Button>(Resource.Id.buttonCollect).Click += ButtonCollect_Click;
             FindViewById<Button>(Resource.Id.buttonView).Click += ButtonView_Click;
+            FindViewById<ListView>(Resource.Id.listView1).ItemClick += OnItemClick;
 
             //Some testing
             //List<MatchData> md = new List<MatchData> { RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData() };
@@ -37,8 +39,19 @@ namespace ScoutingFRC
 
             //List<MatchData> md2 = MatchData.Deserialize<List<MatchData>>(test);
             //
-            matchDataList = new List<MatchData>();
+            matchDataList = Storage.ReadFromFile("test");
+            if (matchDataList == null)
+            {
+                matchDataList = new List<MatchData>();
+            }
 
+        }
+
+        private void OnItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
+        {
+            var item = FindViewById<ListView>(Resource.Id.listView1).Adapter.GetItem(itemClickEventArgs.Position);
+            int num = int.Parse((string)item);
+            displayTeamData(num);
         }
 
         protected override void OnResume()
@@ -59,6 +72,7 @@ namespace ScoutingFRC
             }
         //    FindViewById<TextView>(Resource.Id.textView3).Text = teams.Substring(0, teams.Length - 2);
             var autocompleteTextView = FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1);
+            teamsList.Sort((x, y) => x.teamNumber.CompareTo(y.teamNumber));
             string[] autoCompleteOptions = teamsList.Select(i => i.teamNumber.ToString()).ToArray();
             ArrayAdapter autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
             autocompleteTextView.Adapter = autoCompleteAdapter;
@@ -118,19 +132,22 @@ namespace ScoutingFRC
             {
                 return;
             }
+            displayTeamData(number);
+        }
+
+        private void displayTeamData(int number)
+        {
             List<MatchData> goodData = new List<MatchData>();
-            foreach (var matchData in matchDataList)
-            {
-                if(matchData.teamNumber == number) goodData.Add(matchData);
+            foreach (var matchData in matchDataList) {
+                if (matchData.teamNumber == number) goodData.Add(matchData);
             }
-            if (goodData.Count <= 0)
-            {
+            if (goodData.Count <= 0) {
                 return;
             }
             var viewActivity = new Intent(Application.Context, typeof(DataViewingActivity));
             byte[] bytes = MatchData.Serialize(goodData);
             viewActivity.PutExtra("MatchBytes", bytes);
-            
+
             StartActivity(viewActivity);
         }
 
@@ -158,6 +175,8 @@ namespace ScoutingFRC
                     var matches = MatchData.Deserialize<List<MatchData>>(bytes);
                     matchDataList.AddRange(matches);
                 }
+                Storage.Delete("test");
+                Storage.WriteToFile("test",matchDataList);
             }
         }
 
