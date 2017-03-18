@@ -126,6 +126,8 @@ namespace ScoutingFRC
             var copy = callbacks.error;
             callbacks.error = null;
 
+            bool connected = IsConnected();
+
             //closing the socket will cause both threads to fail
             bluetoothSocket?.Close();
             bluetoothSocket = null;
@@ -145,9 +147,11 @@ namespace ScoutingFRC
                 connectionThread.Join();
             }
 
-            callbacks.error = copy;
+            if(!connected) {
+                callbacks.disconnected?.Invoke(this);
+            }
 
-            callbacks.disconnected?.Invoke(this);
+            callbacks.error = copy;  
         }
 
         private void Connection()
@@ -249,8 +253,6 @@ namespace ScoutingFRC
         private BluetoothAdapter bluetoothAdapter;
         private BluetoothServerSocket serverSocket;
 
-        private bool listen = false;
-
         private Thread listenThread;
 
         public List<BluetoothConnection> connections;
@@ -343,7 +345,6 @@ namespace ScoutingFRC
         public void StartListening()
         {
             if(!IsListening()) {
-                listen = true;
                 listenThread.Start();
             }
         }
@@ -356,10 +357,13 @@ namespace ScoutingFRC
         public void StopListening()
         {
             if (IsListening()) {
-                listen = false;
+                stopping = true;
+                serverSocket.Close();
                 listenThread.Join();
             }
         }
+
+        bool stopping = false;
 
         public void Listen()
         {
@@ -367,28 +371,20 @@ namespace ScoutingFRC
 
             serverSocket = bluetoothAdapter.ListenUsingRfcommWithServiceRecord(name, uuid);
 
-            bool attemptedClose = false;
-
             try {
-                while (listen) {
+                while (true) {
                     BluetoothSocket socket = serverSocket.Accept();
                     lock (connectionsLock) {
                         new BluetoothConnection(context, socket.RemoteDevice, uuid, serviceCallbacks, socket);
                     }
                 }
-
-                attemptedClose = true;
-                serverSocket.Close();
             }
             catch (Exception ex) {
-                Error(null, ex);
-
-                if (!attemptedClose) {
-                    try { serverSocket.Close(); } catch { Error(null, ex); }
+                if(!stopping) {
+                    Error(null, ex);
                 }
+                stopping = false;
             }
-
-            listen = false;
         }
     }
 }

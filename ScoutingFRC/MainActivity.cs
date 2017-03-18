@@ -81,39 +81,40 @@ namespace ScoutingFRC
             ArrayAdapter teamListAdapter  = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
             list.Adapter = teamListAdapter;
         }
-        Random r = new Random();
+
+        Random r = new Random((int)(DateTime.Now.Ticks % int.MaxValue));
 
         MatchData RandomMatchData()
         {
             MatchData md = new MatchData();
              
-            md.teamNumber = r.Next();
-            md.match = r.Next();
+            md.teamNumber = r.Next() % 5000;
+            md.match = r.Next() % 5000;
 
-            md.automomous.gears.failedAttempts = r.Next();
-            md.automomous.gears.successes = r.Next();
+            md.automomous.gears.failedAttempts = r.Next() % 5000;
+            md.automomous.gears.successes = r.Next() % 5000;
 
-            md.automomous.highBoiler.failedAttempts = r.Next();
-            md.automomous.highBoiler.successes = r.Next();
+            md.automomous.highBoiler.failedAttempts = r.Next() % 5000;
+            md.automomous.highBoiler.successes = r.Next() % 5000;
 
-            md.automomous.lowBoiler.failedAttempts = r.Next();
-            md.automomous.lowBoiler.successes = r.Next();
+            md.automomous.lowBoiler.failedAttempts = r.Next() % 5000;
+            md.automomous.lowBoiler.successes = r.Next() % 5000;
 
             md.automomous.oneTimePoints = r.Next() % 2 == 1;
 
-            md.teleoperated.gears.failedAttempts = r.Next();
-            md.teleoperated.gears.successes = r.Next();
+            md.teleoperated.gears.failedAttempts = r.Next() % 5000;
+            md.teleoperated.gears.successes = r.Next() % 5000;
 
-            md.teleoperated.highBoiler.failedAttempts = r.Next();
-            md.teleoperated.highBoiler.successes = r.Next();
+            md.teleoperated.highBoiler.failedAttempts = r.Next() % 5000;
+            md.teleoperated.highBoiler.successes = r.Next() % 5000;
 
-            md.teleoperated.lowBoiler.failedAttempts = r.Next();
-            md.teleoperated.lowBoiler.successes = r.Next();
+            md.teleoperated.lowBoiler.failedAttempts = r.Next() % 5000;
+            md.teleoperated.lowBoiler.successes = r.Next() % 5000;
 
             md.teleoperated.oneTimePoints = r.Next() % 2 == 1;
 
-            md.teleoperated.gears.failedAttempts = r.Next();
-            md.teleoperated.gears.successes = r.Next();
+            md.teleoperated.gears.failedAttempts = r.Next() % 5000;
+            md.teleoperated.gears.successes = r.Next() % 5000;
 
             return md;
         }
