@@ -20,12 +20,6 @@
             android:layout_gravity="left"
             android:gravity="center" />
     </LinearLayout>
-    <TextView
-        android:text="Tap a bluetooth device to exchange match data with it."
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
     <ListView
         android:minWidth="25px"
         android:minHeight="75px"
@@ -39,12 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout2">
-        <Button
-            android:text="Exchange Data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonExchange"
-            android:visibility="gone" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
