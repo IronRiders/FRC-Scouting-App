@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Policy;
 using System.Text;
 
 using Android.App;
@@ -57,6 +58,7 @@ namespace ScoutingFRC
                     addAttempt(ref matchData.automomous.lowBoiler.failedAttempts, ref matchData.teleoperated.lowBoiler.failedAttempts);
                 };
             FindViewById<Switch>(Resource.Id.switchAuto).CheckedChange += OnCheckedChange;
+            drawTings();
         }
 
         private void OnCheckedChange(object sender, CompoundButton.CheckedChangeEventArgs checkedChangeEventArgs)
@@ -68,16 +70,19 @@ namespace ScoutingFRC
                 line.Enabled = autonomous;
                 rope.Enabled = !autonomous;
             }
+            drawTings();
         }
 
         private void addAttempt(ref int auto,ref int tele)
         {
+          
             if (autonomous) {
                 auto++;
             }
             else {
                 tele++;
             }
+            drawTings();
         }
 
         private void ButtonSubmit_Click(object sender, EventArgs e)
@@ -94,6 +99,25 @@ namespace ScoutingFRC
             SetResult(Result.Ok, myIntent);
             Finish();
 
+        }
+
+        private void drawTings()
+        {
+            if (autonomous)
+            {
+                updateCounts(matchData.automomous);
+            }
+            else
+            {
+                updateCounts(matchData.teleoperated);
+            }
+        }
+
+        private void updateCounts(MatchData.PerformanceData data)
+        {
+            FindViewById<TextView>(Resource.Id.textView4).Text = String.Format("{0}/{1}", data.highBoiler.successes, data.highBoiler.failedAttempts+data.highBoiler.successes);
+            FindViewById<TextView>(Resource.Id.textView5).Text = String.Format("{0}/{1}", data.lowBoiler.successes, data.lowBoiler.failedAttempts + data.lowBoiler.successes);
+            FindViewById<TextView>(Resource.Id.textView6).Text = String.Format("{0}/{1}", data.gears.successes, data.gears.failedAttempts + data.gears.successes);
         }
     }
 }
