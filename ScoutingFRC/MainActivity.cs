@@ -32,19 +32,9 @@ namespace ScoutingFRC
             FindViewById<Button>(Resource.Id.buttonView).Click += ButtonView_Click;
             FindViewById<ListView>(Resource.Id.listView1).ItemClick += OnItemClick;
 
-            //Some testing
-            //List<MatchData> md = new List<MatchData> { RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData(), RandomMatchData() };
+            matchDataList = Storage.ReadFromFile("test") ?? new List<MatchData>();
 
-            //byte[] test = MatchData.Serialize(md);
-
-            //List<MatchData> md2 = MatchData.Deserialize<List<MatchData>>(test);
-            //
-            matchDataList = Storage.ReadFromFile("test");
-            if (matchDataList == null)
-            {
-                matchDataList = new List<MatchData>();
-            }
-
+            matchDataList.Add(RandomMatchData());
         }
 
         private void OnItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
@@ -70,7 +60,7 @@ namespace ScoutingFRC
                 }
                 item.matches.Add(matchData.match);
             }
-        //    FindViewById<TextView>(Resource.Id.textView3).Text = teams.Substring(0, teams.Length - 2);
+           FindViewById<TextView>(Resource.Id.textView3).Text = "Teams: "+teamsList.Count;
             var autocompleteTextView = FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1);
             teamsList.Sort((x, y) => x.teamNumber.CompareTo(y.teamNumber));
             string[] autoCompleteOptions = teamsList.Select(i => i.teamNumber.ToString()).ToArray();
