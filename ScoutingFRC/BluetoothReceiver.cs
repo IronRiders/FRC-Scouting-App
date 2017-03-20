@@ -17,10 +17,13 @@ namespace ScoutingFRC
     {
         private List<BluetoothDevice> devices;
         private Action<List<BluetoothDevice>> discoveryFinishedCallback;
+        private Action<BluetoothDevice> deviceFoundCallback;
 
-        public BluetoothReceiver(Action<List<BluetoothDevice>> discoveryFinishedCallback)
+        public BluetoothReceiver(Action<List<BluetoothDevice>> discoveryFinishedCallback, Action<BluetoothDevice> deviceFoundCallback)
         {
             this.discoveryFinishedCallback = discoveryFinishedCallback;
+            this.deviceFoundCallback = deviceFoundCallback;
+
             devices = new List<BluetoothDevice>();
         }
 
@@ -30,9 +33,8 @@ namespace ScoutingFRC
                 case BluetoothDevice.ActionFound: {
                         BluetoothDevice device = (BluetoothDevice) intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
 
-                        if (device.BondState != Bond.Bonded) {
-                            devices.Add(device);
-                        }
+                        devices.Add(device);
+                        deviceFoundCallback?.Invoke(device);
 
                         break;
                 }

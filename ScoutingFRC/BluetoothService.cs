@@ -32,7 +32,6 @@ namespace ScoutingFRC
 
         private Thread connectThread;
         private Thread connectionThread;
-        private bool connected;
 
         private List<Thread> writeThreads;
 
@@ -65,8 +64,6 @@ namespace ScoutingFRC
             disconnectThread = new Thread(DisconnectInternal);
 
             dataId = 0;
-
-            connected = false;
 
             if (bluetoothSocket != null && bluetoothSocket.IsConnected) {
                 this.bluetoothSocket = bluetoothSocket;
@@ -160,7 +157,6 @@ namespace ScoutingFRC
 
             byte[] buffer = new byte[1024 * 1024];
             byte[] result = new byte[1024 * 1024];
-            int bytes;
 
             int totalBytes = -1;
             int bytesLeft = -1;
@@ -168,7 +164,7 @@ namespace ScoutingFRC
             while (true) {
                 int startIndex = 0;
                 try {
-                    bytes = bluetoothSocket.InputStream.Read(buffer, 0, buffer.Length);
+                    int bytes = bluetoothSocket.InputStream.Read(buffer, 0, buffer.Length);
                     if(totalBytes < 0) {
                         if(bytes > sizeof(int)) {
                             bytesLeft = totalBytes = BitConverter.ToInt32(buffer, 0);
@@ -268,13 +264,15 @@ namespace ScoutingFRC
             this.bluetoothAdapter = bluetoothAdapter ?? BluetoothAdapter.DefaultAdapter;
 
             userCallbacks = callbacks ?? new BluetoothCallbacks<BluetoothConnection>();
-            serviceCallbacks = new BluetoothCallbacks<BluetoothConnection>();
+            serviceCallbacks = new BluetoothCallbacks<BluetoothConnection>
+            {
+                error = Error,
+                dataReceived = DataReceived,
+                dataSent = DataSent,
+                connected = Connected,
+                disconnected = Disconnected
+            };
 
-            serviceCallbacks.error = Error;
-            serviceCallbacks.dataReceived = DataReceived;
-            serviceCallbacks.dataSent = DataSent;
-            serviceCallbacks.connected = Connected;
-            serviceCallbacks.disconnected = Disconnected;
 
             connections = new List<BluetoothConnection>();
 
@@ -287,9 +285,7 @@ namespace ScoutingFRC
 
         private void Error(BluetoothConnection bluetoothConnection, Exception ex)
         {
-            if (bluetoothConnection != null) {
-                bluetoothConnection.Disconnect();
-            }
+            bluetoothConnection?.Disconnect();
 
             userCallbacks.error?.Invoke(bluetoothConnection, ex);
         }
@@ -336,9 +332,7 @@ namespace ScoutingFRC
         {
             lock (connectionsLock) {
                 BluetoothConnection bc = connections.Find(_bc => _bc.bluetoothDevice.Address == device.Address);
-                if (bc != null) {
-                    bc.Disconnect();
-                }
+                bc?.Disconnect();
             }
         }
 

@@ -106,17 +106,14 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070019
 			public const int autoCompleteTextView1 = 2131165209;
 			
-			// aapt resource value: 0x7f070022
-			public const int buttonAdd = 2131165218;
+			// aapt resource value: 0x7f070021
+			public const int buttonAdd = 2131165217;
 			
-			// aapt resource value: 0x7f070023
-			public const int buttonCancel = 2131165219;
+			// aapt resource value: 0x7f070022
+			public const int buttonCancel = 2131165218;
 			
 			// aapt resource value: 0x7f070018
 			public const int buttonCollect = 2131165208;
-			
-			// aapt resource value: 0x7f07001e
-			public const int buttonExchange = 2131165214;
 			
 			// aapt resource value: 0x7f070013
 			public const int buttonGearGoal = 2131165203;
@@ -175,8 +172,8 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070012
 			public const int linearLayout6 = 2131165202;
 			
-			// aapt resource value: 0x7f07001f
-			public const int linearLayoutResults = 2131165215;
+			// aapt resource value: 0x7f07001e
+			public const int linearLayoutResults = 2131165214;
 			
 			// aapt resource value: 0x7f07001c
 			public const int listView1 = 2131165212;
@@ -205,38 +202,38 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070015
 			public const int textView6 = 2131165205;
 			
-			// aapt resource value: 0x7f07002a
-			public const int textView7 = 2131165226;
-			
-			// aapt resource value: 0x7f070026
-			public const int textViewAG = 2131165222;
-			
-			// aapt resource value: 0x7f070028
-			public const int textViewAH = 2131165224;
-			
-			// aapt resource value: 0x7f07002b
-			public const int textViewAL = 2131165227;
-			
-			// aapt resource value: 0x7f070020
-			public const int textViewReceived = 2131165216;
-			
-			// aapt resource value: 0x7f070021
-			public const int textViewSent = 2131165217;
-			
-			// aapt resource value: 0x7f070027
-			public const int textViewTG = 2131165223;
-			
 			// aapt resource value: 0x7f070029
-			public const int textViewTH = 2131165225;
-			
-			// aapt resource value: 0x7f07002c
-			public const int textViewTL = 2131165228;
-			
-			// aapt resource value: 0x7f070024
-			public const int textViewTeamNumber = 2131165220;
+			public const int textView7 = 2131165225;
 			
 			// aapt resource value: 0x7f070025
-			public const int view1 = 2131165221;
+			public const int textViewAG = 2131165221;
+			
+			// aapt resource value: 0x7f070027
+			public const int textViewAH = 2131165223;
+			
+			// aapt resource value: 0x7f07002a
+			public const int textViewAL = 2131165226;
+			
+			// aapt resource value: 0x7f07001f
+			public const int textViewReceived = 2131165215;
+			
+			// aapt resource value: 0x7f070020
+			public const int textViewSent = 2131165216;
+			
+			// aapt resource value: 0x7f070026
+			public const int textViewTG = 2131165222;
+			
+			// aapt resource value: 0x7f070028
+			public const int textViewTH = 2131165224;
+			
+			// aapt resource value: 0x7f07002b
+			public const int textViewTL = 2131165227;
+			
+			// aapt resource value: 0x7f070023
+			public const int textViewTeamNumber = 2131165219;
+			
+			// aapt resource value: 0x7f070024
+			public const int view1 = 2131165220;
 			
 			static Id()
 			{

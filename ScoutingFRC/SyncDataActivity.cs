@@ -11,15 +11,17 @@ using Android.Views;
 using Android.Widget;
 using Android.Bluetooth;
 using System.Diagnostics;
+using System.Reflection;
 using Android.Content.PM;
+using Android.Provider;
 
 namespace ScoutingFRC
 {
     [Activity(Label = "Sync Data", ScreenOrientation = ScreenOrientation.Portrait)]
     public class SyncDataActivity : Activity
     {
-        List<MatchData> currentData;
-        List<MatchData> newData;
+        private List<MatchData> currentData;
+        private List<MatchData> newData;
 
         private BluetoothCallbacks<BluetoothConnection> callbacks;
 
@@ -72,7 +74,7 @@ namespace ScoutingFRC
             var listView = FindViewById<ListView>(Resource.Id.listViewDevices);
             listView.Adapter = adapter;
 
-            var bluetoothReceiver = new BluetoothReceiver(DiscoveryFinishedCallback);
+            var bluetoothReceiver = new BluetoothReceiver(DiscoveryFinished, DeviceDiscovered);
             RegisterReceiver(bluetoothReceiver, new IntentFilter(BluetoothAdapter.ActionDiscoveryFinished));
             RegisterReceiver(bluetoothReceiver, new IntentFilter(BluetoothDevice.ActionFound));
 
@@ -97,7 +99,6 @@ namespace ScoutingFRC
                     Intent discoverableIntent = new Intent(BluetoothAdapter.ActionRequestDiscoverable);
                     discoverableIntent.PutExtra(BluetoothAdapter.ExtraDiscoverableDuration, 60);
                     StartActivity(discoverableIntent);
-                    bluetoothAdapter.Enable();
                 }
 
                 bs = new BluetoothService(this, callbacks, bluetoothAdapter);
@@ -127,34 +128,38 @@ namespace ScoutingFRC
             }
         }
 
-        private void DiscoveryFinishedCallback(List<BluetoothDevice> devices)
+        private void DeviceDiscovered(BluetoothDevice device)
         {
-            if (!cancelled) {
+            bool bonded = device.BondState == Bond.Bonded;
+            int insertIndex = bonded ? 0 : bluetoothDevices.Count;
+
+            bluetoothDevices.Insert(insertIndex, device);
+            
+            adapter.Insert((bonded ? "Paired: " : "") + FormatDeviceName(device), insertIndex);
+            adapter.NotifyDataSetChanged();
+        }
+
+        private void DiscoveryFinished(List<BluetoothDevice> devices)
+        {
+            /*if (!cancelled) {
                 bluetoothDevices.AddRange(devices);
 
-                adapter.AddAll(devices.Select(bt => ((bt.Name == null) ? "" : bt.Name) + " (" + bt.Address + ")").ToList());
+                adapter.AddAll(devices.Select(bt => (bt.Name ?? "") + " (" + bt.Address + ")").ToList());
                 adapter.NotifyDataSetChanged();
             }
 
-            cancelled = false;
+            cancelled = false;*/
         }
 
 
 
-        private bool cancelled = false;
         private void SearchForDevices()
         {
             if (bluetoothAdapter != null) {
-                if (bluetoothAdapter.IsDiscovering) {
-                    bluetoothAdapter.CancelDiscovery();
-                    cancelled = true;
-                }
-
                 if (bluetoothAdapter.StartDiscovery()) {
                     bluetoothDevices.Clear();
-
-                    bluetoothDevices.AddRange(bluetoothAdapter.BondedDevices);
-                    adapter.AddAll(bluetoothAdapter.BondedDevices.Select(bt => "Paired: " + ((bt.Name == null) ? "" : bt.Name) + " (" + bt.Address + ")").ToList());
+                    adapter.Clear();
+                    adapter.NotifyDataSetChanged();
                 }
                 else {
                     Debugger.Break();
@@ -162,28 +167,30 @@ namespace ScoutingFRC
             }
         }
 
-        void ErrorCallback(BluetoothConnection bluetoothConnection, Exception ex)
+        private void ChangeTextViews()
         {
-            RunOnUiThread(() => {
-                var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);
-                if (btd == null || !btd.done) {
-                    Toast.MakeText(this, "Error from " + (bluetoothConnection.bluetoothDevice.Name == null ? bluetoothConnection.bluetoothDevice.Address : bluetoothConnection.bluetoothDevice.Name) + ": " + ex.Message, ToastLength.Long).Show();
-
-                }
-            });
-        }
-
-        void ChangeTextViews()
-        {   
             FindViewById<TextView>(Resource.Id.textViewReceived).Text = "Matches Received: " + newData.Count;
             FindViewById<TextView>(Resource.Id.textViewSent).Text = "Matches Sent: " + currentData.Count;
 
             Toast.MakeText(this, "Done", ToastLength.Long).Show();
         }
 
-        void DataCallback(BluetoothConnection bluetoothConnection, byte[] data)
+        private void ErrorCallback(BluetoothConnection bluetoothConnection, Exception ex)
         {
             RunOnUiThread(() => {
+                var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);
+                if (btd == null || !btd.done) {
+                    Toast.MakeText(this, "Error from " + (bluetoothConnection != null ? FormatDeviceName(bluetoothConnection.bluetoothDevice) : "BluetoothService") + ": " + ex.Message, ToastLength.Long).Show();
+
+                }
+            });
+        }
+
+        private void DataCallback(BluetoothConnection bluetoothConnection, byte[] data)
+        {
+            RunOnUiThread(() => {
+                Toast.MakeText(this, "Data received", ToastLength.Short).Show();
+
                 List<MatchData> newMatchData = MatchData.Deserialize<List<MatchData>>(data);
 
                 foreach (var md in newMatchData) {
@@ -209,9 +216,11 @@ namespace ScoutingFRC
             });
         }
 
-        void DataSentCallback(BluetoothConnection bluetoothConnection, int id)
+        private void DataSentCallback(BluetoothConnection bluetoothConnection, int id)
         {
             RunOnUiThread(() => {
+                Toast.MakeText(this, "Data sent", ToastLength.Short).Show();
+
                 var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);
                 if (btd != null && btd.weStarted) {
                     btd.done = true;
@@ -219,7 +228,7 @@ namespace ScoutingFRC
             });
         }
 
-        void SendData(BluetoothConnection bluetoothConnection)
+        private void SendData(BluetoothConnection bluetoothConnection)
         {
             var serialized = MatchData.Serialize(currentData);
             byte[] data = new byte[sizeof(int) + serialized.Length];
@@ -229,9 +238,16 @@ namespace ScoutingFRC
             bluetoothConnection.Write(data, ref id);
         }
 
-        void ConnectedCallback(BluetoothConnection bluetoothConnection)
+        private string FormatDeviceName(BluetoothDevice device)
+        {
+            return device.Name != null ? (device.Name + " (" + device.Address + ")") : device.Address;
+        }
+
+        private void ConnectedCallback(BluetoothConnection bluetoothConnection)
         {
            RunOnUiThread(() => {
+               Toast.MakeText(this, "Connected to " + FormatDeviceName(bluetoothConnection.bluetoothDevice), ToastLength.Short).Show();
+
                newData.Clear();
 
                 var btd = btDataTransfers.FirstOrDefault(bt => bt.device == bluetoothConnection.bluetoothDevice);
@@ -249,7 +265,7 @@ namespace ScoutingFRC
             });
         }
 
-        void DisconnectedCallback(BluetoothConnection bluetoothConnection)
+        private void DisconnectedCallback(BluetoothConnection bluetoothConnection)
         {
             RunOnUiThread(() => {
                 var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);
@@ -270,14 +286,40 @@ namespace ScoutingFRC
         protected override void OnDestroy()
         {
             bs.StopListening();
+            bluetoothAdapter.CancelDiscovery();
             base.OnDestroy();
         }
 
-        private void ButtonCancel_Click(object sender, EventArgs eventArgs)
+        private void Cancel()
         {
             Intent myIntent = new Intent(this, typeof(MainActivity));
             SetResult(Result.Canceled, myIntent);
             Finish();
+        }
+
+        private void AlertDialogClick(object sender, DialogClickEventArgs dialogClickEventArgs)
+        {
+            if (dialogClickEventArgs.Which == -1)
+            {
+                Intent myIntent = new Intent(this, typeof(MainActivity));
+                SetResult(Result.Canceled, myIntent);
+                Finish();
+            }
+        }
+
+
+        private void ButtonCancel_Click(object sender, EventArgs eventArgs)
+        {
+            if (newData.Count > 0) {
+                var builder = new AlertDialog.Builder(this)
+                    .SetMessage("Do you really want to cancel without adding the synced data to the database?")
+                    .SetPositiveButton("Yes", AlertDialogClick)
+                    .SetNegativeButton("No", AlertDialogClick);
+                builder.Create().Show();
+            }
+            else {
+                Cancel();
+            }
         }
 
         private void ButtonAdd_Click(object sender, EventArgs eventArgs)
