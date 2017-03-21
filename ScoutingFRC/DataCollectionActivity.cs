@@ -91,6 +91,8 @@ namespace ScoutingFRC
             matchData.match = int.Parse(FindViewById<TextView>(Resource.Id.editTextMathcNumber).Text);
             matchData.automomous.oneTimePoints = FindViewById<CheckBox>(Resource.Id.checkBox1).Checked;
             matchData.teleoperated.oneTimePoints = FindViewById<CheckBox>(Resource.Id.checkBoxClimb).Checked;
+            matchData.scoutName = FindViewById<TextView>(Resource.Id.editTextYourName).Text;
+            matchData.notes = FindViewById<TextView>(Resource.Id.editTextNotes).Text;
 
             Intent myIntent = new Intent(this, typeof(MainActivity));
 
@@ -115,9 +117,12 @@ namespace ScoutingFRC
 
         private void updateCounts(MatchData.PerformanceData data)
         {
-            FindViewById<TextView>(Resource.Id.textView4).Text = String.Format("{0}/{1}", data.highBoiler.successes, data.highBoiler.failedAttempts+data.highBoiler.successes);
-            FindViewById<TextView>(Resource.Id.textView5).Text = String.Format("{0}/{1}", data.lowBoiler.successes, data.lowBoiler.failedAttempts + data.lowBoiler.successes);
-            FindViewById<TextView>(Resource.Id.textView6).Text = String.Format("{0}/{1}", data.gears.successes, data.gears.failedAttempts + data.gears.successes);
+            FindViewById<TextView>(Resource.Id.textView4).Text =
+                $"{data.highBoiler.successes}/{data.highBoiler.failedAttempts + data.highBoiler.successes}";
+            FindViewById<TextView>(Resource.Id.textView5).Text =
+                $"{data.lowBoiler.successes}/{data.lowBoiler.failedAttempts + data.lowBoiler.successes}";
+            FindViewById<TextView>(Resource.Id.textView6).Text =
+                $"{data.gears.successes}/{data.gears.failedAttempts + data.gears.successes}";
         }
     }
 }

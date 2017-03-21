@@ -18,6 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/buttonCollect" />
+        <Button
+            android:text="Scout a pit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button1" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

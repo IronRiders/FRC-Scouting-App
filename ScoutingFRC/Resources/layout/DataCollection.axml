@@ -18,13 +18,12 @@
             <TextView
                 android:text="Team "
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/textView1"
                 android:textAlignment="gravity"
                 android:gravity="center"
-                android:layout_weight="1"
-                android:textSize="25dp"
+                android:layout_weight="0"
                 android:textStyle="bold"
                 android:layout_gravity="right" />
             <EditText
@@ -53,7 +52,6 @@
                 android:gravity="center"
                 android:layout_weight="1"
                 android:layout_gravity="right"
-                android:textSize="25dp"
                 android:textStyle="bold" />
             <EditText
                 android:inputType="number"
@@ -84,7 +82,6 @@
                 android:id="@+id/textView2"
                 android:gravity="center_vertical"
                 android:layout_gravity="right"
-                android:textSize="25dp"
                 android:textStyle="bold" />
             <EditText
                 android:inputType="textPersonName"
@@ -99,14 +96,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/switchAuto"
+            android:thumb="@drawable/modeSwitch"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Mode"
             android:textOn="Auto"
             android:checked="true"
             android:showText="true"
-            android:textOff="Tele"
-            android:layout_margin="2dp"
-            android:textStyle="bold" />
+            android:textOff="Teleop"
+            android:textStyle="bold"
+            android:paddingRight="15dp" />
     </LinearLayout>
     <View
         android:layout_width="fill_parent"
@@ -117,6 +115,7 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:id="@+id/scrollView1">
         <LinearLayout
             android:orientation="vertical"
@@ -135,8 +134,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView3"
-                android:layout_marginTop="10dp" />
+                android:id="@+id/textView3" />
             <LinearLayout
                 android:orientation="horizontal"
                 android:id="@+id/linearLayout4"
@@ -182,8 +180,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView3"
-                android:layout_marginTop="10dp" />
+                android:id="@+id/textView3" />
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -227,8 +224,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_width="wrap_content" />
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -243,7 +239,7 @@
                     <Button
                         android:background="@drawable/gearButton"
                         style="@style/button_text"
-                        android:text="Goal"
+                        android:text="Placed"
                         android:layout_height="match_parent"
                         android:id="@+id/buttonGearGoal"
                         android:layout_width="match_parent"
@@ -251,7 +247,7 @@
                     <Button
                         android:background="@drawable/gearButton"
                         style="@style/button_text"
-                        android:text="Drop"
+                        android:text="Dropped"
                         android:layout_height="match_parent"
                         android:id="@+id/buttonGearMiss"
                         android:layout_weight="1"
@@ -271,13 +267,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/checkBoxClimb"
-                android:enabled="false"
-                android:layout_marginTop="10dp" />
+                android:enabled="false" />
+            <TextView
+                android:text="Notes:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView7" />
             <EditText
                 android:inputType="textMultiLine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText1" />
+                android:id="@+id/editTextNotes"
+                android:lines="3"
+                android:background="@drawable/back"
+                android:maxLines="3"
+                android:gravity="top"
+                android:padding="5dp" />
         </LinearLayout>
     </ScrollView>
     <Button

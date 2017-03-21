@@ -18,5 +18,6 @@ namespace ScoutingFRC
         public int teamNumber;
         public DateTime timeCollected;
         public string scoutName;
+        public string notes;
     }
 }
