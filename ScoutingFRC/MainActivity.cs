@@ -3,16 +3,8 @@ using Android.App;
 using Android.Widget;
 using Android.OS;
 using System.Collections.Generic;
-using Android.Bluetooth;
 using System.Linq;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using Android.Content;
-using System.Text;
-using Android.Content.PM;
-using System.ComponentModel;
-using Android.Views;
 
 namespace ScoutingFRC
 {
@@ -20,6 +12,8 @@ namespace ScoutingFRC
     public class MainActivity : Activity
     {
         private List<TeamData> teamDataList = new List<TeamData>();
+        private int lastMatch=0;
+        private string lastName;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -108,6 +102,9 @@ namespace ScoutingFRC
         private void ButtonCollect_Click(object sender, EventArgs e)
         {
             var myIntent = new Intent(this, typeof(DataCollectionActivity));
+            myIntent.PutExtra("name", lastName);
+            var upcomingMatch = (lastMatch == 0) ? 0 : (lastMatch + 1);
+            myIntent.PutExtra("match", upcomingMatch);
             StartActivityForResult(myIntent, 0);
         }
 
@@ -154,6 +151,8 @@ namespace ScoutingFRC
                 {
                     var bytes = data.GetByteArrayExtra("W");
                     var match = MatchData.Deserialize<MatchData>(bytes);
+                    lastMatch = match.match;
+                    lastName = match.scoutName;
                     teamDataList.Add(match);
                 }
                 else if (requestCode == 1)
@@ -166,6 +165,8 @@ namespace ScoutingFRC
                 Storage.WriteToFile("test",teamDataList);
             }
         }
+
+
     }
 }
 
