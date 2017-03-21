@@ -63,6 +63,7 @@
     <Compile Include="SplashActivity.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="SyncDataActivity.cs" />
+    <Compile Include="TeamData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GettingStarted.Xamarin" />
