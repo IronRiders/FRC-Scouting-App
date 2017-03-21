@@ -26,7 +26,7 @@ namespace ScoutingFRC
             }
         }
 
-        public static void WriteToFile(string username, List<MatchData> data)
+        public static void WriteToFile(string username, List<TeamData> data)
         {
             string tsdPath = Combine(GetPersonalFolderPath(), username + ".tsd");
 
@@ -37,11 +37,11 @@ namespace ScoutingFRC
           
         }
 
-        public static List<MatchData> ReadFromFile(string username)
+        public static List<TeamData> ReadFromFile(string username)
         {
             string tsdPath = Combine(GetPersonalFolderPath(), username + ".tsd");
          
-            List<MatchData> result = new List<MatchData>();
+            List<TeamData> result = new List<TeamData>();
 
             if (!File.Exists(tsdPath)) {
                 return null;
@@ -50,7 +50,7 @@ namespace ScoutingFRC
             try {
                 using (Stream stream = File.Open(Combine(GetPersonalFolderPath(), tsdPath), FileMode.Open)) {
                     var binaryFormatter = new BinaryFormatter();
-                    result = (List<MatchData>)binaryFormatter.Deserialize(stream);
+                    result = (List<TeamData>)binaryFormatter.Deserialize(stream);
                 }
             }
             catch {

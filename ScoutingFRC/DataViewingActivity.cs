@@ -23,7 +23,7 @@ namespace ScoutingFRC
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ViewData);
             var bytes = Intent.GetByteArrayExtra("MatchBytes");
-            List<MatchData> MatchList = MatchData.Deserialize<List<MatchData>>(bytes);
+            List<TeamData> MatchList = MatchData.Deserialize<List<TeamData>>(bytes);
 
             if (MatchList.Count > 0)
             {
@@ -32,7 +32,7 @@ namespace ScoutingFRC
 
         }
 
-        private void displayData(List<MatchData> datas)
+        private void displayData(List<TeamData> datas)
         {
             FindViewById<TextView>(Resource.Id.textViewTeamNumber).Text = datas[0].teamNumber.ToString();
             int count = datas.Count;
@@ -40,8 +40,13 @@ namespace ScoutingFRC
             int[] gears = new int[4];
             int[] HighGoals = new int[4];
             int[] LowGoals = new int[4];
-            foreach (var matchData in datas)
+            foreach (var teamData in datas)
             {
+                if (!(teamData is MatchData))
+                {
+                    continue;
+                }
+                MatchData matchData = teamData as MatchData;
                 matches += matchData.match + ", ";
                 addScoringMethod(matchData.automomous.gears, 0, gears);
                 addScoringMethod(matchData.teleoperated.gears, 2, gears);

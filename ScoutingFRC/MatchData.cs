@@ -16,13 +16,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace ScoutingFRC
 {   
     [Serializable]
-    class MatchData
+    class MatchData : TeamData
     {
-        public int teamNumber;
         public int match;
         public PerformanceData automomous;
         public PerformanceData teleoperated;
-        public DateTime timeCollected;
 
         public MatchData()
         {

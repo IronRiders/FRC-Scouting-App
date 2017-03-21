@@ -5,23 +5,24 @@
     android:layout_height="match_parent"
     android:padding="10dp">
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout7">
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/linearLayout1"
-            android:layout_margin="2dp">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
             <TextView
-                android:text="Team Number"
+                android:text="Team "
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/textView1"
                 android:textAlignment="gravity"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:layout_weight="1"
                 android:textSize="25dp"
                 android:textStyle="bold"
@@ -39,17 +40,17 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/linearLayout2"
-            android:layout_margin="2dp">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
             <TextView
-                android:text="Match Number"
+                android:text="Match"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/textView2"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:layout_weight="1"
                 android:layout_gravity="right"
                 android:textSize="25dp"
@@ -63,6 +64,36 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:layout_margin="1dp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout2"
+            android:layout_margin="2dp">
+            <TextView
+                android:text="Your Name"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/textView2"
+                android:gravity="center_vertical"
+                android:layout_gravity="right"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+            <EditText
+                android:inputType="textPersonName"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextYourName"
+                android:layout_width="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:gravity="center_horizontal" />
         </LinearLayout>
         <Switch
             android:layout_width="match_parent"
@@ -81,158 +112,174 @@
         android:layout_width="fill_parent"
         android:layout_height="1dip"
         android:background="#FF777777" />
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
+        android:minWidth="25px"
+        android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_gravity="top"
-        android:layout_weight="1">
-        <CheckBox
-            android:text="Cross the baseline "
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBox1" />
-        <TextView
-            android:text="High Boiler"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView3"
-            android:layout_marginTop="10dp" />
+        android:id="@+id/scrollView1">
         <LinearLayout
-            android:orientation="horizontal"
-            android:id="@+id/linearLayout4"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:orientation="horizontal"
-                android:id="@+id/linearLayout3"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="top"
+            android:layout_weight="1">
+            <CheckBox
+                android:text="Cross the baseline "
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <Button
-                    android:background="@drawable/fuelButton"
-                    style="@style/button_text"
-                    android:text="Goal!"
-                    android:layout_height="match_parent"
-                    android:id="@+id/buttonHighGoal"
-                    android:drawableTint="#00000000"
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp" />
-                <Button
-                    android:background="@drawable/fuelButton"
-                    style="@style/button_text"
-                    android:text="MISS"
-                    android:layout_height="match_parent"
-                    android:id="@+id/buttonHighMiss"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_margin="3dp" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox1" />
             <TextView
-                android:text="##/##"
+                android:text="High Boiler"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/textView4"
-                android:gravity="center" />
-        </LinearLayout>
-        <TextView
-            android:text="Low Boiler"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView3"
-            android:layout_marginTop="10dp" />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearLayout5">
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:layout_marginTop="10dp" />
             <LinearLayout
                 android:orientation="horizontal"
-                android:id="@+id/linearLayout3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <Button
-                    android:background="@drawable/fuelButton"
-                    style="@style/button_text"
-                    android:text="Goal!"
-                    android:layout_height="match_parent"
-                    android:id="@+id/buttonLowGoal"
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/linearLayout3"
                     android:layout_width="match_parent"
-                    android:layout_weight="1" />
-                <Button
-                    android:background="@drawable/fuelButton"
-                    style="@style/button_text"
-                    android:text="MISS"
                     android:layout_height="match_parent"
-                    android:id="@+id/buttonLowMiss"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent" />
+                    android:layout_weight="1">
+                    <Button
+                        android:background="@drawable/fuelButton"
+                        style="@style/button_text"
+                        android:text="Goal"
+                        android:layout_height="match_parent"
+                        android:id="@+id/buttonHighGoal"
+                        android:drawableTint="#00000000"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_margin="3dp" />
+                    <Button
+                        android:background="@drawable/fuelButton"
+                        style="@style/button_text"
+                        android:text="MISS"
+                        android:layout_height="match_parent"
+                        android:id="@+id/buttonHighMiss"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_margin="3dp" />
+                </LinearLayout>
+                <TextView
+                    android:text="##/##"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView4"
+                    android:gravity="center"
+                    android:padding="5dp" />
             </LinearLayout>
             <TextView
-                android:text="##/##"
+                android:text="Low Boiler"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/textView5"
-                android:gravity="center" />
-        </LinearLayout>
-        <TextView
-            android:text="Gears"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp" />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearLayout6">
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:layout_marginTop="10dp" />
             <LinearLayout
                 android:orientation="horizontal"
-                android:id="@+id/linearLayout3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <Button
-                    android:background="@drawable/gearButton"
-                    style="@style/button_text"
-                    android:text="Goal!"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout5">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/buttonGearGoal"
-                    android:layout_width="match_parent"
-                    android:layout_weight="1" />
-                <Button
-                    android:background="@drawable/gearButton"
-                    style="@style/button_text"
-                    android:text="MISS"
+                    android:layout_weight="1">
+                    <Button
+                        android:background="@drawable/fuelButton"
+                        style="@style/button_text"
+                        android:text="Goal"
+                        android:layout_height="match_parent"
+                        android:id="@+id/buttonLowGoal"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="0.0dp" />
+                    <Button
+                        android:background="@drawable/fuelButton"
+                        style="@style/button_text"
+                        android:text="MISS"
+                        android:layout_height="match_parent"
+                        android:id="@+id/buttonLowMiss"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent" />
+                </LinearLayout>
+                <TextView
+                    android:text="##/##"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/buttonGearMiss"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent" />
+                    android:id="@+id/textView5"
+                    android:gravity="center"
+                    android:padding="5dp" />
             </LinearLayout>
             <TextView
+                android:text="Gears"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/textView6"
-                android:text="##/##"
-                android:gravity="center" />
+                android:layout_marginTop="10dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout6">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <Button
+                        android:background="@drawable/gearButton"
+                        style="@style/button_text"
+                        android:text="Goal"
+                        android:layout_height="match_parent"
+                        android:id="@+id/buttonGearGoal"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1" />
+                    <Button
+                        android:background="@drawable/gearButton"
+                        style="@style/button_text"
+                        android:text="Drop"
+                        android:layout_height="match_parent"
+                        android:id="@+id/buttonGearMiss"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent" />
+                </LinearLayout>
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView6"
+                    android:text="##/##"
+                    android:gravity="center"
+                    android:padding="5dp" />
+            </LinearLayout>
+            <CheckBox
+                android:text="Climb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBoxClimb"
+                android:enabled="false"
+                android:layout_marginTop="10dp" />
+            <EditText
+                android:inputType="textMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText1" />
         </LinearLayout>
-        <CheckBox
-            android:text="Climb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBoxClimb"
-            android:enabled="false"
-            android:layout_marginTop="10dp" />
-    </LinearLayout>
+    </ScrollView>
     <Button
         android:text="Submit"
         android:layout_width="match_parent"

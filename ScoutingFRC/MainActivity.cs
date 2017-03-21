@@ -19,7 +19,7 @@ namespace ScoutingFRC
     [Activity(Label = "FRC Scouting", Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        private List<MatchData> matchDataList = new List<MatchData>();
+        private List<TeamData> teamDataList = new List<TeamData>();
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -32,38 +32,34 @@ namespace ScoutingFRC
             FindViewById<Button>(Resource.Id.buttonView).Click += ButtonView_Click;
             FindViewById<ListView>(Resource.Id.listView1).ItemClick += OnItemClick;
 
-            matchDataList = Storage.ReadFromFile("test") ?? new List<MatchData>();
+            teamDataList = Storage.ReadFromFile("test") ?? new List<TeamData>();
 
-            matchDataList.Add(RandomMatchData());
         }
 
         private void OnItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
         {
             var item = FindViewById<ListView>(Resource.Id.listView1).Adapter.GetItem(itemClickEventArgs.Position);
             int num = int.Parse((string)item);
-            displayTeamData(num);
+            DisplayTeamData(num);
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-            FindViewById<TextView>(Resource.Id.textView2).Text = ("Matches Scouted: " + matchDataList.Count);
+            FindViewById<TextView>(Resource.Id.textView2).Text = ("Matches Scouted: " + teamDataList.Count);
 
-            List<ListItem> teamsList = new List<ListItem>();
-            foreach (var matchData in matchDataList)
+            List<int> teamsList = new List<int>();
+            foreach (var matchData in teamDataList)
             {
-                ListItem item = teamsList.FirstOrDefault(i => i.teamNumber == matchData.teamNumber);
-                if (item == null)
+                if (!teamsList.Contains(matchData.teamNumber))
                 {
-                    item = new ListItem(matchData.teamNumber);
-                    teamsList.Add(item);
+                    teamsList.Add(matchData.teamNumber);
                 }
-                item.matches.Add(matchData.match);
             }
            FindViewById<TextView>(Resource.Id.textView3).Text = "Teams: "+teamsList.Count;
             var autocompleteTextView = FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1);
-            teamsList.Sort((x, y) => x.teamNumber.CompareTo(y.teamNumber));
-            string[] autoCompleteOptions = teamsList.Select(i => i.teamNumber.ToString()).ToArray();
+            teamsList.Sort();
+            string[] autoCompleteOptions = teamsList.Select(i => i.ToString()).ToArray();
             ArrayAdapter autoCompleteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
             autocompleteTextView.Adapter = autoCompleteAdapter;
 
@@ -123,20 +119,20 @@ namespace ScoutingFRC
             {
                 return;
             }
-            displayTeamData(number);
+            DisplayTeamData(number);
         }
 
-        private void displayTeamData(int number)
+        private void DisplayTeamData(int number)
         {
-            List<MatchData> goodData = new List<MatchData>();
-            foreach (var matchData in matchDataList) {
-                if (matchData.teamNumber == number) goodData.Add(matchData);
+            List<TeamData> teamData = new List<TeamData>();
+            foreach (var matchData in teamDataList) {
+                if (matchData.teamNumber == number) teamData.Add(matchData);
             }
-            if (goodData.Count <= 0) {
+            if (teamData.Count <= 0) {
                 return;
             }
             var viewActivity = new Intent(Application.Context, typeof(DataViewingActivity));
-            byte[] bytes = MatchData.Serialize(goodData);
+            byte[] bytes = MatchData.Serialize(teamData);
             viewActivity.PutExtra("MatchBytes", bytes);
 
             StartActivity(viewActivity);
@@ -145,7 +141,7 @@ namespace ScoutingFRC
         private void ButtonSync_Click(object sender, EventArgs e)
         {
             var myIntent = new Intent(this, typeof(SyncDataActivity));
-            byte[] bytes = MatchData.Serialize(matchDataList);
+            byte[] bytes = MatchData.Serialize(teamDataList);
             myIntent.PutExtra("currentData", bytes);
             StartActivityForResult(myIntent, 1);
         }
@@ -158,28 +154,16 @@ namespace ScoutingFRC
                 {
                     var bytes = data.GetByteArrayExtra("W");
                     var match = MatchData.Deserialize<MatchData>(bytes);
-                    matchDataList.Add(match);
+                    teamDataList.Add(match);
                 }
                 else if (requestCode == 1)
                 {
                     var bytes = data.GetByteArrayExtra("newMatches");
-                    var matches = MatchData.Deserialize<List<MatchData>>(bytes);
-                    matchDataList.AddRange(matches);
+                    var matches = MatchData.Deserialize<List<TeamData>>(bytes);
+                    teamDataList.AddRange(matches);
                 }
                 Storage.Delete("test");
-                Storage.WriteToFile("test",matchDataList);
-            }
-        }
-
-        public class ListItem
-        {
-            public int teamNumber;
-            public List<int> matches;
-
-            public ListItem(int number)
-            {
-                teamNumber = number;
-                matches = new List<int>();
+                Storage.WriteToFile("test",teamDataList);
             }
         }
     }

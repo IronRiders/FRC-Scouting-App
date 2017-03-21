@@ -20,8 +20,8 @@ namespace ScoutingFRC
     [Activity(Label = "Sync Data", ScreenOrientation = ScreenOrientation.Portrait)]
     public class SyncDataActivity : Activity
     {
-        private List<MatchData> currentData;
-        private List<MatchData> newData;
+        private List<TeamData> currentData;
+        private List<TeamData> newData;
 
         private BluetoothCallbacks<BluetoothConnection> callbacks;
 
@@ -54,7 +54,7 @@ namespace ScoutingFRC
             SetContentView(Resource.Layout.SyncDevices);
 
             var bytes = Intent.GetByteArrayExtra("currentData");
-            currentData = MatchData.Deserialize<List<MatchData>>(bytes);
+            currentData = MatchData.Deserialize<List<TeamData>>(bytes);
             FindViewById<Button>(Resource.Id.buttonAdd).Click += ButtonAdd_Click;
             FindViewById<Button>(Resource.Id.buttonCancel).Click += ButtonCancel_Click;
             FindViewById<ListView>(Resource.Id.listViewDevices).ItemClick += SyncDataActivity_ItemClick;
@@ -66,7 +66,7 @@ namespace ScoutingFRC
             callbacks.connected = ConnectedCallback;
             callbacks.disconnected = DisconnectedCallback;
 
-            newData = new List<MatchData>();
+            newData = new List<TeamData>();
 
             btDataTransfers = new List<BluetoothDataTransfer>();
 
@@ -191,13 +191,13 @@ namespace ScoutingFRC
             RunOnUiThread(() => {
                 Toast.MakeText(this, "Data received", ToastLength.Short).Show();
 
-                List<MatchData> newMatchData = MatchData.Deserialize<List<MatchData>>(data);
+                List<TeamData> newMatchData = MatchData.Deserialize<List<TeamData>>(data);
 
                 foreach (var md in newMatchData) {
-                    var duplicate = currentData.Find(_md => _md.teamNumber == md.teamNumber && _md.match == md.match);
-                    if (duplicate == null) {
+                 //   var duplicate = currentData.Find(_md => _md.teamNumber == md.teamNumber && _md.match == md.match);
+                   // if (duplicate == null) {
                         newData.Add(md);
-                    }
+                   // }
                 }
 
                 var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);
