@@ -21,6 +21,7 @@ namespace ScoutingFRC
     {
         private MatchData matchData;
         private bool autonomous = true;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -30,34 +31,49 @@ namespace ScoutingFRC
             FindViewById<Button>(Resource.Id.buttonGearGoal).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.gears.successes,ref matchData.teleoperated.gears.successes);
+                    addAttempt(ref matchData.automomous.gears.successes, ref matchData.teleoperated.gears.successes);
                 };
             FindViewById<Button>(Resource.Id.buttonGearMiss).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.gears.failedAttempts, ref matchData.teleoperated.gears.failedAttempts);
+                    addAttempt(ref matchData.automomous.gears.failedAttempts,
+                        ref matchData.teleoperated.gears.failedAttempts);
                 };
             FindViewById<Button>(Resource.Id.buttonHighGoal).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.highBoiler.successes, ref matchData.teleoperated.highBoiler.successes);
+                    addAttempt(ref matchData.automomous.highBoiler.successes,
+                        ref matchData.teleoperated.highBoiler.successes);
                 };
             FindViewById<Button>(Resource.Id.buttonHighMiss).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.highBoiler.failedAttempts, ref matchData.teleoperated.highBoiler.failedAttempts);
+                    addAttempt(ref matchData.automomous.highBoiler.failedAttempts,
+                        ref matchData.teleoperated.highBoiler.failedAttempts);
                 };
             FindViewById<Button>(Resource.Id.buttonLowGoal).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.lowBoiler.successes, ref matchData.teleoperated.lowBoiler.successes);
+                    addAttempt(ref matchData.automomous.lowBoiler.successes,
+                        ref matchData.teleoperated.lowBoiler.successes);
                 };
             FindViewById<Button>(Resource.Id.buttonLowMiss).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.lowBoiler.failedAttempts, ref matchData.teleoperated.lowBoiler.failedAttempts);
+                    addAttempt(ref matchData.automomous.lowBoiler.failedAttempts,
+                        ref matchData.teleoperated.lowBoiler.failedAttempts);
                 };
             FindViewById<Switch>(Resource.Id.switchAuto).CheckedChange += OnCheckedChange;
+            var name = Intent.GetStringExtra("name");
+            if (name != null)
+            {
+                FindViewById<TextView>(Resource.Id.editTextYourName).Text = name;
+            }
+            var number = Intent.GetIntExtra("match", 0);
+            if (number != 0)
+            {
+                FindViewById<TextView>(Resource.Id.editTextMathcNumber).Text = number.ToString();
+            }
             drawTings();
         }
 
@@ -73,13 +89,15 @@ namespace ScoutingFRC
             drawTings();
         }
 
-        private void addAttempt(ref int auto,ref int tele)
+        private void addAttempt(ref int auto, ref int tele)
         {
-          
-            if (autonomous) {
+
+            if (autonomous)
+            {
                 auto++;
             }
-            else {
+            else
+            {
                 tele++;
             }
             drawTings();
@@ -87,11 +105,35 @@ namespace ScoutingFRC
 
         private void ButtonSubmit_Click(object sender, EventArgs e)
         {
-            matchData.teamNumber = int.Parse(FindViewById<TextView>(Resource.Id.editTextTeamNumber).Text);
-            matchData.match = int.Parse(FindViewById<TextView>(Resource.Id.editTextMathcNumber).Text);
+            try
+            {
+                matchData.teamNumber = int.Parse(FindViewById<TextView>(Resource.Id.editTextTeamNumber).Text);
+            }
+            catch (Exception)
+            {
+                ComplainAboutFeild("a team number");
+                return;
+            }
+
+            try
+            {
+                matchData.match = int.Parse(FindViewById<TextView>(Resource.Id.editTextMathcNumber).Text);
+            }
+            catch (Exception)
+            {
+                ComplainAboutFeild("a match number");
+                return;
+            }
+
+            string name = FindViewById<TextView>(Resource.Id.editTextYourName).Text;
+            if (string.IsNullOrEmpty(name))
+            {
+                ComplainAboutFeild("your name");
+                return;
+            }
             matchData.automomous.oneTimePoints = FindViewById<CheckBox>(Resource.Id.checkBox1).Checked;
             matchData.teleoperated.oneTimePoints = FindViewById<CheckBox>(Resource.Id.checkBoxClimb).Checked;
-            matchData.scoutName = FindViewById<TextView>(Resource.Id.editTextYourName).Text;
+            matchData.scoutName = name;
             matchData.notes = FindViewById<TextView>(Resource.Id.editTextNotes).Text;
 
             Intent myIntent = new Intent(this, typeof(MainActivity));
@@ -123,6 +165,14 @@ namespace ScoutingFRC
                 $"{data.lowBoiler.successes}/{data.lowBoiler.failedAttempts + data.lowBoiler.successes}";
             FindViewById<TextView>(Resource.Id.textView6).Text =
                 $"{data.gears.successes}/{data.gears.failedAttempts + data.gears.successes}";
+        }
+
+        private void ComplainAboutFeild(string missing)
+        {
+            var builder = new AlertDialog.Builder(this)
+                 .SetMessage($"You cannot submit match scouting data without {missing}")
+                 .SetPositiveButton("Ok", (sender, args) => {});
+            builder.Create().Show();
         }
     }
 }
