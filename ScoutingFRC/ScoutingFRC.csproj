@@ -58,6 +58,7 @@
     <Compile Include="DataViewingActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MatchData.cs" />
+    <Compile Include="PitScoutingActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SplashActivity.cs" />
@@ -76,6 +77,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SyncDevices.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PitScouting.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

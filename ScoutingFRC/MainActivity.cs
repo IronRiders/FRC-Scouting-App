@@ -22,12 +22,20 @@ namespace ScoutingFRC
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
             FindViewById<Button>(Resource.Id.buttonSync).Click += ButtonSync_Click;
+            FindViewById<Button>(Resource.Id.buttonPitScouting).Click += ButtonPitScouting_Click;
             FindViewById<Button>(Resource.Id.buttonCollect).Click += ButtonCollect_Click;
             FindViewById<Button>(Resource.Id.buttonView).Click += ButtonView_Click;
             FindViewById<ListView>(Resource.Id.listView1).ItemClick += OnItemClick;
 
             teamDataList = Storage.ReadFromFile("test") ?? new List<TeamData>();
 
+        }
+
+        private void ButtonPitScouting_Click(object sender, EventArgs eventArgs)
+        {
+            var myIntent = new Intent(this, typeof(PitScoutingActivity));
+            myIntent.PutExtra("name", lastName);
+            StartActivityForResult(myIntent, 2);
         }
 
         private void OnItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
