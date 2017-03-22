@@ -170,6 +170,7 @@ namespace ScoutingFRC
         private void ComplainAboutFeild(string missing)
         {
             var builder = new AlertDialog.Builder(this)
+                 .SetTitle("Cannont Submit Match Data")
                  .SetMessage($"You cannot submit match scouting data without {missing}")
                  .SetPositiveButton("Ok", (sender, args) => {});
             builder.Create().Show();
