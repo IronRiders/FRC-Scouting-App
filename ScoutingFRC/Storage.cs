@@ -17,31 +17,31 @@ namespace ScoutingFRC
             return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         }
 
-        public static void Delete(string username)
+        public static void Delete(string fileName)
         {
-            string tsdPath = Combine(GetPersonalFolderPath(), username + ".tsd");
+            var tsdPath = Combine(GetPersonalFolderPath(), fileName + ".frc");
 
             if (File.Exists(tsdPath)) {
                 File.Delete(tsdPath);
             }
         }
 
-        public static void WriteToFile(string username, List<TeamData> data)
+        public static void WriteToFile(string fileName, List<TeamData> data)
         {
-            string tsdPath = Combine(GetPersonalFolderPath(), username + ".tsd");
+            var tsdPath = Combine(GetPersonalFolderPath(), fileName + ".frc");
 
             using (Stream stream = File.Open(tsdPath, FileMode.Create)) {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                var binaryFormatter = new BinaryFormatter();
                 binaryFormatter.Serialize(stream, data);
             }
           
         }
 
-        public static List<TeamData> ReadFromFile(string username)
+        public static List<TeamData> ReadFromFile(string fileName)
         {
-            string tsdPath = Combine(GetPersonalFolderPath(), username + ".tsd");
+            var tsdPath = Combine(GetPersonalFolderPath(), fileName + ".frc");
          
-            List<TeamData> result = new List<TeamData>();
+            var result = new List<TeamData>();
 
             if (!File.Exists(tsdPath)) {
                 return null;
