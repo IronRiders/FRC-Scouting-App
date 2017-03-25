@@ -118,6 +118,11 @@ namespace ScoutingFRC
                         failedAttempts++;
                     }
                 }
+
+                public override string ToString()
+                {
+                    return $"{successes}/{failedAttempts + successes}";
+                }
             }
         }
     }

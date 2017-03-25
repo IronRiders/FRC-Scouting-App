@@ -19,5 +19,10 @@ namespace ScoutingFRC
         public DateTime timeCollected;
         public string scoutName;
         public string notes;
+
+        public TeamData()
+        {
+            timeCollected = DateTime.Now;
+        }
     }
 }
