@@ -24,132 +24,136 @@
         android:background="#FF777777"
         android:id="@+id/view1"
         android:layout_marginBottom="10dp" />
-    <TextView
-        android:text="Average Gears:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:textStyle="bold" />
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1"
-        android:layout_marginLeft="7.0dp"
-        android:layout_marginBottom="12.0dp">
-        <TextView
-            android:text="Auto"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView4" />
-        <TextView
-            android:text="#/#"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewAG"
-            android:layout_marginLeft="13.5dp" />
-        <TextView
-            android:text="Teleop"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView5" />
-        <TextView
-            android:text="#/#"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewTG"
-            android:layout_marginLeft="14.5dp" />
-    </LinearLayout>
-    <TextView
-        android:text="Average High Goals"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView6"
-        android:textStyle="bold" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1"
-        android:layout_marginLeft="7.0dp"
-        android:layout_marginBottom="11.5dp">
-        <TextView
-            android:text="Auto"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView4" />
-        <TextView
-            android:text="#/#"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewAH"
-            android:layout_marginLeft="13.5dp" />
-        <TextView
-            android:text="Teleop"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView5" />
-        <TextView
-            android:text="#/#"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewTH"
-            android:layout_marginLeft="14.5dp" />
-    </LinearLayout>
-    <TextView
-        android:text="Average Low Goals"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView7"
-        android:textStyle="bold" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1"
-        android:layout_marginLeft="7.0dp">
-        <TextView
-            android:text="Auto"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView4" />
-        <TextView
-            android:text="#/#"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewAL"
-            android:layout_marginLeft="13.5dp" />
-        <TextView
-            android:text="Teleop"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView5" />
-        <TextView
-            android:text="#/#"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewTL"
-            android:layout_marginLeft="14.5dp" />
-    </LinearLayout>
-    <ListView
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutAuto"
+        android:layout_marginBottom="7dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout2">
+            <TextView
+                android:text="Autonomous"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:layout_marginRight="10dp" />
+            <TextView
+                android:text="# pts"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/textViewAutoPts"
+                android:textColor="@color/light_blue"
+                android:textSize="30dp" />
+        </LinearLayout>
+        <TextView
+            android:text="Baseline -  ##%"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewBaseline" />
+        <TextView
+            android:text="Gear - ##%"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewAutoGear" />
+        <TextView
+            android:text="High Goal - #"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewAutoHG" />
+        <TextView
+            android:text="Low Goal - #"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewAutoLG" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutTele"
+        android:layout_marginBottom="7dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout2">
+            <TextView
+                android:text="Teleoperated"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:layout_marginRight="10dp" />
+            <TextView
+                android:text="# pts"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/textViewTelePts"
+                android:textColor="@color/light_blue"
+                android:textSize="30dp" />
+        </LinearLayout>
+        <TextView
+            android:text="Gears - #/#"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewTeleGears" />
+        <TextView
+            android:text="High Goals - ##/##"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewTeleHG" />
+        <TextView
+            android:text="Low Goals - ##/##"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewTeleLG" />
+        <TextView
+            android:text="Climbing -  ##%"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewClimbingView" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listViewNotes" />
+        android:id="@+id/linearLayoutNotes">
+        <TextView
+            android:text="Notes"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView2"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ListView
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listViewNotes" />
+    </LinearLayout>
 </LinearLayout>
