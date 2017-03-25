@@ -27,15 +27,8 @@ namespace ScoutingFRC
             FindViewById<Button>(Resource.Id.buttonView).Click += ButtonView_Click;
             FindViewById<ListView>(Resource.Id.listView1).ItemClick += OnItemClick;
 
-            teamDataList = Storage.ReadFromFile("test") ?? new List<TeamData>();
+            teamDataList = Storage.ReadFromFile("ScoutingData2017") ?? new List<TeamData>();
 
-        }
-
-        private void ButtonPitScouting_Click(object sender, EventArgs eventArgs)
-        {
-            var myIntent = new Intent(this, typeof(PitScoutingActivity));
-            myIntent.PutExtra("name", lastName);
-            StartActivityForResult(myIntent, 2);
         }
 
         private void OnItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
@@ -126,6 +119,12 @@ namespace ScoutingFRC
             }
             DisplayTeamData(number);
         }
+        private void ButtonPitScouting_Click(object sender, EventArgs eventArgs)
+        {
+            var myIntent = new Intent(this, typeof(PitScoutingActivity));
+            myIntent.PutExtra("name", lastName);
+            StartActivityForResult(myIntent, 2);
+        }
 
         private void DisplayTeamData(int number)
         {
@@ -157,7 +156,7 @@ namespace ScoutingFRC
             if (resultCode == Result.Ok) {
                 if (requestCode == 0)
                 {
-                    var bytes = data.GetByteArrayExtra("W");
+                    var bytes = data.GetByteArrayExtra("newMatch");
                     var match = MatchData.Deserialize<MatchData>(bytes);
                     lastMatch = match.match;
                     lastName = match.scoutName;
@@ -169,8 +168,15 @@ namespace ScoutingFRC
                     var matches = MatchData.Deserialize<List<TeamData>>(bytes);
                     teamDataList.AddRange(matches);
                 }
-                Storage.Delete("test");
-                Storage.WriteToFile("test",teamDataList);
+                else if (requestCode == 2)
+                {
+                    var bytes = data.GetByteArrayExtra("newPitData");
+                    var match = MatchData.Deserialize<TeamData>(bytes);
+                    lastName = match.scoutName;
+                    teamDataList.Add(match);
+                }
+                Storage.Delete("ScoutingData2017");
+                Storage.WriteToFile("ScoutingData2017", teamDataList);
             }
         }
 

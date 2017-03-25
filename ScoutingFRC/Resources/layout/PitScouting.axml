@@ -5,72 +5,80 @@
     android:layout_height="match_parent"
     android:padding="10dp">
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1">
+        android:id="@+id/linearLayout3"
+        android:layout_weight="1"
+        android:layout_gravity="top">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout1">
+            <TextView
+                android:text="Team Number"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/textView1"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:gravity="center_vertical" />
+            <EditText
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/editTextTeamNumP"
+                android:layout_weight="1"
+                android:gravity="center_horizontal" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout2">
+            <TextView
+                android:text="Your Name"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/textView2"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:gravity="center_vertical" />
+            <EditText
+                android:inputType="textPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/editTextNameP"
+                android:layout_weight="1"
+                android:gravity="center_horizontal" />
+        </LinearLayout>
         <TextView
-            android:text="Team Number"
+            android:text="Notes:"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/textView1"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:gravity="center_vertical" />
-        <EditText
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/editText1"
-            android:layout_weight="1"
-            android:gravity="center_horizontal" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout2">
-        <TextView
-            android:text="Your Name"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/textView2"
             android:textStyle="bold"
-            android:layout_weight="1"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <EditText
-            android:inputType="textPersonName"
+            android:inputType="textMultiLine"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/editText2"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextNotesP"
+            android:background="@drawable/back"
             android:layout_weight="1"
-            android:gravity="center_horizontal" />
+            android:gravity="left"
+            android:padding="7dp"
+            android:capitalize="sentences" />
     </LinearLayout>
-    <TextView
-        android:text="Notes:"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView2"
-        android:textStyle="bold"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:inputType="textMultiLine"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/editText3"
-        android:background="@drawable/back"
-        android:layout_weight="1"
-        android:gravity="left"
-        android:padding="7dp"
-        android:capitalize="sentences" />
     <Button
         android:text="Submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button1"
+        android:id="@+id/buttonSubmitPit"
         android:layout_weight="0"
         android:layout_gravity="bottom" />
 </LinearLayout>

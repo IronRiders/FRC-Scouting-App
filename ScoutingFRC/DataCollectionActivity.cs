@@ -157,7 +157,7 @@ namespace ScoutingFRC
             Intent myIntent = new Intent(this, typeof(MainActivity));
 
             var bytes = MatchData.Serialize(matchData);
-            myIntent.PutExtra("W", bytes);
+            myIntent.PutExtra("newMatch", bytes);
             SetResult(Result.Ok, myIntent);
             Finish();
 
