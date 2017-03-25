@@ -50,6 +50,9 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f040000
 			public const int gear = 2130968576;
 			
+			// aapt resource value: 0x7f040003
+			public const int light_blue = 2130968579;
+			
 			// aapt resource value: 0x7f040002
 			public const int splash_background = 2130968578;
 			
@@ -226,8 +229,17 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070014
 			public const int linearLayout9 = 2131165204;
 			
+			// aapt resource value: 0x7f07003c
+			public const int linearLayoutAuto = 2131165244;
+			
+			// aapt resource value: 0x7f070047
+			public const int linearLayoutNotes = 2131165255;
+			
 			// aapt resource value: 0x7f070035
 			public const int linearLayoutResults = 2131165237;
+			
+			// aapt resource value: 0x7f070042
+			public const int linearLayoutTele = 2131165250;
 			
 			// aapt resource value: 0x7f07002c
 			public const int listView1 = 2131165228;
@@ -235,8 +247,8 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070034
 			public const int listViewDevices = 2131165236;
 			
-			// aapt resource value: 0x7f070042
-			public const int listViewNotes = 2131165250;
+			// aapt resource value: 0x7f070048
+			public const int listViewNotes = 2131165256;
 			
 			// aapt resource value: 0x7f070009
 			public const int scrollView1 = 2131165193;
@@ -265,23 +277,32 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070023
 			public const int textView7 = 2131165219;
 			
-			// aapt resource value: 0x7f07003c
-			public const int textViewAG = 2131165244;
-			
-			// aapt resource value: 0x7f07003e
-			public const int textViewAH = 2131165246;
-			
-			// aapt resource value: 0x7f070040
-			public const int textViewAL = 2131165248;
+			// aapt resource value: 0x7f07003f
+			public const int textViewAutoGear = 2131165247;
 			
 			// aapt resource value: 0x7f07001c
 			public const int textViewAutoGears = 2131165212;
 			
+			// aapt resource value: 0x7f070040
+			public const int textViewAutoHG = 2131165248;
+			
 			// aapt resource value: 0x7f07000d
 			public const int textViewAutoHighBoiler = 2131165197;
 			
+			// aapt resource value: 0x7f070041
+			public const int textViewAutoLG = 2131165249;
+			
 			// aapt resource value: 0x7f070015
 			public const int textViewAutoLowBoiler = 2131165205;
+			
+			// aapt resource value: 0x7f07003d
+			public const int textViewAutoPts = 2131165245;
+			
+			// aapt resource value: 0x7f07003e
+			public const int textViewBaseline = 2131165246;
+			
+			// aapt resource value: 0x7f070046
+			public const int textViewClimbingView = 2131165254;
 			
 			// aapt resource value: 0x7f070036
 			public const int textViewReceived = 2131165238;
@@ -289,26 +310,26 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070037
 			public const int textViewSent = 2131165239;
 			
-			// aapt resource value: 0x7f07003d
-			public const int textViewTG = 2131165245;
-			
-			// aapt resource value: 0x7f07003f
-			public const int textViewTH = 2131165247;
-			
-			// aapt resource value: 0x7f070041
-			public const int textViewTL = 2131165249;
-			
 			// aapt resource value: 0x7f07003a
 			public const int textViewTeamNumber = 2131165242;
 			
 			// aapt resource value: 0x7f07001d
 			public const int textViewTeleGears = 2131165213;
 			
+			// aapt resource value: 0x7f070044
+			public const int textViewTeleHG = 2131165252;
+			
 			// aapt resource value: 0x7f07000e
 			public const int textViewTeleHighBoiler = 2131165198;
 			
+			// aapt resource value: 0x7f070045
+			public const int textViewTeleLG = 2131165253;
+			
 			// aapt resource value: 0x7f070016
 			public const int textViewTeleLowBoiler = 2131165206;
+			
+			// aapt resource value: 0x7f070043
+			public const int textViewTelePts = 2131165251;
 			
 			// aapt resource value: 0x7f07003b
 			public const int view1 = 2131165243;
