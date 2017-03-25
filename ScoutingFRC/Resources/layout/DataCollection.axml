@@ -104,7 +104,8 @@
             android:showText="true"
             android:textOff="Teleop"
             android:textStyle="bold"
-            android:paddingRight="15dp" />
+            android:paddingRight="15dp"
+            android:splitTrack="true" />
     </LinearLayout>
     <View
         android:layout_width="fill_parent"
@@ -128,13 +129,37 @@
                 android:text="Cross the baseline "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox1" />
-            <TextView
-                android:text="High Boiler"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
+                android:id="@+id/checkBox1"
+                android:textSize="20dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView3" />
+                android:id="@+id/linearLayout8">
+                <TextView
+                    android:text="High Boiler"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/textView3"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/primary_text_dark" />
+                <TextView
+                    android:text="Auto: 0/0"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textViewAutoHighBoiler"
+                    android:layout_weight="1" />
+                <TextView
+                    android:text="Tele: 0/0"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textViewTeleHighBoiler"
+                    android:layout_weight="1" />
+            </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:id="@+id/linearLayout4"
@@ -166,28 +191,43 @@
                         android:layout_width="match_parent"
                         android:layout_margin="3dp" />
                     <ImageButton
-                        android:src="@android:drawable/ic_delete"
+                        android:src="@drawable/undosmall"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:id="@+id/imageButton1"
+                        android:id="@+id/buttonUndoHighBoiler"
                         android:background="@drawable/fuelbutton"
                         android:layout_margin="3dp" />
                 </LinearLayout>
-                <TextView
-                    android:text="##/##"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/textView4"
-                    android:gravity="center"
-                    android:padding="5dp" />
             </LinearLayout>
-            <TextView
-                android:text="Low Boiler"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView3" />
+                android:id="@+id/linearLayout9">
+                <TextView
+                    android:text="Low Boiler"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/textView3"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/primary_text_dark" />
+                <TextView
+                    android:text="Auto: 0/0"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textViewAutoLowBoiler"
+                    android:layout_weight="1" />
+                <TextView
+                    android:text="Tele: 0/0"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textViewTeleLowBoiler"
+                    android:layout_weight="1" />
+            </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -216,22 +256,44 @@
                         android:id="@+id/buttonLowMiss"
                         android:layout_weight="1"
                         android:layout_width="match_parent" />
+                    <ImageButton
+                        android:src="@drawable/undosmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/buttonUndoLowBoiler"
+                        android:background="@drawable/fuelbutton"
+                        android:layout_margin="3dp" />
                 </LinearLayout>
-                <TextView
-                    android:text="##/##"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/textView5"
-                    android:gravity="center"
-                    android:padding="5dp" />
             </LinearLayout>
-            <TextView
-                android:text="Gears"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content" />
+                android:id="@+id/linearLayout10">
+                <TextView
+                    android:text="Gears"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/textView3"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/primary_text_dark" />
+                <TextView
+                    android:text="Auto: 0/0"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textViewAutoGears"
+                    android:layout_weight="1" />
+                <TextView
+                    android:text="Tele: 0/0"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textViewTeleGears"
+                    android:layout_weight="1" />
+            </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -259,28 +321,29 @@
                         android:id="@+id/buttonGearMiss"
                         android:layout_weight="1"
                         android:layout_width="match_parent" />
+                    <ImageButton
+                        android:src="@drawable/undosmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/buttonUndoGears"
+                        android:background="@drawable/gearbutton"
+                        android:layout_margin="3dp" />
                 </LinearLayout>
-                <TextView
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/textView6"
-                    android:text="##/##"
-                    android:gravity="center"
-                    android:padding="5dp" />
             </LinearLayout>
             <CheckBox
                 android:text="Climb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/checkBoxClimb"
-                android:enabled="false" />
+                android:enabled="false"
+                android:textSize="20dp" />
             <TextView
                 android:text="Notes:"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView7" />
+                android:id="@+id/textView7"
+                android:textStyle="bold" />
             <EditText
                 android:inputType="textMultiLine"
                 android:layout_width="match_parent"

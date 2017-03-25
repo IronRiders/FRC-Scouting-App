@@ -94,6 +94,30 @@ namespace ScoutingFRC
                 {
                     return new { failedAttempts, successes }.GetHashCode();
                 }
+
+                public void DecrementAttempt(bool successful)
+                {
+                    if (successful) 
+                    {
+                        successes--;
+                    }
+                    else
+                    {
+                        failedAttempts--;
+                    }
+                }
+
+                public void IncrementAttempt(bool successful)
+                {
+                    if (successful)
+                    {
+                        successes++;
+                    }
+                    else
+                    {
+                        failedAttempts++;
+                    }
+                }
             }
         }
     }

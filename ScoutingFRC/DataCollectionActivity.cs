@@ -1,17 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Policy;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 
 namespace ScoutingFRC
@@ -22,6 +14,10 @@ namespace ScoutingFRC
         private MatchData matchData;
         private bool autonomous = true;
 
+        private Stack<Action> HighGoal = new Stack<Action>();
+        private Stack<Action> LowGoal = new Stack<Action>();
+        private Stack<Action> Gears = new Stack<Action>();
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -31,50 +27,60 @@ namespace ScoutingFRC
             FindViewById<Button>(Resource.Id.buttonGearGoal).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.gears.successes, ref matchData.teleoperated.gears.successes);
+                    AddAttempt(matchData.automomous.gears, matchData.teleoperated.gears, true, Gears);
                 };
             FindViewById<Button>(Resource.Id.buttonGearMiss).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.gears.failedAttempts,
-                        ref matchData.teleoperated.gears.failedAttempts);
+                    AddAttempt(matchData.automomous.gears, matchData.teleoperated.gears, false, Gears);
                 };
             FindViewById<Button>(Resource.Id.buttonHighGoal).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.highBoiler.successes,
-                        ref matchData.teleoperated.highBoiler.successes);
+                    AddAttempt(matchData.automomous.highBoiler, matchData.teleoperated.highBoiler, true, HighGoal);
                 };
             FindViewById<Button>(Resource.Id.buttonHighMiss).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.highBoiler.failedAttempts,
-                        ref matchData.teleoperated.highBoiler.failedAttempts);
+                    AddAttempt(matchData.automomous.highBoiler, matchData.teleoperated.highBoiler, false, HighGoal);
                 };
             FindViewById<Button>(Resource.Id.buttonLowGoal).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.lowBoiler.successes,
-                        ref matchData.teleoperated.lowBoiler.successes);
+                    AddAttempt(matchData.automomous.lowBoiler, matchData.teleoperated.lowBoiler, true, LowGoal);
                 };
             FindViewById<Button>(Resource.Id.buttonLowMiss).Click +=
                 (sender, args) =>
                 {
-                    addAttempt(ref matchData.automomous.lowBoiler.failedAttempts,
-                        ref matchData.teleoperated.lowBoiler.failedAttempts);
+                    AddAttempt(matchData.automomous.lowBoiler, matchData.teleoperated.lowBoiler, false, LowGoal);
                 };
             FindViewById<Switch>(Resource.Id.switchAuto).CheckedChange += OnCheckedChange;
             var name = Intent.GetStringExtra("name");
-            if (name != null)
-            {
+            if (name != null) {
                 FindViewById<TextView>(Resource.Id.editTextYourName).Text = name;
             }
             var number = Intent.GetIntExtra("match", 0);
-            if (number != 0)
-            {
+            if (number != 0) {
                 FindViewById<TextView>(Resource.Id.editTextMathcNumber).Text = number.ToString();
             }
-            drawTings();
+
+            FindViewById<ImageButton>(Resource.Id.buttonUndoHighBoiler).Click +=
+                (sender, args) =>
+                {
+                    Undo(HighGoal);
+                };
+            FindViewById<ImageButton>(Resource.Id.buttonUndoLowBoiler).Click +=
+                (sender, args) =>
+                {
+                    Undo(LowGoal);
+                };
+            FindViewById<ImageButton>(Resource.Id.buttonUndoGears).Click +=
+                (sender, args) =>
+                {
+                    Undo(Gears);
+                };
+
+            RedrawLayout();
         }
 
         private void OnCheckedChange(object sender, CompoundButton.CheckedChangeEventArgs checkedChangeEventArgs)
@@ -86,21 +92,33 @@ namespace ScoutingFRC
                 line.Enabled = autonomous;
                 rope.Enabled = !autonomous;
             }
-            drawTings();
+            RedrawLayout();
         }
 
-        private void addAttempt(ref int auto, ref int tele)
+        private void AddAttempt(MatchData.PerformanceData.ScoringMethod auto, MatchData.PerformanceData.ScoringMethod tele, bool successful ,Stack<Action> undoList)
         {
 
             if (autonomous)
             {
-                auto++;
+                auto.IncrementAttempt(successful);
+                undoList.Push(() => auto.DecrementAttempt(successful));
             }
             else
             {
-                tele++;
+                tele.IncrementAttempt(successful);
+                undoList.Push(() => tele.DecrementAttempt(successful));
             }
-            drawTings();
+            RedrawLayout();
+        }
+
+        private void Undo(Stack<Action> pastActions)
+        {
+            if (pastActions.Count > 0)
+            {
+                var action = pastActions.Pop();
+                action();
+            }
+            RedrawLayout();
         }
 
         private void ButtonSubmit_Click(object sender, EventArgs e)
@@ -145,32 +163,25 @@ namespace ScoutingFRC
 
         }
 
-        private void drawTings()
+        private void RedrawLayout()
         {
-            if (autonomous)
-            {
-                updateCounts(matchData.automomous);
-            }
-            else
-            {
-                updateCounts(matchData.teleoperated);
-            }
+            FindViewById<TextView>(Resource.Id.textViewAutoGears).Text = "Auto " + getCount(matchData.automomous.gears);
+            FindViewById<TextView>(Resource.Id.textViewTeleGears).Text = "Tele " + getCount(matchData.teleoperated.gears);
+            FindViewById<TextView>(Resource.Id.textViewAutoHighBoiler).Text = "Auto " + getCount(matchData.automomous.highBoiler);
+            FindViewById<TextView>(Resource.Id.textViewTeleHighBoiler).Text = "Tele " + getCount(matchData.teleoperated.highBoiler);
+            FindViewById<TextView>(Resource.Id.textViewAutoLowBoiler).Text = "Auto " + getCount(matchData.automomous.lowBoiler);
+            FindViewById<TextView>(Resource.Id.textViewTeleLowBoiler).Text = "Tele " + getCount(matchData.teleoperated.lowBoiler);
         }
 
-        private void updateCounts(MatchData.PerformanceData data)
+        private string getCount(MatchData.PerformanceData.ScoringMethod score)
         {
-            FindViewById<TextView>(Resource.Id.textView4).Text =
-                $"{data.highBoiler.successes}/{data.highBoiler.failedAttempts + data.highBoiler.successes}";
-            FindViewById<TextView>(Resource.Id.textView5).Text =
-                $"{data.lowBoiler.successes}/{data.lowBoiler.failedAttempts + data.lowBoiler.successes}";
-            FindViewById<TextView>(Resource.Id.textView6).Text =
-                $"{data.gears.successes}/{data.gears.failedAttempts + data.gears.successes}";
+            return $"{score.successes}/{score.failedAttempts + score.successes}";
         }
-
+  
         private void ComplainAboutFeild(string missing)
         {
             var builder = new AlertDialog.Builder(this)
-                 .SetTitle("Cannont Submit Match Data")
+                 .SetTitle("Cannot Submit Match Data")
                  .SetMessage($"You cannot submit match scouting data without {missing}")
                  .SetPositiveButton("Ok", (sender, args) => {});
             builder.Create().Show();
