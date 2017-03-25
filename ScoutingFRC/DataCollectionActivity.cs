@@ -165,18 +165,14 @@ namespace ScoutingFRC
 
         private void RedrawLayout()
         {
-            FindViewById<TextView>(Resource.Id.textViewAutoGears).Text = "Auto " + getCount(matchData.automomous.gears);
-            FindViewById<TextView>(Resource.Id.textViewTeleGears).Text = "Tele " + getCount(matchData.teleoperated.gears);
-            FindViewById<TextView>(Resource.Id.textViewAutoHighBoiler).Text = "Auto " + getCount(matchData.automomous.highBoiler);
-            FindViewById<TextView>(Resource.Id.textViewTeleHighBoiler).Text = "Tele " + getCount(matchData.teleoperated.highBoiler);
-            FindViewById<TextView>(Resource.Id.textViewAutoLowBoiler).Text = "Auto " + getCount(matchData.automomous.lowBoiler);
-            FindViewById<TextView>(Resource.Id.textViewTeleLowBoiler).Text = "Tele " + getCount(matchData.teleoperated.lowBoiler);
+            FindViewById<TextView>(Resource.Id.textViewAutoGears).Text = "Auto " + matchData.automomous.gears;
+            FindViewById<TextView>(Resource.Id.textViewTeleGears).Text = "Tele " + matchData.teleoperated.gears;
+            FindViewById<TextView>(Resource.Id.textViewAutoHighBoiler).Text = "Auto " + matchData.automomous.highBoiler;
+            FindViewById<TextView>(Resource.Id.textViewTeleHighBoiler).Text = "Tele " + matchData.teleoperated.highBoiler;
+            FindViewById<TextView>(Resource.Id.textViewAutoLowBoiler).Text = "Auto " + matchData.automomous.lowBoiler;
+            FindViewById<TextView>(Resource.Id.textViewTeleLowBoiler).Text = "Tele " + matchData.teleoperated.lowBoiler;
         }
 
-        private string getCount(MatchData.PerformanceData.ScoringMethod score)
-        {
-            return $"{score.successes}/{score.failedAttempts + score.successes}";
-        }
   
         private void ComplainAboutFeild(string missing)
         {

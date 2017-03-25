@@ -235,6 +235,9 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f070034
 			public const int listViewDevices = 2131165236;
 			
+			// aapt resource value: 0x7f070042
+			public const int listViewNotes = 2131165250;
+			
 			// aapt resource value: 0x7f070009
 			public const int scrollView1 = 2131165193;
 			

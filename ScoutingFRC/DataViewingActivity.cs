@@ -69,6 +69,20 @@ namespace ScoutingFRC
 
             FindViewById<TextView>(Resource.Id.textViewAL).Text = String.Format("{0:#.###}/{1:#.##}", low[0], low[1]);
             FindViewById<TextView>(Resource.Id.textViewTL).Text = String.Format("{0:#.###}/{1:#.##}", low[2], low[3]);
+
+            List<String> notes = new List<string>();
+            foreach (var teamData in datas)
+            {
+                if (!string.IsNullOrEmpty(teamData.notes))
+                {
+                    notes.Add($"\"{teamData.notes}\" - {teamData.scoutName}");
+                }
+                var notesArray = notes.ToArray();
+                var list = FindViewById<ListView>(Resource.Id.listViewNotes);
+                ArrayAdapter teamListAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, notesArray);
+                list.Adapter = teamListAdapter;
+            }
+
         }
 
         private double[] divide(int[] ar, int a)
