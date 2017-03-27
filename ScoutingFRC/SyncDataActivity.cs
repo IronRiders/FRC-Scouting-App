@@ -141,14 +141,7 @@ namespace ScoutingFRC
 
         private void DiscoveryFinished(List<BluetoothDevice> devices)
         {
-            /*if (!cancelled) {
-                bluetoothDevices.AddRange(devices);
 
-                adapter.AddAll(devices.Select(bt => (bt.Name ?? "") + " (" + bt.Address + ")").ToList());
-                adapter.NotifyDataSetChanged();
-            }
-
-            cancelled = false;*/
         }
 
 
@@ -194,6 +187,32 @@ namespace ScoutingFRC
                 List<TeamData> newMatchData = MatchData.Deserialize<List<TeamData>>(data);
 
                 foreach (var md in newMatchData) {
+                    if(md is MatchData) {
+                        var sameTeam = currentData.Find(td => td.teamNumber == md.teamNumber);
+                        if(sameTeam == null) {
+                            newMatchData.Add(md);
+                        }
+                        else {
+                            var sameMatch = currentData.Find(td =>
+                            {
+                                if (td is MatchData) {
+                                    return (td as MatchData).match == (md as MatchData).match;
+                                }
+
+                                return false;
+                            });
+
+                            if(sameMatch == null) {
+                                newMatchData.Add(md);
+                            }
+                            else {
+                                newMatchData.Add((md as MatchData).Merge(sameMatch));
+                            }
+                        }
+                    }
+                    else {
+
+                    }
                  //   var duplicate = currentData.Find(_md => _md.teamNumber == md.teamNumber && _md.match == md.match);
                    // if (duplicate == null) {
                         newData.Add(md);
