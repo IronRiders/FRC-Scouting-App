@@ -26,7 +26,18 @@ namespace ScoutingFRC
         {
             automomous = new PerformanceData();
             teleoperated = new PerformanceData();
-            timeCollected = DateTime.Now;
+        }
+
+        public TeamData Merge(TeamData o)
+        {
+            MatchData other = o as MatchData;
+            MatchData result = Merge<MatchData>(o);
+            
+            result.match = match;
+            result.automomous = automomous.Merge(other.automomous);
+            result.teleoperated = teleoperated.Merge(other.teleoperated);
+
+            return result;
         }
 
         public static T Deserialize<T>(byte[] bytes) where T : class
@@ -73,6 +84,18 @@ namespace ScoutingFRC
                 oneTimePoints = false;
             }
 
+            public PerformanceData Merge(PerformanceData other)
+            {
+                PerformanceData result = new PerformanceData();
+
+                result.highBoiler = highBoiler.Merge(other.highBoiler);
+                result.lowBoiler = lowBoiler.Merge(other.lowBoiler);
+                result.gears = gears.Merge(other.gears);
+                result.oneTimePoints = oneTimePoints || other.oneTimePoints;
+
+                return result;
+            }
+
             public override int GetHashCode()
             {
                 return new { highBoiler, lowBoiler, gears, oneTimePoints }.GetHashCode();
@@ -88,6 +111,16 @@ namespace ScoutingFRC
                 {
                     failedAttempts = 0;
                     successes = 0;
+                }
+
+                public ScoringMethod Merge(ScoringMethod other)
+                {
+                    ScoringMethod result = new ScoringMethod();
+
+                    result.failedAttempts = TeamData.Merge(failedAttempts, other.failedAttempts);
+                    result.successes = TeamData.Merge(successes, other.successes);
+
+                    return result;
                 }
 
                 public override int GetHashCode()
