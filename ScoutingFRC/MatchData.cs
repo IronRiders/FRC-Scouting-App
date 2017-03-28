@@ -26,7 +26,16 @@ namespace ScoutingFRC
         {
             automomous = new PerformanceData();
             teleoperated = new PerformanceData();
-            timeCollected = DateTime.Now;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType()) {
+                return false;
+            }
+
+            MatchData m = obj as MatchData;
+            return base.Equals(obj) && match == m.match && automomous.Equals(m.automomous) && teleoperated.Equals(m.teleoperated);
         }
 
         public static T Deserialize<T>(byte[] bytes) where T : class
@@ -67,11 +76,33 @@ namespace ScoutingFRC
             public PerformanceData()
             {
                 highBoiler = new ScoringMethod();
-                lowBoiler = new ScoringMethod();
-                gears = new ScoringMethod();
+                lowBoiler  = new ScoringMethod();
+                gears      = new ScoringMethod();
 
                 oneTimePoints = false;
             }
+
+            public override bool Equals(object obj)
+            {
+                if (obj == null || GetType() != obj.GetType()) {
+                    return false;
+                }
+
+                PerformanceData p = obj as PerformanceData;
+                return highBoiler.Equals(p.highBoiler) && lowBoiler.Equals(p.lowBoiler) && gears.Equals(p.gears) && oneTimePoints == p.oneTimePoints;
+            }
+
+            /*public PerformanceData Merge(PerformanceData other)
+            {
+                PerformanceData result = new PerformanceData();
+
+                result.highBoiler = highBoiler.Merge(other.highBoiler);
+                result.lowBoiler = lowBoiler.Merge(other.lowBoiler);
+                result.gears = gears.Merge(other.gears);
+                result.oneTimePoints = oneTimePoints || other.oneTimePoints;
+
+                return result;
+            }*/
 
             public override int GetHashCode()
             {
@@ -89,6 +120,26 @@ namespace ScoutingFRC
                     failedAttempts = 0;
                     successes = 0;
                 }
+
+                public override bool Equals(object obj)
+                {
+                    if (obj == null || GetType() != obj.GetType()) {
+                        return false;
+                    }
+
+                    ScoringMethod s = obj as ScoringMethod;
+                    return failedAttempts == s.failedAttempts && successes == s.successes;
+                }
+
+                /*public ScoringMethod Merge(ScoringMethod other)
+                {
+                    ScoringMethod result = new ScoringMethod();
+
+                    result.failedAttempts = TeamData.Merge(failedAttempts, other.failedAttempts);
+                    result.successes = TeamData.Merge(successes, other.successes);
+
+                    return result;
+                }*/
 
                 public override int GetHashCode()
                 {
