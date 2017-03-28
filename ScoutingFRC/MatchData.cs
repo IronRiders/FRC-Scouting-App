@@ -28,16 +28,14 @@ namespace ScoutingFRC
             teleoperated = new PerformanceData();
         }
 
-        public TeamData Merge(TeamData o)
+        public override bool Equals(object obj)
         {
-            MatchData other = o as MatchData;
-            MatchData result = Merge<MatchData>(o);
-            
-            result.match = match;
-            result.automomous = automomous.Merge(other.automomous);
-            result.teleoperated = teleoperated.Merge(other.teleoperated);
+            if (obj == null || GetType() != obj.GetType()) {
+                return false;
+            }
 
-            return result;
+            MatchData m = obj as MatchData;
+            return base.Equals(obj) && match == m.match && automomous.Equals(m.automomous) && teleoperated.Equals(m.teleoperated);
         }
 
         public static T Deserialize<T>(byte[] bytes) where T : class
@@ -78,13 +76,23 @@ namespace ScoutingFRC
             public PerformanceData()
             {
                 highBoiler = new ScoringMethod();
-                lowBoiler = new ScoringMethod();
-                gears = new ScoringMethod();
+                lowBoiler  = new ScoringMethod();
+                gears      = new ScoringMethod();
 
                 oneTimePoints = false;
             }
 
-            public PerformanceData Merge(PerformanceData other)
+            public override bool Equals(object obj)
+            {
+                if (obj == null || GetType() != obj.GetType()) {
+                    return false;
+                }
+
+                PerformanceData p = obj as PerformanceData;
+                return highBoiler.Equals(p.highBoiler) && lowBoiler.Equals(p.lowBoiler) && gears.Equals(p.gears) && oneTimePoints == p.oneTimePoints;
+            }
+
+            /*public PerformanceData Merge(PerformanceData other)
             {
                 PerformanceData result = new PerformanceData();
 
@@ -94,7 +102,7 @@ namespace ScoutingFRC
                 result.oneTimePoints = oneTimePoints || other.oneTimePoints;
 
                 return result;
-            }
+            }*/
 
             public override int GetHashCode()
             {
@@ -113,7 +121,17 @@ namespace ScoutingFRC
                     successes = 0;
                 }
 
-                public ScoringMethod Merge(ScoringMethod other)
+                public override bool Equals(object obj)
+                {
+                    if (obj == null || GetType() != obj.GetType()) {
+                        return false;
+                    }
+
+                    ScoringMethod s = obj as ScoringMethod;
+                    return failedAttempts == s.failedAttempts && successes == s.successes;
+                }
+
+                /*public ScoringMethod Merge(ScoringMethod other)
                 {
                     ScoringMethod result = new ScoringMethod();
 
@@ -121,7 +139,7 @@ namespace ScoutingFRC
                     result.successes = TeamData.Merge(successes, other.successes);
 
                     return result;
-                }
+                }*/
 
                 public override int GetHashCode()
                 {

@@ -37,7 +37,7 @@ namespace ScoutingFRC
                 this.device = device;
                 this.connection = connection;
                 this.weStarted = weStarted;
-                this.done = false;
+                done = false;
             }
 
             public BluetoothDevice device;
@@ -187,7 +187,10 @@ namespace ScoutingFRC
                 List<TeamData> newMatchData = MatchData.Deserialize<List<TeamData>>(data);
 
                 foreach (var md in newMatchData) {
-                    if(md is MatchData) {
+                    if (currentData.FindIndex(td => td.Equals(md)) < 0) {
+                        newData.Add(md);
+                    }
+                    /*if(md is MatchData) {
                         var sameTeam = currentData.Find(td => td.teamNumber == md.teamNumber);
                         if(sameTeam == null) {
                             newMatchData.Add(md);
@@ -212,11 +215,7 @@ namespace ScoutingFRC
                     }
                     else {
 
-                    }
-                 //   var duplicate = currentData.Find(_md => _md.teamNumber == md.teamNumber && _md.match == md.match);
-                   // if (duplicate == null) {
-                        newData.Add(md);
-                   // }
+                    }*/
                 }
 
                 var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);

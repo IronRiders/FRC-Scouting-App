@@ -19,7 +19,17 @@ namespace ScoutingFRC
         public string scoutName;
         public string notes;
 
-        public T Merge<T>(TeamData other) where T : TeamData, new()
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType()) {
+                return false;
+            }
+
+            TeamData t = obj as TeamData;
+            return teamNumber == t.teamNumber && scoutName == t.scoutName && notes == t.notes;
+        }
+
+        /*public T Merge<T>(TeamData other) where T : TeamData, new()
         {
             T result = new T();
 
@@ -43,6 +53,6 @@ namespace ScoutingFRC
             }
 
             return 0;
-        }
+        }*/
     }
 }
