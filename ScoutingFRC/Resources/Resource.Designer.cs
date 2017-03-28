@@ -232,6 +232,9 @@ namespace ScoutingFRC
 			// aapt resource value: 0x7f07003c
 			public const int linearLayoutAuto = 2131165244;
 			
+			// aapt resource value: 0x7f070048
+			public const int linearLayoutListNotes = 2131165256;
+			
 			// aapt resource value: 0x7f070047
 			public const int linearLayoutNotes = 2131165255;
 			
@@ -246,9 +249,6 @@ namespace ScoutingFRC
 			
 			// aapt resource value: 0x7f070034
 			public const int listViewDevices = 2131165236;
-			
-			// aapt resource value: 0x7f070048
-			public const int listViewNotes = 2131165256;
 			
 			// aapt resource value: 0x7f070009
 			public const int scrollView1 = 2131165193;
