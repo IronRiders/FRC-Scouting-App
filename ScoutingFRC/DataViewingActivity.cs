@@ -99,20 +99,19 @@ namespace ScoutingFRC
                 FindViewById<LinearLayout>(Resource.Id.linearLayoutAuto).Visibility = ViewStates.Gone;
                 FindViewById<LinearLayout>(Resource.Id.linearLayoutTele).Visibility = ViewStates.Gone;
             }
-           
-
-            List<String> notes = new List<string>();
+           LinearLayout.LayoutParams textViewLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent);
             foreach (var teamData in datas)
             {
                 if (!string.IsNullOrEmpty(teamData.notes))
                 {
-                    notes.Add($"\"{teamData.notes}\" - {teamData.scoutName}");
+                    String note = ($"\"{teamData.notes}\" - {teamData.scoutName}");
+                    TextView text = new TextView(this);
+                    text.LayoutParameters = textViewLayout;
+                    text.Text = note;
+                    FindViewById<LinearLayout>(Resource.Id.linearLayoutListNotes).AddView(text);
                 }
             }
-            var notesArray = notes.ToArray();
-            var list = FindViewById<ListView>(Resource.Id.listViewNotes);
-            ArrayAdapter teamListAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, notesArray);
-            list.Adapter = teamListAdapter;
+         
 
         }
 

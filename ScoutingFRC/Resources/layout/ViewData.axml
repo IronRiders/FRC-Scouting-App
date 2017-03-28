@@ -149,11 +149,21 @@
             android:textSize="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <ListView
+        <ScrollView
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/listViewNotes" />
+            android:id="@+id/scrollView1">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/linearLayoutListNotes"
+                android:background="@drawable/back"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:padding="7dp" />
+        </ScrollView>
     </LinearLayout>
 </LinearLayout>
