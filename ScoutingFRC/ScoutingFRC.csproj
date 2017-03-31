@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="BluetoothReceiver.cs" />
     <Compile Include="BluetoothService.cs" />
+    <Compile Include="CSVFile.cs" />
     <Compile Include="DataCollectionActivity.cs" />
     <Compile Include="DataViewingActivity.cs" />
     <Compile Include="MainActivity.cs" />

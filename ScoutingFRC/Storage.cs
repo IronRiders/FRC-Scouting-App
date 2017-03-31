@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
 using System.Runtime.Serialization.Formatters.Binary;
-using Android.Graphics;
-
 using static System.IO.Path;
 
 namespace ScoutingFRC
@@ -14,7 +11,7 @@ namespace ScoutingFRC
 
         private static string GetPersonalFolderPath()
         {
-            return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         }
 
         public static void Delete(string fileName)

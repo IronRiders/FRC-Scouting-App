@@ -29,35 +29,34 @@ namespace ScoutingFRC
             {
                 displayData(MatchList);
             }
-
         }
 
         private void displayData(List<TeamData> datas)
         {
             FindViewById<TextView>(Resource.Id.textViewTeamNumber).Text = datas[0].teamNumber.ToString();
             int count = datas.Count;
+
             string matches = "Matches: ";
             int[] gears = new int[4];
             int[] HighGoals = new int[4];
             int[] LowGoals = new int[4];
-            foreach (var teamData in datas)
-            {
-                if (!(teamData is MatchData))
-                {
-                    continue;
+
+            foreach (var teamData in datas) {
+                if (teamData is MatchData) {
+                    MatchData matchData = teamData as MatchData;
+                    matches += matchData.match + ", ";
+                    addScoringMethod(matchData.automomous.gears, 0, gears);
+                    addScoringMethod(matchData.teleoperated.gears, 2, gears);
+                    addScoringMethod(matchData.automomous.highBoiler, 0, HighGoals);
+                    addScoringMethod(matchData.teleoperated.highBoiler, 2, HighGoals);
+                    addScoringMethod(matchData.automomous.lowBoiler, 0, LowGoals);
+                    addScoringMethod(matchData.teleoperated.lowBoiler, 2, LowGoals);
                 }
-                MatchData matchData = teamData as MatchData;
-                matches += matchData.match + ", ";
-                addScoringMethod(matchData.automomous.gears, 0, gears);
-                addScoringMethod(matchData.teleoperated.gears, 2, gears);
-                addScoringMethod(matchData.automomous.highBoiler, 0, HighGoals);
-                addScoringMethod(matchData.teleoperated.highBoiler, 2, HighGoals);
-                addScoringMethod(matchData.automomous.lowBoiler, 0, LowGoals);
-                addScoringMethod(matchData.teleoperated.lowBoiler, 2, LowGoals);
             }
-            double[] high = divide(HighGoals, count);
-            double[] low = divide(LowGoals, count);
-            double[] gear = divide(gears, count);
+
+            double[] high = Divide(HighGoals, count);
+            double[] low = Divide(LowGoals, count);
+            double[] gear = Divide(gears, count);
             
             FindViewById<TextView>(Resource.Id.textView1).Text = matches.Substring(0,matches.Length-2);
 
@@ -71,10 +70,8 @@ namespace ScoutingFRC
             FindViewById<TextView>(Resource.Id.textViewTL).Text = String.Format("{0:#.###}/{1:#.##}", low[2], low[3]);
 
             List<String> notes = new List<string>();
-            foreach (var teamData in datas)
-            {
-                if (!string.IsNullOrEmpty(teamData.notes))
-                {
+            foreach (var teamData in datas)  {
+                if (!string.IsNullOrEmpty(teamData.notes)) {
                     notes.Add($"\"{teamData.notes}\" - {teamData.scoutName}");
                 }
                 var notesArray = notes.ToArray();
@@ -82,15 +79,13 @@ namespace ScoutingFRC
                 ArrayAdapter teamListAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, notesArray);
                 list.Adapter = teamListAdapter;
             }
-
         }
 
-        private double[] divide(int[] ar, int a)
+        private double[] Divide(int[] arr, int a)
         {
-            double[] ret = new double[ar.Length];
-            for (int j = 0; j < ar.Length; j++)
-            {
-                ret[j] = ((double) ar[j])/a;
+            double[] ret = new double[arr.Length];
+            for (int j = 0; j < arr.Length; j++) {
+                ret[j] = ((double) arr[j])/a;
             }
             return ret;
         }

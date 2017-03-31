@@ -12,7 +12,7 @@ namespace ScoutingFRC
     public class MainActivity : Activity
     {
         private List<TeamData> teamDataList = new List<TeamData>();
-        private int lastMatch=0;
+        private int lastMatch = 0;
         private string lastName;
 
         protected override void OnCreate(Bundle bundle)
@@ -41,17 +41,16 @@ namespace ScoutingFRC
         protected override void OnResume()
         {
             base.OnResume();
-            FindViewById<TextView>(Resource.Id.textView2).Text = ("Matches Scouted: " + teamDataList.Count);
+            FindViewById<TextView>(Resource.Id.textView2).Text = "Matches Scouted: " + teamDataList.Count;
 
             List<int> teamsList = new List<int>();
-            foreach (var matchData in teamDataList)
-            {
-                if (!teamsList.Contains(matchData.teamNumber))
-                {
+            foreach (var matchData in teamDataList) {
+                if (!teamsList.Contains(matchData.teamNumber)) {
                     teamsList.Add(matchData.teamNumber);
                 }
             }
-           FindViewById<TextView>(Resource.Id.textView3).Text = "Teams: "+teamsList.Count;
+
+            FindViewById<TextView>(Resource.Id.textView3).Text = "Teams: " + teamsList.Count;
             var autocompleteTextView = FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1);
             teamsList.Sort();
             string[] autoCompleteOptions = teamsList.Select(i => i.ToString()).ToArray();
@@ -59,45 +58,8 @@ namespace ScoutingFRC
             autocompleteTextView.Adapter = autoCompleteAdapter;
 
             var list = FindViewById<ListView>(Resource.Id.listView1);
-            ArrayAdapter teamListAdapter  = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
+            ArrayAdapter teamListAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleDropDownItem1Line, autoCompleteOptions);
             list.Adapter = teamListAdapter;
-        }
-
-        Random r = new Random((int)(DateTime.Now.Ticks % int.MaxValue));
-
-        MatchData RandomMatchData()
-        {
-            MatchData md = new MatchData();
-             
-            md.teamNumber = r.Next() % 5000;
-            md.match = r.Next() % 5000;
-
-            md.automomous.gears.failedAttempts = r.Next() % 5000;
-            md.automomous.gears.successes = r.Next() % 5000;
-
-            md.automomous.highBoiler.failedAttempts = r.Next() % 5000;
-            md.automomous.highBoiler.successes = r.Next() % 5000;
-
-            md.automomous.lowBoiler.failedAttempts = r.Next() % 5000;
-            md.automomous.lowBoiler.successes = r.Next() % 5000;
-
-            md.automomous.oneTimePoints = r.Next() % 2 == 1;
-
-            md.teleoperated.gears.failedAttempts = r.Next() % 5000;
-            md.teleoperated.gears.successes = r.Next() % 5000;
-
-            md.teleoperated.highBoiler.failedAttempts = r.Next() % 5000;
-            md.teleoperated.highBoiler.successes = r.Next() % 5000;
-
-            md.teleoperated.lowBoiler.failedAttempts = r.Next() % 5000;
-            md.teleoperated.lowBoiler.successes = r.Next() % 5000;
-
-            md.teleoperated.oneTimePoints = r.Next() % 2 == 1;
-
-            md.teleoperated.gears.failedAttempts = r.Next() % 5000;
-            md.teleoperated.gears.successes = r.Next() % 5000;
-
-            return md;
         }
 
         private void ButtonCollect_Click(object sender, EventArgs e)
@@ -112,12 +74,10 @@ namespace ScoutingFRC
         private void ButtonView_Click(object sender, EventArgs e)
         {
             int number;
-            bool parsed = int.TryParse(FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1).Text, out number);
-            if (!parsed)
-            {
-                return;
-            }
-            DisplayTeamData(number);
+           
+            if(int.TryParse(FindViewById<AutoCompleteTextView>(Resource.Id.autoCompleteTextView1).Text, out number)) {
+                DisplayTeamData(number);
+            }  
         }
         private void ButtonPitScouting_Click(object sender, EventArgs eventArgs)
         {
@@ -129,17 +89,15 @@ namespace ScoutingFRC
         private void DisplayTeamData(int number)
         {
             List<TeamData> teamData = new List<TeamData>();
-            foreach (var matchData in teamDataList) {
-                if (matchData.teamNumber == number) teamData.Add(matchData);
-            }
-            if (teamData.Count <= 0) {
-                return;
-            }
-            var viewActivity = new Intent(Application.Context, typeof(DataViewingActivity));
-            byte[] bytes = MatchData.Serialize(teamData);
-            viewActivity.PutExtra("MatchBytes", bytes);
+            teamData.AddRange(teamDataList.Where(td => number == td.teamNumber));
 
-            StartActivity(viewActivity);
+            if (teamData.Count > 0) {
+                var viewActivity = new Intent(Application.Context, typeof(DataViewingActivity));
+                byte[] bytes = MatchData.Serialize(teamData);
+                viewActivity.PutExtra("MatchBytes", bytes);
+
+                StartActivity(viewActivity);
+            }
         }
 
         private void ButtonSync_Click(object sender, EventArgs e)
@@ -154,33 +112,33 @@ namespace ScoutingFRC
         {
             base.OnActivityResult(requestCode, resultCode, data);
             if (resultCode == Result.Ok) {
-                if (requestCode == 0)
-                {
-                    var bytes = data.GetByteArrayExtra("newMatch");
-                    var match = MatchData.Deserialize<MatchData>(bytes);
-                    lastMatch = match.match;
-                    lastName = match.scoutName;
-                    teamDataList.Add(match);
+                switch(requestCode) {
+                    case 0: {
+                            var bytes = data.GetByteArrayExtra("newMatch");
+                            var match = MatchData.Deserialize<MatchData>(bytes);
+                            lastMatch = match.match;
+                            lastName = match.scoutName;
+                            teamDataList.Add(match);
+                            break;
+                        }
+                    case 1: {
+                            var bytes = data.GetByteArrayExtra("newMatches");
+                            var matches = MatchData.Deserialize<List<TeamData>>(bytes);
+                            teamDataList.AddRange(matches);
+                            break;
+                        }
+                    case 2: {
+                            var bytes = data.GetByteArrayExtra("newPitData");
+                            var match = MatchData.Deserialize<TeamData>(bytes);
+                            lastName = match.scoutName;
+                            teamDataList.Add(match);
+                            break;
+                        }
                 }
-                else if (requestCode == 1)
-                {
-                    var bytes = data.GetByteArrayExtra("newMatches");
-                    var matches = MatchData.Deserialize<List<TeamData>>(bytes);
-                    teamDataList.AddRange(matches);
-                }
-                else if (requestCode == 2)
-                {
-                    var bytes = data.GetByteArrayExtra("newPitData");
-                    var match = MatchData.Deserialize<TeamData>(bytes);
-                    lastName = match.scoutName;
-                    teamDataList.Add(match);
-                }
+
                 Storage.Delete("ScoutingData2017");
                 Storage.WriteToFile("ScoutingData2017", teamDataList);
             }
         }
-
-
     }
 }
-
