@@ -8,43 +8,42 @@
     android:padding="15dp">
     <LinearLayout
         android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout5"
-        android:layout_weight="0">
-        <TextView
-            android:text="Scout"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView4"
-            android:textStyle="bold" />
-        <Button
-            android:text="Scout a Match"
+        android:id="@+id/linearLayout7"
+        android:layout_weight="1">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonCollect" />
-        <Button
-            android:text="Scout a pit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonPitScouting" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/linearLayout2"
-        android:layout_weight="1"
-        android:layout_gravity="top">
+            android:id="@+id/linearLayout5">
+            <TextView
+                android:text="Scout"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:textStyle="bold" />
+            <Button
+                android:text="Scout a Match"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonCollect" />
+            <Button
+                android:text="Scout a pit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonPitScouting" />
+        </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout6"
-            android:layout_weight="1">
+            android:id="@+id/linearLayout6">
             <TextView
                 android:text="View"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -78,7 +77,7 @@
                 android:minWidth="25px"
                 android:minHeight="25px"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="150dp"
                 android:id="@+id/listView1"
                 android:layout_weight="1" />
         </LinearLayout>
@@ -86,8 +85,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout4"
-            android:layout_weight="1">
+            android:id="@+id/linearLayout4">
             <TextView
                 android:text="Share"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -114,9 +112,7 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout3"
-        android:layout_weight="0"
-        android:layout_gravity="bottom">
+        android:id="@+id/linearLayout3">
         <TextView
             android:text="Matches Scouted: "
             android:textAppearance="?android:attr/textAppearanceMedium"
