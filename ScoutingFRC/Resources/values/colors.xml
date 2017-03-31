@@ -4,5 +4,6 @@
   <color name="gear">#EAAA00</color>
   <color name="fuel">#F3F315</color>
   <color name="splash_background">#000000</color>
+  <color name="light_blue">#ff5c6bc0</color>
 
 </resources>
