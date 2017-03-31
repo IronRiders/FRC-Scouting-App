@@ -13,7 +13,6 @@ public class SplashActivity : Activity
     public override void OnCreate(Bundle savedInstanceState, PersistableBundle persistentState)
     {
         base.OnCreate(savedInstanceState, persistentState);
-     
     }
 
     protected override void OnResume()
@@ -21,5 +20,4 @@ public class SplashActivity : Activity
         base.OnResume();
         StartActivity(new Intent(Application.Context, typeof(MainActivity)));
     }
-
 }

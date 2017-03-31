@@ -141,10 +141,8 @@ namespace ScoutingFRC
 
         private void DiscoveryFinished(List<BluetoothDevice> devices)
         {
-
+            
         }
-
-
 
         private void SearchForDevices()
         {
@@ -190,32 +188,6 @@ namespace ScoutingFRC
                     if (currentData.FindIndex(td => td.Equals(md)) < 0) {
                         newData.Add(md);
                     }
-                    /*if(md is MatchData) {
-                        var sameTeam = currentData.Find(td => td.teamNumber == md.teamNumber);
-                        if(sameTeam == null) {
-                            newMatchData.Add(md);
-                        }
-                        else {
-                            var sameMatch = currentData.Find(td =>
-                            {
-                                if (td is MatchData) {
-                                    return (td as MatchData).match == (md as MatchData).match;
-                                }
-
-                                return false;
-                            });
-
-                            if(sameMatch == null) {
-                                newMatchData.Add(md);
-                            }
-                            else {
-                                newMatchData.Add((md as MatchData).Merge(sameMatch));
-                            }
-                        }
-                    }
-                    else {
-
-                    }*/
                 }
 
                 var btd = btDataTransfers.FirstOrDefault(bt => bt.connection == bluetoothConnection);
