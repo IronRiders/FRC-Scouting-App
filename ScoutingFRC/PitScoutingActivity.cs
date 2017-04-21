@@ -1,8 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Runtime;
+using Android.Views;
 using Android.Widget;
 
 namespace ScoutingFRC
@@ -20,7 +25,10 @@ namespace ScoutingFRC
                 FindViewById<TextView>(Resource.Id.editTextNameP).Text = name;
             }
         }
-
+        
+        /// <summary>  
+        ///  Builds new MatchData and sends it back to MainActivity, If data is missing it displays an AlertDialog
+        /// </summary> 
         private void SubmitPitData(object sender, EventArgs eventArgs)
         {
             var teamData = new TeamData();
@@ -53,6 +61,10 @@ namespace ScoutingFRC
             Finish();
 
         }
+        
+        /// <summary>  
+        ///  Alerst user that a given parameter is missing and data cannot be submited.
+        /// </summary> 
         private void ComplainAboutFeild(string missing)
         {
             var builder = new AlertDialog.Builder(this)
