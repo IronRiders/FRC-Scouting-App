@@ -102,7 +102,10 @@ namespace ScoutingFRC
                 Toast.MakeText(this, "Bluetooth not supported on this device.", ToastLength.Long).Show();
             }
         }
-
+        
+        /// <summary>  
+        ///  Button Listner for the SyncData Button, displays statu and starts syncing
+        /// </summary> 
         private void SyncDataActivity_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             BluetoothDevice device = bluetoothDevices[(int)(e.Id)];
@@ -121,7 +124,10 @@ namespace ScoutingFRC
                 }
             }
         }
-
+        
+        /// <summary>  
+        ///  
+        /// </summary> 
         private void DeviceDiscovered(BluetoothDevice device)
         {
             bool bonded = device.BondState == Bond.Bonded;
@@ -132,12 +138,17 @@ namespace ScoutingFRC
             adapter.Insert((bonded ? "Paired: " : "") + FormatDeviceName(device), insertIndex);
             adapter.NotifyDataSetChanged();
         }
-
+        
+        /// <summary>  
+        ///  
+        /// </summary> 
         private void DiscoveryFinished(List<BluetoothDevice> devices)
-        {
-            
+        {        
         }
-
+        
+        /// <summary>  
+        ///  
+        /// </summary> 
         private void SearchForDevices()
         {
             if (bluetoothAdapter != null) {
@@ -151,7 +162,10 @@ namespace ScoutingFRC
                 }
             }
         }
-
+        
+        /// <summary>  
+        ///  Update the UI with info about completion of syncing. 
+        /// </summary> 
         private void ChangeTextViews()
         {
             FindViewById<TextView>(Resource.Id.textViewReceived).Text = "Matches Received: " + newData.Count;
@@ -159,7 +173,10 @@ namespace ScoutingFRC
 
             Toast.MakeText(this, "Done", ToastLength.Long).Show();
         }
-
+        
+        /// <summary>  
+        ///  
+        /// </summary> 
         private void ErrorCallback(BluetoothConnection bluetoothConnection, Exception ex)
         {
             RunOnUiThread(() => {
@@ -170,7 +187,10 @@ namespace ScoutingFRC
                 }
             });
         }
-
+        
+        /// <summary>  
+        ///  
+        /// </summary> 
         private void DataCallback(BluetoothConnection bluetoothConnection, byte[] data)
         {
             RunOnUiThread(() => {
@@ -199,7 +219,10 @@ namespace ScoutingFRC
                 }
             });
         }
-
+        
+        /// <summary>  
+        ///  
+        /// </summary> 
         private void DataSentCallback(BluetoothConnection bluetoothConnection, int id)
         {
             RunOnUiThread(() => {
@@ -211,7 +234,10 @@ namespace ScoutingFRC
                 }
             });
         }
-
+        
+        /// <summary>  
+        ///  
+        /// </summary> 
         private void SendData(BluetoothConnection bluetoothConnection)
         {
             var serialized = MatchData.Serialize(currentData);
@@ -221,12 +247,18 @@ namespace ScoutingFRC
             int id = 0;
             bluetoothConnection.Write(data, ref id);
         }
-
+        
+        /// <summary>  
+        ///   
+        /// </summary>  
         private string FormatDeviceName(BluetoothDevice device)
         {
             return device.Name != null ? (device.Name + " (" + device.Address + ")") : device.Address;
         }
 
+        /// <summary>  
+        ///  
+        /// </summary>  
         private void ConnectedCallback(BluetoothConnection bluetoothConnection)
         {
            RunOnUiThread(() => {
@@ -248,7 +280,10 @@ namespace ScoutingFRC
                 }
             });
         }
-
+        
+        /// <summary>  
+        ///  
+        /// </summary>  
         private void DisconnectedCallback(BluetoothConnection bluetoothConnection)
         {
             RunOnUiThread(() => {
@@ -266,21 +301,30 @@ namespace ScoutingFRC
 
             });
         }
-
+        
+        /// <summary>  
+        ///  When the application is closed bluetooth is stopped. 
+        /// </summary>  
         protected override void OnDestroy()
         {
             bs.StopListening();
             bluetoothAdapter.CancelDiscovery();
             base.OnDestroy();
         }
-
+        
+        /// <summary>  
+        ///  Cancels the Activity returning nothing.
+        /// </summary>  
         private void Cancel()
         {
             Intent myIntent = new Intent(this, typeof(MainActivity));
             SetResult(Result.Canceled, myIntent);
             Finish();
         }
-
+        
+        /// <summary>  
+        ///  Creates an Alerd Dialog to confirm the user wants to quit.
+        /// </summary>  
         private void AlertDialogClick(object sender, DialogClickEventArgs dialogClickEventArgs)
         {
             if (dialogClickEventArgs.Which == -1)
@@ -290,8 +334,10 @@ namespace ScoutingFRC
                 Finish();
             }
         }
-
-
+        
+        /// <summary>  
+        ///  Button Listener for ButtonCancel, ends activity and returns nothing, after confirming with user. 
+        /// </summary>  
         private void ButtonCancel_Click(object sender, EventArgs eventArgs)
         {
             if (newData.Count > 0) {
@@ -305,7 +351,10 @@ namespace ScoutingFRC
                 Cancel();
             }
         }
-
+        
+        /// <summary>  
+        ///  Button Listener for ButtonAdd, ends activity and returns new data. 
+        /// </summary>  
         private void ButtonAdd_Click(object sender, EventArgs eventArgs)
         {
             Intent myIntent = new Intent(this, typeof(MainActivity));
