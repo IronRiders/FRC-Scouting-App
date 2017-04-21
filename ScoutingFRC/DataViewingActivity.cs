@@ -53,17 +53,17 @@ namespace ScoutingFRC
                 if (matchData.teleoperated.oneTimePoints) {
                     climbing++;
                 }
-                addScoringMethod(matchData.automomous.gears, 0, gears);
-                addScoringMethod(matchData.teleoperated.gears, 2, gears);
-                addScoringMethod(matchData.automomous.highBoiler, 0, HighGoals);
-                addScoringMethod(matchData.teleoperated.highBoiler, 2, HighGoals);
-                addScoringMethod(matchData.automomous.lowBoiler, 0, LowGoals);
-                addScoringMethod(matchData.teleoperated.lowBoiler, 2, LowGoals);
+                AddScoringMethod(matchData.automomous.gears, 0, gears);
+                AddScoringMethod(matchData.teleoperated.gears, 2, gears);
+                AddScoringMethod(matchData.automomous.highBoiler, 0, HighGoals);
+                AddScoringMethod(matchData.teleoperated.highBoiler, 2, HighGoals);
+                AddScoringMethod(matchData.automomous.lowBoiler, 0, LowGoals);
+                AddScoringMethod(matchData.teleoperated.lowBoiler, 2, LowGoals);
             }
 
-            double[] high = divide(HighGoals, matchCount);
-            double[] low = divide(LowGoals, matchCount);
-            double[] gear = divide(gears, matchCount);
+            double[] high = DivideArray(HighGoals, matchCount);
+            double[] low = DivideArray(LowGoals, matchCount);
+            double[] gear = DivideArray(gears, matchCount);
             double baselinePercentage = (((double)baseline)/matchCount)*100;
             double climbingPercentage = (climbing / matchCount) * 100;
 
@@ -121,7 +121,7 @@ namespace ScoutingFRC
         /// <summary>  
         /// divide every element in an array by a given int.
         /// </summary> 
-        private double[] divide(int[] ar, int a)
+        private double[] DivideArray(int[] ar, int a)
         {
             double[] result = new double[ar.Length];
             for (int j = 0; j < ar.Length; j++) {
@@ -133,7 +133,7 @@ namespace ScoutingFRC
         /// <summary>  
         ///  add that successes and failure to a specifide index in an array
         /// </summary> 
-        private void addScoringMethod(MatchData.PerformanceData.ScoringMethod method, int start, int[] arr)
+        private void AddScoringMethod(MatchData.PerformanceData.ScoringMethod method, int start, int[] arr)
         {
             arr[start] += method.successes;
             arr[start + 1] += method.failedAttempts + method.successes;
