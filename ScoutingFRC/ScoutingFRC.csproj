@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BluetoothConnection.cs" />
     <Compile Include="BluetoothReceiver.cs" />
     <Compile Include="BluetoothService.cs" />
     <Compile Include="CSVFile.cs" />

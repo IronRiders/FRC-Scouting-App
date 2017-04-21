@@ -1,19 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Android.Bluetooth;
 using System.Diagnostics;
-using System.Reflection;
 using Android.Content.PM;
-using Android.Provider;
 
 namespace ScoutingFRC
 {

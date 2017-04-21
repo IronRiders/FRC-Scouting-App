@@ -1,14 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.Bluetooth;
 
 namespace ScoutingFRC
@@ -27,6 +19,10 @@ namespace ScoutingFRC
             devices = new List<BluetoothDevice>();
         }
 
+        /// <summary>
+        /// Callback for the BroadcastReceiver. Handles the case when a bluetooth devices is found
+        /// and when the discovery finished.
+        /// </summary>
         public override void OnReceive(Context context, Intent intent)
         {
             switch(intent.Action) {
