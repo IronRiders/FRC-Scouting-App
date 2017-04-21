@@ -24,7 +24,10 @@ namespace ScoutingFRC
                 DisplayData(MatchList);
             }
         }
-
+        
+        /// <summary>  
+        ///  Update user interface with Team and Match Data
+        /// </summary> 
         private void DisplayData(List<TeamData> datas)
         {
             FindViewById<TextView>(Resource.Id.textViewTeamNumber).Text = datas[0].teamNumber.ToString();
@@ -100,6 +103,9 @@ namespace ScoutingFRC
             }
         }
 
+        /// <summary>  
+        ///  given a string and an ID sets that TextView to that string
+        /// </summary> 
         private void UpdateTextView(int id, String value, double visible)
         {
             using (TextView textView = FindViewById<TextView>(id)) {
@@ -112,6 +118,9 @@ namespace ScoutingFRC
             }
         }
 
+        /// <summary>  
+        /// divide every element in an array by a given int.
+        /// </summary> 
         private double[] divide(int[] ar, int a)
         {
             double[] result = new double[ar.Length];
@@ -120,7 +129,10 @@ namespace ScoutingFRC
             }
             return result;
         }
-
+        
+        /// <summary>  
+        ///  add that successes and failure to a specifide index in an array
+        /// </summary> 
         private void addScoringMethod(MatchData.PerformanceData.ScoringMethod method, int start, int[] arr)
         {
             arr[start] += method.successes;
