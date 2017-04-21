@@ -27,6 +27,9 @@ namespace ScoutingFRC
             return base.Equals(obj) && match == m.match && automomous.Equals(m.automomous) && teleoperated.Equals(m.teleoperated);
         }
 
+        /// <summary>
+        /// Deserializes a byte array to an object.
+        /// </summary>
         public static T Deserialize<T>(byte[] bytes) where T : class
         {
             using (MemoryStream stream = new MemoryStream(bytes)) {
@@ -35,6 +38,9 @@ namespace ScoutingFRC
             }
         }
 
+        /// <summary>
+        /// Serializes an object into a byte array.
+        /// </summary>
         public static byte[] Serialize<T>(T matchData) where T : class
         {
             using (MemoryStream stream = new MemoryStream()) {
@@ -44,6 +50,9 @@ namespace ScoutingFRC
             }
         }
 
+        /// <summary>
+        /// Returns a hash of the data, excluding teamNumber and match.
+        /// </summary>
         public int GetDataHash()
         {
             return new { automomous, teleoperated }.GetHashCode();
@@ -81,18 +90,6 @@ namespace ScoutingFRC
                 return highBoiler.Equals(p.highBoiler) && lowBoiler.Equals(p.lowBoiler) && gears.Equals(p.gears) && oneTimePoints == p.oneTimePoints;
             }
 
-            /*public PerformanceData Merge(PerformanceData other)
-            {
-                PerformanceData result = new PerformanceData();
-
-                result.highBoiler = highBoiler.Merge(other.highBoiler);
-                result.lowBoiler = lowBoiler.Merge(other.lowBoiler);
-                result.gears = gears.Merge(other.gears);
-                result.oneTimePoints = oneTimePoints || other.oneTimePoints;
-
-                return result;
-            }*/
-
             public override int GetHashCode()
             {
                 return new { highBoiler, lowBoiler, gears, oneTimePoints }.GetHashCode();
@@ -120,41 +117,33 @@ namespace ScoutingFRC
                     return failedAttempts == s.failedAttempts && successes == s.successes;
                 }
 
-                /*public ScoringMethod Merge(ScoringMethod other)
-                {
-                    ScoringMethod result = new ScoringMethod();
-
-                    result.failedAttempts = TeamData.Merge(failedAttempts, other.failedAttempts);
-                    result.successes = TeamData.Merge(successes, other.successes);
-
-                    return result;
-                }*/
-
                 public override int GetHashCode()
                 {
                     return new { failedAttempts, successes }.GetHashCode();
                 }
 
+                /// <summary>
+                /// Decreases number of attempts.
+                /// </summary>
                 public void DecrementAttempt(bool successful)
                 {
-                    if (successful) 
-                    {
+                    if (successful)  {
                         successes--;
                     }
-                    else
-                    {
+                    else {
                         failedAttempts--;
                     }
                 }
 
+                /// <summary>
+                /// Increases number of attempts.
+                /// </summary>
                 public void IncrementAttempt(bool successful)
                 {
-                    if (successful)
-                    {
+                    if (successful) {
                         successes++;
                     }
-                    else
-                    {
+                    else {
                         failedAttempts++;
                     }
                 }

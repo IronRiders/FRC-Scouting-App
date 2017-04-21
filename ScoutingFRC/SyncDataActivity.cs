@@ -126,7 +126,7 @@ namespace ScoutingFRC
         }
         
         /// <summary>  
-        ///  
+        /// Gets called when a new device is discovered.
         /// </summary> 
         private void DeviceDiscovered(BluetoothDevice device)
         {
@@ -140,14 +140,14 @@ namespace ScoutingFRC
         }
         
         /// <summary>  
-        ///  
+        ///  Gets called when the discovery finishes.
         /// </summary> 
         private void DiscoveryFinished(List<BluetoothDevice> devices)
         {        
         }
         
         /// <summary>  
-        ///  
+        ///  Starts searching for bluetooth devices.
         /// </summary> 
         private void SearchForDevices()
         {
@@ -175,7 +175,7 @@ namespace ScoutingFRC
         }
         
         /// <summary>  
-        ///  
+        ///  Gets called when an error occurs in a bluetooth connection.
         /// </summary> 
         private void ErrorCallback(BluetoothConnection bluetoothConnection, Exception ex)
         {
@@ -189,7 +189,7 @@ namespace ScoutingFRC
         }
         
         /// <summary>  
-        ///  
+        ///  Gets called when data is received.
         /// </summary> 
         private void DataCallback(BluetoothConnection bluetoothConnection, byte[] data)
         {
@@ -221,7 +221,7 @@ namespace ScoutingFRC
         }
         
         /// <summary>  
-        ///  
+        ///  Gets called when data is successfully sent.
         /// </summary> 
         private void DataSentCallback(BluetoothConnection bluetoothConnection, int id)
         {
@@ -236,7 +236,7 @@ namespace ScoutingFRC
         }
         
         /// <summary>  
-        ///  
+        /// Sends the currentData to a bluetooth connection.
         /// </summary> 
         private void SendData(BluetoothConnection bluetoothConnection)
         {
@@ -249,7 +249,7 @@ namespace ScoutingFRC
         }
         
         /// <summary>  
-        ///   
+        /// Neatly formats the name of a bluetooth device.
         /// </summary>  
         private string FormatDeviceName(BluetoothDevice device)
         {
@@ -257,7 +257,7 @@ namespace ScoutingFRC
         }
 
         /// <summary>  
-        ///  
+        /// Gets called when connected to a bluetooth device.
         /// </summary>  
         private void ConnectedCallback(BluetoothConnection bluetoothConnection)
         {
@@ -282,7 +282,7 @@ namespace ScoutingFRC
         }
         
         /// <summary>  
-        ///  
+        /// Called when disconnected from a bluetooth device.
         /// </summary>  
         private void DisconnectedCallback(BluetoothConnection bluetoothConnection)
         {

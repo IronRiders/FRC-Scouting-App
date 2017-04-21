@@ -8,12 +8,17 @@ namespace ScoutingFRC
 {
     class Storage
     {
-
+        /// <summary>
+        /// Returns the application data path.
+        /// </summary>
         private static string GetPersonalFolderPath()
         {
             return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         }
 
+        /// <summary>
+        /// Deletes a file.
+        /// </summary>
         public static void Delete(string fileName)
         {
             var tsdPath = Combine(GetPersonalFolderPath(), fileName + ".frc");
@@ -23,6 +28,9 @@ namespace ScoutingFRC
             }
         }
 
+        /// <summary>
+        /// Writes a list of teamdatas to a file.
+        /// </summary>
         public static void WriteToFile(string fileName, List<TeamData> data)
         {
             var tsdPath = Combine(GetPersonalFolderPath(), fileName + ".frc");
@@ -34,6 +42,9 @@ namespace ScoutingFRC
           
         }
 
+        /// <summary>
+        /// Reads a list of teamdatas from a file.
+        /// </summary>
         public static List<TeamData> ReadFromFile(string fileName)
         {
             var tsdPath = Combine(GetPersonalFolderPath(), fileName + ".frc");

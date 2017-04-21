@@ -86,6 +86,10 @@ namespace ScoutingFRC
             RedrawLayout();
         }
 
+
+        /// <summary>
+        /// Gets called when the autonomous/teleporated checkbox gets changed
+        /// </summary>
         private void OnCheckedChange(object sender, CompoundButton.CheckedChangeEventArgs checkedChangeEventArgs)
         {
             autonomous = FindViewById<Switch>(Resource.Id.switchAuto).Checked;
@@ -99,9 +103,11 @@ namespace ScoutingFRC
             RedrawLayout();
         }
 
+        /// <summary>
+        /// Adds a new attempt to the given auto or teleoperated scoring method.
+        /// </summary>
         private void AddAttempt(MatchData.PerformanceData.ScoringMethod auto, MatchData.PerformanceData.ScoringMethod tele, bool successful ,Stack<Action> undoList)
         {
-
             if (autonomous) {
                 auto.IncrementAttempt(successful);
                 undoList.Push(() => auto.DecrementAttempt(successful));
@@ -113,6 +119,10 @@ namespace ScoutingFRC
             RedrawLayout();
         }
 
+
+        /// <summary>
+        /// Undoes an action
+        /// </summary>
         private void Undo(Stack<Action> pastActions)
         {
             if (pastActions.Count > 0) {
@@ -123,6 +133,9 @@ namespace ScoutingFRC
             RedrawLayout();
         }
 
+        /// <summary>
+        /// Submit button event handler
+        /// </summary>
         private void ButtonSubmit_Click(object sender, EventArgs e)
         {
             try {
@@ -161,6 +174,10 @@ namespace ScoutingFRC
 
         }
 
+
+        /// <summary>
+        /// Refreshes the UI.
+        /// </summary>
         private void RedrawLayout()
         {
             FindViewById<TextView>(Resource.Id.textViewAutoGears).Text = "Auto " + matchData.automomous.gears;
@@ -171,7 +188,9 @@ namespace ScoutingFRC
             FindViewById<TextView>(Resource.Id.textViewTeleLowBoiler).Text = "Tele " + matchData.teleoperated.lowBoiler;
         }
 
-  
+        /// <summary>
+        /// Shows a warning for a missing field.
+        /// </summary>
         private void ComplainAboutFeild(string missing)
         {
             var builder = new AlertDialog.Builder(this)
