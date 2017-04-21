@@ -36,19 +36,19 @@ namespace ScoutingFRC
                 teamData.teamNumber = int.Parse(FindViewById<TextView>(Resource.Id.editTextTeamNumP).Text);
             }
             catch (Exception) {
-                ComplainAboutFeild("a team number");
+                ComplainAboutField("a team number");
                 return;
             }
 
             string name = FindViewById<TextView>(Resource.Id.editTextNameP).Text;
             if (string.IsNullOrEmpty(name)) {
-                ComplainAboutFeild("your name");
+                ComplainAboutField("your name");
                 return;
             }
             teamData.scoutName = name;
             string notes = FindViewById<TextView>(Resource.Id.editTextNotesP).Text;
             if (string.IsNullOrEmpty(name)) {
-                ComplainAboutFeild("taking any notes");
+                ComplainAboutField("taking any notes");
                 return;
             }
             teamData.notes = notes;
@@ -65,7 +65,7 @@ namespace ScoutingFRC
         /// <summary>  
         ///  Alerst user that a given parameter is missing and data cannot be submited.
         /// </summary> 
-        private void ComplainAboutFeild(string missing)
+        private void ComplainAboutField(string missing)
         {
             var builder = new AlertDialog.Builder(this)
                  .SetTitle("Cannot Submit Pit Scouting Data!")

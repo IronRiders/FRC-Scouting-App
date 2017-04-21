@@ -20,14 +20,12 @@ namespace ScoutingFRC
             var bytes = Intent.GetByteArrayExtra("MatchBytes");
             List<TeamData> MatchList = MatchData.Deserialize<List<TeamData>>(bytes);
 
-            if (MatchList.Count > 0)
-            {
-                displayData(MatchList);
+            if (MatchList.Count > 0) {
+                DisplayData(MatchList);
             }
-
         }
 
-        private void displayData(List<TeamData> datas)
+        private void DisplayData(List<TeamData> datas)
         {
             FindViewById<TextView>(Resource.Id.textViewTeamNumber).Text = datas[0].teamNumber.ToString();
             int count = datas.Count;
@@ -38,21 +36,18 @@ namespace ScoutingFRC
             int[] LowGoals = new int[4];
             int baseline = 0;
             double climbing =0;
-            foreach (var teamData in datas)
-            {
-                if (!(teamData is MatchData))
-                {
+
+            foreach (var teamData in datas) {
+                if (!(teamData is MatchData)) {
                     continue;
                 }
                 matchCount++;
                 MatchData matchData = teamData as MatchData;
                 matches += matchData.match + ", ";
-                if (matchData.automomous.oneTimePoints)
-                {
+                if (matchData.automomous.oneTimePoints) {
                     baseline++;
                 }
-                if (matchData.teleoperated.oneTimePoints)
-                {
+                if (matchData.teleoperated.oneTimePoints) {
                     climbing++;
                 }
                 addScoringMethod(matchData.automomous.gears, 0, gears);
@@ -63,7 +58,6 @@ namespace ScoutingFRC
                 addScoringMethod(matchData.teleoperated.lowBoiler, 2, LowGoals);
             }
 
-            //[autoSucc, autoall]
             double[] high = divide(HighGoals, matchCount);
             double[] low = divide(LowGoals, matchCount);
             double[] gear = divide(gears, matchCount);
@@ -79,8 +73,8 @@ namespace ScoutingFRC
             UpdateTextView(Resource.Id.textViewTeleHG, $"High Goals - {Math.Round(high[2], 2)}/{Math.Round(high[3], 2)}", high[3]);
             UpdateTextView(Resource.Id.textViewTeleLG, $"Low Goals - {Math.Round(low[2], 2)}/{Math.Round(low[3], 2)}", low[3]);
             UpdateTextView(Resource.Id.textViewClimbingView, $"Climbing - {Math.Round(climbingPercentage, 2)}%", climbingPercentage);
-            if (matchCount > 0)
-            {
+
+            if (matchCount > 0) {
                 FindViewById<TextView>(Resource.Id.textView1).Text = ((matchCount>1)? "Mathces: " : "Match: ") + matches.Substring(0, matches.Length - 2);
                 double autoPoints = (baselinePercentage/100)*5 + (gear[0])*60 + high[0] + low[0]/3;
                 double telePoints = (climbingPercentage / 100) * 50 + (gear[2]) * 10 + high[0]/3 + low[0] / 9;
@@ -88,17 +82,15 @@ namespace ScoutingFRC
                 FindViewById<TextView>(Resource.Id.textViewTelePts).Text = Math.Round(telePoints, 3) + " pts";
 
             }
-            else
-            {
+            else {
                 FindViewById<TextView>(Resource.Id.textView1).Visibility = ViewStates.Gone;
                 FindViewById<LinearLayout>(Resource.Id.linearLayoutAuto).Visibility = ViewStates.Gone;
                 FindViewById<LinearLayout>(Resource.Id.linearLayoutTele).Visibility = ViewStates.Gone;
             }
-           LinearLayout.LayoutParams textViewLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent);
-            foreach (var teamData in datas)
-            {
-                if (!string.IsNullOrEmpty(teamData.notes))
-                {
+
+            LinearLayout.LayoutParams textViewLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent);
+            foreach (var teamData in datas)  {
+                if (!string.IsNullOrEmpty(teamData.notes)) {
                     String note = ($"\"{teamData.notes}\" - {teamData.scoutName}");
                     TextView text = new TextView(this);
                     text.LayoutParameters = textViewLayout;
@@ -106,20 +98,15 @@ namespace ScoutingFRC
                     FindViewById<LinearLayout>(Resource.Id.linearLayoutListNotes).AddView(text);
                 }
             }
-         
-
         }
 
-        private void UpdateTextView(int id, String value, double visable)
+        private void UpdateTextView(int id, String value, double visible)
         {
-            using (TextView textView = FindViewById<TextView>(id))
-            {
-                if (visable > 0)
-                {
+            using (TextView textView = FindViewById<TextView>(id)) {
+                if (visible > 0) {
                     textView.Text = value;
                 }
-                else
-                {
+                else {
                     textView.Visibility = ViewStates.Gone;
                 }
             }
@@ -127,12 +114,11 @@ namespace ScoutingFRC
 
         private double[] divide(int[] ar, int a)
         {
-            double[] ret = new double[ar.Length];
-            for (int j = 0; j < ar.Length; j++)
-            {
-                ret[j] = ((double) ar[j])/a;
+            double[] result = new double[ar.Length];
+            for (int j = 0; j < ar.Length; j++) {
+                result[j] = ((double) ar[j])/a;
             }
-            return ret;
+            return result;
         }
 
         private void addScoringMethod(MatchData.PerformanceData.ScoringMethod method, int start, int[] arr)
