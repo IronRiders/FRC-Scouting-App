@@ -116,6 +116,7 @@ namespace ScoutingFRC
                 tele.IncrementAttempt(successful);
                 undoList.Push(() => tele.DecrementAttempt(successful));
             }
+
             RedrawLayout();
         }
 
@@ -142,7 +143,7 @@ namespace ScoutingFRC
                 matchData.teamNumber = int.Parse(FindViewById<TextView>(Resource.Id.editTextTeamNumber).Text);
             }
             catch {
-                ComplainAboutFeild("a team number");
+                ComplainAboutField("a team number");
                 return;
             }
 
@@ -150,13 +151,13 @@ namespace ScoutingFRC
                 matchData.match = int.Parse(FindViewById<TextView>(Resource.Id.editTextMathcNumber).Text);
             }
             catch {
-                ComplainAboutFeild("a match number");
+                ComplainAboutField("a match number");
                 return;
             }
 
             string name = FindViewById<TextView>(Resource.Id.editTextYourName).Text;
             if (string.IsNullOrEmpty(name)) {
-                ComplainAboutFeild("your name");
+                ComplainAboutField("your name");
                 return;
             }
 
@@ -171,7 +172,6 @@ namespace ScoutingFRC
             myIntent.PutExtra("newMatch", bytes);
             SetResult(Result.Ok, myIntent);
             Finish();
-
         }
 
 
@@ -191,7 +191,7 @@ namespace ScoutingFRC
         /// <summary>
         /// Shows a warning for a missing field.
         /// </summary>
-        private void ComplainAboutFeild(string missing)
+        private void ComplainAboutField(string missing)
         {
             var builder = new AlertDialog.Builder(this)
                  .SetTitle("Cannot Submit Match Data")

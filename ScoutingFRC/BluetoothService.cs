@@ -117,7 +117,7 @@ namespace ScoutingFRC
         /// <summary>
         /// Shows a toast on the UI thread
         /// </summary>
-        public void Debug(string s)
+        public void DebugString(string s)
         {
             (context as Activity).RunOnUiThread(() => Toast.MakeText(context, s, ToastLength.Long).Show());
         }

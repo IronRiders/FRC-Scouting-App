@@ -9,7 +9,6 @@ using ScoutingFRC;
 [Activity(Theme = "@style/CustomTheme.Splash", MainLauncher = true, NoHistory = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
 public class SplashActivity : Activity
 {
-
     public override void OnCreate(Bundle savedInstanceState, PersistableBundle persistentState)
     {
         base.OnCreate(savedInstanceState, persistentState);
