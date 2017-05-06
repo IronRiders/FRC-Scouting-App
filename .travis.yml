@@ -16,4 +16,4 @@ install:
   - /Library/Frameworks/Mono.framework/Commands/nuget restore ${SOLUTION_NAME}
 
 script:
-  - /Library/Frameworks/Mono.framework/Commands/xbuild /t:SignAndroidPackage /p:Configuration=Release ${SOLUTION_NAME}
+  - /Library/Frameworks/Mono.framework/Commands/xbuild /t:Build /p:Configuration=Release ${SOLUTION_NAME}
