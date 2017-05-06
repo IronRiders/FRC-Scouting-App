@@ -1,4 +1,4 @@
-os: linux
+os: osx
 language: csharp
 
 env:
@@ -6,11 +6,14 @@ env:
     - ANDROID_COMPONENTS=build-tools-25.0.1,android-24,extra-android-support,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository
     - ANDROID_LICENSES=android-sdk-license-c81a61d9
     - MONO_ANDROID_VERSION=7.0.2-42
+    - SOLUTION_NAME=ScoutingFRC.sln
     
 install:
-  - sudo apt-get install expect
   - curl -L https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=$ANDROID_COMPONENTS --accept=$ANDROID_LICENSES
   - source ~/.android-sdk-installer/env
+  - wget "https://dl.xamarin.com/MonoforAndroid/Mac/xamarin.android-${MONO_ANDROID_VERSION}.pkg"
+  - sudo installer -pkg "xamarin.android-${MONO_ANDROID_VERSION}.pkg" -target /
+  - /Library/Frameworks/Mono.framework/Commands/nuget restore ${SOLUTION_NAME}
 
 script:
-  - whoami
+  - /Library/Frameworks/Mono.framework/Commands/xbuild /t:SignAndroidPackage /p:Configuration=Release ${SOLUTION_NAME}
