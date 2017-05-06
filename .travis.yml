@@ -8,7 +8,7 @@ env:
     - MONO_ANDROID_VERSION=7.0.2-42
     
 install:
-  - apt-get install expect
+  - sudo apt-get install expect
   - curl -L https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=$ANDROID_COMPONENTS --accept=$ANDROID_LICENSES
   - source ~/.android-sdk-installer/env
 
