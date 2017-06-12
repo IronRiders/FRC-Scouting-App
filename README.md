@@ -9,12 +9,13 @@ This is a scouting app built by Alex MacLean and Tobias Rohde, members of team 4
 ## Technologies/Compiling instructions 
 
 ## Class Name 
-Projects In Computer Science s2 2017
+Projects In Computer Science S2 2017
 
 ## Contributors
-Alex MacLean
-Tobias Rohde
+* Alex MacLean
+* Tobias Rohde
 
-## bug/task tracking
+## Bug/Task Tracking
+https://github.com/IronRiders/FRC-Scouting-App/issues
 
 ## Github usernames / link to repositories
