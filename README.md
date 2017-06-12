@@ -20,3 +20,5 @@ https://github.com/IronRiders/FRC-Scouting-App/issues
 
 ## Github usernames / link to repositories
 https://github.com/IronRiders/FRC-Scouting-App
+* @AlexMaclean
+* @Tobias-Rohde
