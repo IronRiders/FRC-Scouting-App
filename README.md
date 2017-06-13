@@ -19,7 +19,7 @@ Projects In Computer Science S2 2017
 ## Bug/Task Tracking
 https://github.com/IronRiders/FRC-Scouting-App/issues
 
-## Github usernames / Link To Repositories
+## Github Usernames / Link To Repositories
 https://github.com/IronRiders/FRC-Scouting-App
 * [@AlexMaclean](https://github.com/alexMaclean)
 * [@Tobias-Rohde](https://github.com/Tobias-Rohde)
