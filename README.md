@@ -23,3 +23,6 @@ https://github.com/IronRiders/FRC-Scouting-App/issues
 https://github.com/IronRiders/FRC-Scouting-App
 * [@AlexMaclean](https://github.com/alexMaclean)
 * [@Tobias-Rohde](https://github.com/Tobias-Rohde)
+
+## Play Store Listing
+https://play.google.com/store/apps/details?id=com.TRandAM.ScoutingFRC&hl=en
